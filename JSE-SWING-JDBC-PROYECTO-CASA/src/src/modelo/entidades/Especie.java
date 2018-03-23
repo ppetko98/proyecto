@@ -41,7 +41,4 @@ public class Especie {
         return  id_especie + " " + nombreEspecie + " " + nombreGenero ;
     }
     
-    
-    
-    
 }
