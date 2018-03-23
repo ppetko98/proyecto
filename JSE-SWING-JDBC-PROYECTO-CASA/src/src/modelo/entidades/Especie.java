@@ -1,11 +1,6 @@
 
 package src.modelo.entidades;
 
-/**
- *
- * @author Tamara
- * @author ppetk
- */
 public class Especie {
     private  int id_especie;
     private  String nombreEspecie;
