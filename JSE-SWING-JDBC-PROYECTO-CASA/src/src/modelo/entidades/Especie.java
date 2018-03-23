@@ -117,7 +117,4 @@ public class Especie {
         return  id_especie + " " + genero + " " + especie_name ;
     }
     
-    
-    
-    
 }
