@@ -1,8 +1,8 @@
 
-package modelo.dao;
+package src.modelo.dao;
 
-import modelo.entidades.Especie;
-import modelo.excepciones.EspecieException;
+import src.modelo.entidades.Especie;
+import src.modelo.excepciones.EspecieException;
 
 import java.util.List;
 

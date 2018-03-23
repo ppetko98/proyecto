@@ -1,4 +1,4 @@
 package src.modelo.entidades;
 
-public class imagenes {
+public class Genero {
 }

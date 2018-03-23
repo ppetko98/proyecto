@@ -1,5 +1,5 @@
 
-package modelo.excepciones;
+package src.modelo.excepciones;
 
 /**
  *
