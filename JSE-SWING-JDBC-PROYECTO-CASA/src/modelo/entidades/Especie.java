@@ -1,5 +1,5 @@
 
-package modelo.entidades;
+package src.modelo.entidades;
 
 /**
  *

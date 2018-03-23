@@ -1,27 +1,15 @@
-package test;
+package src.test;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
+import src.modelo.dao.EspecieController;
+import src.modelo.dao.Implements.EspecieControllerImpl;
+import src.modelo.entidades.Especie;
+import src.modelo.excepciones.EspecieException;
+
+import javax.swing.*;
+import java.awt.*;
 import java.util.List;
-import java.util.Vector;
-import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import modelo.dao.EspecieController;
-import modelo.dao.EspecieControllerImpl;
-import modelo.entidades.Especie;
-import modelo.entidades.EspecieException;
-import utilidades.VentanaPrincipal;
+
+import static utilidades.BaseSwing.crear;
 
 /**
  *
@@ -29,10 +17,10 @@ import utilidades.VentanaPrincipal;
  */
 public class Ejecucion {
     
-    private final JFrame mainFrame = VentanaPrincipal.crear ("GESTIÓN DE ESPECIES",
+    private final JFrame mainFrame = crear ("GESTIÓN DE ESPECIES",
             600, 500, false, true);
     
-    private final JFrame eliminarFrame = VentanaPrincipal.crear("ELIMINAR ESPECIE",
+    private final JFrame eliminarFrame = crear("ELIMINAR ESPECIE",
             600, 500, false, true);
     
 public JList <Especie> lstEspecies = new JList<>();
