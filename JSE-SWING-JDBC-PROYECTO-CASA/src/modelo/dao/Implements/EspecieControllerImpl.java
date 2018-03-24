@@ -2,9 +2,9 @@
 package src.modelo.dao.Implements;
 
 import com.mysql.jdbc.Connection;
-import src.src.modelo.dao.EspecieController;
-import src.src.modelo.entidades.Especie;
-import src.src.modelo.excepciones.EspecieException;
+import src.modelo.dao.EspecieController;
+import src.modelo.entidades.Especie;
+import src.modelo.excepciones.EspecieException;
 
 import java.sql.DriverManager;
 import java.sql.ResultSet;

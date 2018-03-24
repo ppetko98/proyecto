@@ -1,15 +1,15 @@
 package src.test;
 
-import src.src.modelo.dao.EspecieController;
-import src.src.modelo.dao.Implements.EspecieControllerImpl;
-import src.src.modelo.entidades.Especie;
-import src.src.modelo.excepciones.EspecieException;
+import src.modelo.dao.EspecieController;
+import src.modelo.dao.Implements.EspecieControllerImpl;
+import src.modelo.entidades.Especie;
+import src.modelo.excepciones.EspecieException;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-import static src.src.utilidades.BaseSwing.crear;
+import static src.utilidades.BaseSwing.crear;
 
 
 /**
