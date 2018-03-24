@@ -38,9 +38,9 @@ public class EspecieControllerImpl implements EspecieController {
             do{
                 int id_especie = rs.getInt("id_especie");
                 String especie_name = rs.getString("especie_name");
-                String genero = rs.getString("genero_name");
+                String genero_name = rs.getString("genero_name");
                 
-                Especie objeto = new Especie(id_especie, especie_name, genero_name);
+                Especie objeto = new Especie(id_especie, especie_name ,genero_name);
                 
                 lista.add(objeto);
                 

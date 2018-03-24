@@ -15,12 +15,18 @@ public class Especie {
 
     public Especie() {
     }
-    
-    
 
-    public Especie(int id_especie, String especie_name, String autor, String descripcion, int imagen, String metabolismo, String ecologia, String references, int id_secuencia) {
+    public Especie(int id_especie, String especie_name, String genero_name) {
         this.id_especie = id_especie;
         this.especie_name = especie_name;
+        this.genero_name = genero_name;
+    }
+
+    
+    public Especie(int id_especie, String especie_name, String genero_name, String autor, String descripcion, int imagen, String metabolismo, String ecologia, String references, int id_secuencia) {
+        this.id_especie = id_especie;
+        this.especie_name = especie_name;
+        this.genero_name = genero_name;
         this.autor = autor;
         this.descripcion = descripcion;
         this.imagen = imagen;
@@ -46,11 +52,11 @@ public class Especie {
         this.especie_name = especie_name;
     }
 
-    public String getGenero() {
+    public String getGenero_name() {
         return genero_name;
     }
 
-    public void setGenero(String genero_name) {
+    public void setGenero_name(String genero_name) {
         this.genero_name = genero_name;
     }
 
@@ -109,6 +115,7 @@ public class Especie {
     public void setId_secuencia(int id_secuencia) {
         this.id_secuencia = id_secuencia;
     }
+    
 
     
 
