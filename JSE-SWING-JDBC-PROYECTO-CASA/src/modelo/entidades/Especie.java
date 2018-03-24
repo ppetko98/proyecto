@@ -4,7 +4,7 @@ package src.modelo.entidades;
 public class Especie {
     private  int id_especie;
     private  String especie_name;
-    private  String genero;
+    private  String genero_name;
     private  String autor;
     private String descripcion;
     private int imagen;
@@ -47,11 +47,11 @@ public class Especie {
     }
 
     public String getGenero() {
-        return genero;
+        return genero_name;
     }
 
-    public void setGenero(String genero) {
-        this.genero = genero;
+    public void setGenero(String genero_name) {
+        this.genero_name = genero_name;
     }
 
     public String getAutor() {
@@ -114,7 +114,7 @@ public class Especie {
 
     @Override
     public String toString() {
-        return  id_especie + " " + genero + " " + especie_name ;
+        return  id_especie + " " + genero_name + " " + especie_name ;
     }
     
 }

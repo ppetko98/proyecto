@@ -1,7 +1,7 @@
 package src.test;
 
 import src.modelo.dao.EspecieController;
-import src.modelo.dao.Implements.EspecieControllerImpl;
+import modelo.dao.Implements.EspecieControllerImpl;
 import src.modelo.entidades.Especie;
 import src.modelo.excepciones.EspecieException;
 
