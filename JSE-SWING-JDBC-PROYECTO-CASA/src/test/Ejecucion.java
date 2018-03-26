@@ -1,17 +1,17 @@
-package src.test;
+package test;
 
 import modelo.dao.EspecieController;
 import modelo.dao.Implements.EspecieControllerImpl;
 import modelo.entidades.Especie;
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import src.modelo.excepciones.EspecieException;
 
-import static src.utilidades.BaseSwing.crear;
-import utilidades.VentanaPrincipal;
+import static utilidades.BaseSwing.crear;
 
 /**
  *
@@ -25,6 +25,9 @@ public class Ejecucion {
             600, 400, false, true);
 
     private final List<Especie> especies = EspecieControllerImpl.lista;
+    
+    private final String pathImg = System.getProperty("user.dir")+"\\src\\testImages\\";
+
 
     private EspecieController controllerEspecie = new EspecieControllerImpl();
 
@@ -50,6 +53,8 @@ public class Ejecucion {
     }
 
     private void startup() {
+        
+        
         JPanel botones = new JPanel(new GridLayout(5, 0, 25, 25));
         botones.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
         JPanel contenido = new JPanel(new GridLayout(2, 1, 20, 20));
@@ -60,17 +65,49 @@ public class Ejecucion {
         titulo.setFont(new Font(auxFont.getFontName(), auxFont.getStyle(), 30));
         
         //Imagen del logo , por ejemplo 
-        ImageIcon logo = new ImageIcon("C:\\Users\\Tamara\\Documents\\programación\\repositorio_proyecto_programacion\\proyecto\\JSE-SWING-JDBC-PROYECTO-CASA\\src\\testImages\\logo angym.png");
+        ImageIcon logo = new ImageIcon(pathImg+"logo angym.png");
+        
+        /*
+        "C:\\Users\\Tamara\\Documents\\"
+                + "programación\\repositorio_proyecto_programacion\\proyecto\\"
+                + "JSE-SWING-JDBC-PROYECTO-CASA\\src\\testImages\\logo angym.png"
+        */
         JLabel imagen = new JLabel(logo);
         
         
         // Botones
-        ImageIcon crearImagen = new ImageIcon("C:\\Users\\Tamara\\Documents\\programación\\repositorio_proyecto_programacion\\proyecto\\JSE-SWING-JDBC-PROYECTO-CASA\\src\\testImages\\if_New_file_131897.png");
-        ImageIcon editImagen = new ImageIcon("C:\\Users\\Tamara\\Documents\\programación\\repositorio_proyecto_programacion\\proyecto\\JSE-SWING-JDBC-PROYECTO-CASA\\src\\testImages\\edit.png");
-        ImageIcon eliminarImagen = new ImageIcon("C:\\Users\\Tamara\\Documents\\programación\\repositorio_proyecto_programacion\\proyecto\\JSE-SWING-JDBC-PROYECTO-CASA\\src\\testImages\\if_Trash_empty_71063.png");
-        ImageIcon buscarImagen = new ImageIcon("C:\\Users\\Tamara\\Documents\\programación\\repositorio_proyecto_programacion\\proyecto\\JSE-SWING-JDBC-PROYECTO-CASA\\src\\testImages\\if_Preview_131689.png");
-        ImageIcon cancelarImagen = new ImageIcon("C:\\Users\\Tamara\\Documents\\programación\\repositorio_proyecto_programacion\\proyecto\\JSE-SWING-JDBC-PROYECTO-CASA\\src\\testImages\\if_Cancel_131742.png");
-
+        ImageIcon crearImagen = new ImageIcon(pathImg+"if_New_file_131897.png");
+        
+        /*
+        C:\\Users\\Tamara\\Documents\\"
+                + "programación\\repositorio_proyecto_programacion\\proyecto\\"
+                + "JSE-SWING-JDBC-PROYECTO-CASA
+        */
+        
+        ImageIcon editImagen = new ImageIcon(pathImg+"edit.png");
+        /*
+        C:\\Users\\Tamara\\Documents\\"
+                + "programación\\repositorio_proyecto_programacion\\proyecto\\"
+                + "JSE-SWING-JDBC-PROYECTO-CASA
+        */
+        ImageIcon eliminarImagen = new ImageIcon(pathImg+"if_Trash_empty_71063.png");
+        /*
+        C:\\Users\\Tamara\\Documents\\"
+                + "programación\\repositorio_proyecto_programacion\\proyecto\\"
+                + "JSE-SWING-JDBC-PROYECTO-CASA
+        */
+        ImageIcon buscarImagen = new ImageIcon(pathImg+"if_Preview_131689.png");
+        /*
+        C:\\Users\\Tamara\\Documents\\"
+                + "programación\\repositorio_proyecto_programacion\\proyecto\\"
+                + "JSE-SWING-JDBC-PROYECTO-CASA
+        */
+        ImageIcon cancelarImagen = new ImageIcon(pathImg+"if_Cancel_131742.png");
+        /*
+        C:\\Users\\Tamara\\Documents\\"
+                + "programación\\repositorio_proyecto_programacion\\proyecto\\"
+                + "JSE-SWING-JDBC-PROYECTO-CASA
+        */
         JButton btnCrear = new JButton("AÑADIR", crearImagen);
         JButton btnEditar = new JButton("MODIFICAR", editImagen);
         JButton btnEliminar = new JButton("ELIMINAR", eliminarImagen);
@@ -113,9 +150,20 @@ public class Ejecucion {
     private void eliminarEspecie() throws EspecieException {
         JLabel lblSeleccion = new JLabel("SELECCIONA ESPECIE");
         JComboBox<Especie> cmbEspecies = new JComboBox<>();
-        ImageIcon eliminarImagen = new ImageIcon("C:\\Users\\Tamara\\Documents\\programación\\repositorio_proyecto_programacion\\proyecto\\JSE-SWING-JDBC-PROYECTO-CASA\\src\\testImages\\if_Trash_empty_71063.png");
+        ImageIcon eliminarImagen = new ImageIcon(pathImg+"if_Trash_empty_71063.png");
+        /*
+        C:\\Users\\Tamara\\Documents\\"
+                + "programación\\repositorio_proyecto_programacion\\proyecto\\"
+                + "JSE-SWING-JDBC-PROYECTO-CASA
+        */
         JButton elimButton = new JButton("ELIMINAR", eliminarImagen);
-        ImageIcon cancelarImagen = new ImageIcon("C:\\Users\\Tamara\\Documents\\programación\\repositorio_proyecto_programacion\\proyecto\\JSE-SWING-JDBC-PROYECTO-CASA\\src\\testImages\\if_Cancel_131742.png");
+        
+        ImageIcon cancelarImagen = new ImageIcon(pathImg+"if_Cancel_131742.png");
+        /*
+        C:\\Users\\Tamara\\Documents\\"
+                + "programación\\repositorio_proyecto_programacion\\proyecto\\"
+                + "JSE-SWING-JDBC-PROYECTO-CASA
+        */
         JButton cancelButton = new JButton("CANCELAR", cancelarImagen);
 
         for (Especie e : especies) {

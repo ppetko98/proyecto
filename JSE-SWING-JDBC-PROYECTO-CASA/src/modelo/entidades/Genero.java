@@ -1,4 +1,4 @@
-package src.modelo.entidades;
+package modelo.entidades;
 
 public class Genero {
 }
