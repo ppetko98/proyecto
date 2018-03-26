@@ -1,5 +1,5 @@
 
-package src.modelo.entidades;
+package modelo.entidades;
 
 public class Especie {
     private  int id_especie;

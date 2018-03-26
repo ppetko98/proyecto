@@ -2,8 +2,8 @@
 package modelo.dao.Implements;
 
 import com.mysql.jdbc.Connection;
-import src.modelo.dao.EspecieController;
-import src.modelo.entidades.Especie;
+import modelo.dao.EspecieController;
+import modelo.entidades.Especie;
 import src.modelo.excepciones.EspecieException;
 
 import java.sql.DriverManager;
@@ -16,7 +16,7 @@ import java.util.List;
 
 public class EspecieControllerImpl implements EspecieController {
 
-    private static List<Especie> lista = new ArrayList<>();
+    public static List<Especie> lista = new ArrayList<>();
     
     @Override
     public List<Especie> lista() throws EspecieException {
