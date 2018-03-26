@@ -51,9 +51,9 @@ public class Ejecucion {
 
     private void startup() {
         JPanel botones = new JPanel(new GridLayout(5, 0, 25, 25));
-        botones.setBorder(BorderFactory.createEmptyBorder(30, 20, 20, 20));
+        botones.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
         JPanel contenido = new JPanel(new GridLayout(2, 1, 20, 20));
-        contenido.setBorder(BorderFactory.createEmptyBorder(10,100, 100, 100));
+        contenido.setBorder(BorderFactory.createEmptyBorder(10 ,100, 100, 100));
         // titulo
         JLabel titulo = new JLabel("GESTION BASE DE DATOS", JLabel.NORTH_EAST);
         Font auxFont=titulo.getFont(); 
