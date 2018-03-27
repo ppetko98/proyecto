@@ -193,19 +193,34 @@ public class BuscarPanel extends JPanel {
                     JOptionPane.ERROR_MESSAGE);
         }//Validacion Especie
 
+        //SE DEBERÁ HACER CON CONSULTA SQL
         String pathImg = System.getProperty("user.dir") + "\\src\\testImages\\"
-                + especiebuscada.getEspecie_name() + ".png";
+                + especiebuscada.getEspecie_name() + ".png";//direccion de las imagenes
 
         ImageIcon imagen = new ImageIcon(pathImg);
 
         Image image = imagen.getImage().getScaledInstance(lblImagen.getSize().width, lblImagen.getSize().height, 0);
 
         lblImagen.setIcon(new ImageIcon(image));
-        //lblImagen.setText(especiebuscada.getEspecie_name());
         lblImagen.setVisible(true);
-
-        //SwingUtilities.updateComponentTreeUI(this);
-
+        /*
+        //CHECKBOX PARA LA TABLA
+        if (cbEspecie1.isEnabled()) {
+            
+        }if (cbEspecie2.isEnabled()) {
+            
+        }if (cbEspecie3.isEnabled()) {
+            
+        }if (cbEspecie4.isEnabled()) {
+            
+        }if (cbEspecie5.isEnabled()) {
+            
+        }if (cbEspecie6.isEnabled()) {
+            
+        }
+        //TODO
+        */
+        
     }//GEN-LAST:event_btnBuscarEspecieActionPerformed
 
 
