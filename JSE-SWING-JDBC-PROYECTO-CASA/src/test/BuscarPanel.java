@@ -201,7 +201,7 @@ public class BuscarPanel extends JPanel {
         Image image = imagen.getImage().getScaledInstance(lblImagen.getSize().width, lblImagen.getSize().height, 0);
 
         lblImagen.setIcon(new ImageIcon(image));
-        lblImagen.setText(especiebuscada.getEspecie_name());
+        //lblImagen.setText(especiebuscada.getEspecie_name());
         lblImagen.setVisible(true);
 
         //SwingUtilities.updateComponentTreeUI(this);
