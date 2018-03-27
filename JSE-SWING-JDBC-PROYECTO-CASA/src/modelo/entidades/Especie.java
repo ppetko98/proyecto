@@ -36,6 +36,10 @@ public class Especie {
         this.id_secuencia = id_secuencia;
     }
 
+    public Especie(String nombre, String autor, String descripcion, String metabolismo, String ecologia, String references) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public int getId_especie() {
         return id_especie;
     }

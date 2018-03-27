@@ -12,6 +12,9 @@ import java.util.logging.Logger;
 import src.modelo.excepciones.EspecieException;
 
 import static utilidades.BaseSwing.crear;
+import utilidades.Validacion;
+import utilidades.ValidacionException;
+import utilidades.VentanaPrincipal;
 
 /**
  *
@@ -23,7 +26,8 @@ public class Ejecucion {
             800, 600, false, true);
     private final JFrame eliminarFrame = crear("ELIMINAR ESPECIE",
             600, 400, false, true);
-
+     private final JFrame agregarFrame = crear("AÑADIR ESPECIE",
+            600, 400, false, true);
     private final List<Especie> especies = EspecieControllerImpl.lista;
     
     private final String pathImg = System.getProperty("user.dir")+"\\src\\testImages\\";
@@ -129,6 +133,15 @@ public class Ejecucion {
                 Logger.getLogger(Ejecucion.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+         btnCrear.addActionListener(e -> {
+            crearEspecie();
+             // Ocultar formulario cuando se pulse el boton de X
+            agregarFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+
+            // Mostrar formulario
+            agregarFrame.setVisible(true);
+        });
+
 
         //Vista
         JPanel mainPanel = new JPanel(new BorderLayout(40, 40));
@@ -208,6 +221,91 @@ public class Ejecucion {
         eliminarFrame.setLocationByPlatform(true);
         eliminarFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
+    }
+     private void crearEspecie() {
+
+        JTextField txtNombre = new JTextField();
+        JTextField txtAutor = new JTextField();
+        JTextField txtDecripcion = new JTextField();
+        JTextField txtMetabolismo = new JTextField();
+        JTextField txtEcologia = new JTextField();
+        JTextField txtReferences = new JTextField();
+
+        JLabel lblNombre = new JLabel("NOMBRE", JLabel.RIGHT);
+        JLabel lblAutor = new JLabel("AUTOR", JLabel.RIGHT);
+        JLabel lblDescripcion = new JLabel("DESCRIPCION", JLabel.RIGHT);
+        JLabel lblMetabolismo = new JLabel("METABOLISMO", JLabel.RIGHT);
+        JLabel lblEcologia = new JLabel("ECOLOGIA", JLabel.RIGHT);
+        JLabel lblReferences = new JLabel("REFERENCES", JLabel.RIGHT);
+
+        JPanel datos = new JPanel();
+        datos.setLayout(new GridLayout(6, 0, 40, 15));
+        datos.add(lblNombre);
+        datos.add(txtNombre);
+        datos.add(lblAutor);
+        datos.add(txtAutor);
+        datos.add(lblDescripcion);
+        datos.add(txtDecripcion);
+        datos.add(lblMetabolismo);
+        datos.add(txtMetabolismo);
+        datos.add(lblEcologia);
+        datos.add(txtEcologia);
+        datos.add(lblReferences);
+        datos.add(txtReferences);
+
+        JButton buttonOK = new JButton("SIGUIENTE");
+        JButton buttonKO = new JButton("CANCELAR");
+
+        JPanel inferior = new JPanel();
+        inferior.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        inferior.add(buttonOK);
+        buttonOK.addActionListener(ae -> {
+            try {
+
+                Validacion.validarCadena(txtNombre, true, "Nombre");
+                Validacion.validarCadena(txtAutor, true, "Autor");
+                Validacion.validarCadena(txtDecripcion, true, "Descripcion");
+                Validacion.validarCadena(txtMetabolismo, true, "Metabolismo");
+                Validacion.validarCadena(txtEcologia, true, "Ecologia");
+                Validacion.validarCadena(txtReferences, true, "References");
+
+            } catch (ValidacionException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "Error",
+                        JOptionPane.ERROR_MESSAGE);
+
+                return;
+            }
+
+            String nombre = txtNombre.getText();
+            String autor = txtAutor.getText();
+            String descripcion = txtDecripcion.getText();
+            String metabolismo = txtMetabolismo.getText();
+            String ecologia = txtEcologia.getText();
+            String references = txtReferences.getText();
+
+            Especie es = new Especie(nombre, autor, descripcion, metabolismo,
+                    ecologia, references);
+
+            especies.add(es);
+
+            agregarFrame.setVisible(false);
+
+            JOptionPane.showMessageDialog(null, "Se ha creado una nueva especie");
+
+        });
+        inferior.add(buttonKO);
+        buttonKO.addActionListener(ae -> {
+            agregarFrame.setVisible(false);
+        });
+        JPanel panel = new JPanel(new BorderLayout(5, 5));
+
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        panel.add(inferior, BorderLayout.SOUTH);
+        panel.add(datos, BorderLayout.CENTER);
+
+        agregarFrame.setContentPane(panel);
     }
 
 }
