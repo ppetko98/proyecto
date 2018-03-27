@@ -1,6 +1,7 @@
 package modelo.dao.Implements;
 
 import com.mysql.jdbc.Connection;
+import com.sun.java.swing.plaf.windows.WindowsTreeUI;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
@@ -14,6 +15,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,6 +32,7 @@ import static utilidades.BaseSwing.crear;
 public class EspecieControllerImpl implements EspecieController {
 
     public static List<Especie> lista = new ArrayList<>();
+    public static Collection<Especie> listacompleta = new ArrayList<>();
 
     @Override
     public List<Especie> lista() throws EspecieException {
@@ -80,8 +83,6 @@ public class EspecieControllerImpl implements EspecieController {
             }
         }
 
-        System.out.println(lista);//SOLO PARA PRUEBAS!!!! ELIMINAR DESPUES IMPRIME LA LISTA PARA VER SI CARGA CORRECTAMENTE LOS DATOS
-
         return lista;
 
     }
@@ -126,5 +127,59 @@ public class EspecieControllerImpl implements EspecieController {
 
         Connection connection = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/biologia");
         return connection;
+    }
+
+    @Override
+    public Collection<Especie> coleccionCompleta() throws EspecieException {
+        if (lista.isEmpty()) {
+
+            Connection connection = null;
+
+            try {
+
+                //connection = conexion();
+                connection = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/biologia",
+                        "root", "root");
+
+                Statement st = connection.createStatement();
+
+                ResultSet rs = st.executeQuery("SELECT e.especie_name, e.autor, e.descripcion, e.ecologia, e.metabolismo, e.references \n"
+                        + "FROM biologia.especie e;");
+
+                if (rs.next()) {
+                    do {
+                        String especie_name = rs.getString("especie_name");
+                        String autor = rs.getString("autor");
+                        String descripcion = rs.getString("descripcion");
+                        String ecologia = rs.getString("ecologia");
+                        String metabolismo = rs.getString("metabolismo");
+                        String references = rs.getString("references");
+                        
+                        Especie objeto = new Especie(especie_name, autor, descripcion, metabolismo, ecologia, references);
+
+                        listacompleta.add(objeto);
+
+                    } while (rs.next());
+
+                } else {
+                    throw new EspecieException("No data available in table");
+                }
+
+            } catch (SQLException ex) {
+                throw new EspecieException(ex.getMessage(), ex);
+            } finally {
+                if (connection != null) {
+                    try {
+                        connection.close();
+                    } catch (SQLException ex) {
+                        throw new EspecieException(ex.getMessage(), ex);
+                    }
+                }
+            }
+        }
+
+        System.out.println(listacompleta);//SOLO PARA PRUEBAS!!!! ELIMINAR DESPUES IMPRIME LA LISTA PARA VER SI CARGA CORRECTAMENTE LOS DATOS
+
+        return listacompleta;
     }
 }
