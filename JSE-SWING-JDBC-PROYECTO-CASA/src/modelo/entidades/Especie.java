@@ -22,6 +22,15 @@ public class Especie {
         this.genero_name = genero_name;
     }
 
+    public Especie(String especie_name, String autor, String descripcion, String metabolismo, String ecologia, String references) {
+        this.especie_name = especie_name;
+        this.autor = autor;
+        this.descripcion = descripcion;
+        this.metabolismo = metabolismo;
+        this.ecologia = ecologia;
+        this.references = references;
+        
+    }
     
     public Especie(int id_especie, String especie_name, String genero_name, String autor, String descripcion, int imagen, String metabolismo, String ecologia, String references, int id_secuencia) {
         this.id_especie = id_especie;
@@ -36,10 +45,7 @@ public class Especie {
         this.id_secuencia = id_secuencia;
     }
 
-    public Especie(String nombre, String autor, String descripcion, String metabolismo, String ecologia, String references) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+   
     public int getId_especie() {
         return id_especie;
     }
