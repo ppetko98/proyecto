@@ -172,14 +172,18 @@ public class BuscarPanel extends JPanel {
 
         try {
             Validacion.validarCadena(textBuscarEspecie, true, "Buscar Especie");
-
+            boolean found = false;
+            
             for (Especie e : especies) {
                 if (e.getEspecie_name().equals(especieString)) {
                     especiebuscada = e;
-                } else {
-                    throw new EspecieException("Especie no encontrada");
+                    found=true;
                 }
-            }
+            }//foreach recorre especies
+            
+            if (!found) {
+                throw new EspecieException("Especie no encontrada");
+            }//Si NO ha encontrado la especie lanza la excepcion
         } catch (ValidacionException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error",
                     JOptionPane.ERROR_MESSAGE);
@@ -199,7 +203,6 @@ public class BuscarPanel extends JPanel {
         lblImagen.setIcon(new ImageIcon(image));
         lblImagen.setText(especiebuscada.getEspecie_name());
         lblImagen.setVisible(true);
-        //lblImagen.setText(pathImg);
 
         //SwingUtilities.updateComponentTreeUI(this);
 
