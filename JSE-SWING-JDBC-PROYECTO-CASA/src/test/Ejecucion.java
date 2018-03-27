@@ -5,6 +5,7 @@ import modelo.dao.Implements.EspecieControllerImpl;
 import modelo.entidades.Especie;
 import javax.swing.*;
 import java.awt.*;
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,13 +24,17 @@ public class Ejecucion {
 
     private final JFrame mainFrame = crear("GESTIÓN DE ESPECIES",
             800, 600, false, true);
+    private final JFrame agregarFrame = crear("AÑADIR ESPECIE",
+            600, 400, false, true);
     private final JFrame eliminarFrame = crear("ELIMINAR ESPECIE",
             600, 400, false, true);
-    private final JFrame agregarFrame = crear("AÑADIR ESPECIE",
+    private final JFrame modificarFrame = crear("MODIFICAR ESPECIE",
             600, 400, false, true);
     private final JFrame buscarFrame = crear("BUSCAR ESPECIE",
             600, 400, true, true);
     private final List<Especie> especies = EspecieControllerImpl.lista;
+    
+    private final Collection<Especie> especiescompletas = EspecieControllerImpl.listacompleta;
 
     private final String pathImg = System.getProperty("user.dir") + "\\src\\testImages\\";
 
@@ -57,8 +62,6 @@ public class Ejecucion {
     }
 
     private void startup() {
-
-        eliminarFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
         JPanel botones = new JPanel(new GridLayout(5, 0, 25, 25));
         botones.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
@@ -99,14 +102,6 @@ public class Ejecucion {
         botones.add(btnCancelar);
 
         //Action Listener
-        btnEliminar.addActionListener(ae -> {
-            try {
-                eliminarEspecie();
-            } catch (EspecieException ex) {
-                Logger.getLogger(Ejecucion.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-        });
         btnCrear.addActionListener(e -> {
             crearEspecie();
             // Ocultar formulario cuando se pulse el boton de X
@@ -115,9 +110,24 @@ public class Ejecucion {
             // Mostrar formulario
             agregarFrame.setVisible(true);
         });
+        
+        btnEliminar.addActionListener(ae -> {
+            try {
+                eliminarEspecie();
+            } catch (EspecieException ex) {
+                Logger.getLogger(Ejecucion.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
+        });
+        
         btnBuscar.addActionListener((ae) -> {
             buscarEspecie(buscarFrame);
+
+        });
+        
+         btnCancelar.addActionListener((ae) -> {
+            // Cierra la ventana principal, pero si no lo vamos a usar se quita el boton
+           mainFrame.setVisible(false);
 
         });
 
