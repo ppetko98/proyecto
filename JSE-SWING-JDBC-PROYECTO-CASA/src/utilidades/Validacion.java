@@ -12,10 +12,8 @@ import javax.swing.JTextField;
  * @author Tuka Manel
  */
 public interface Validacion {
-    
-        
-   
-    public static void validarCadena(JTextField field, boolean required, String nombre) throws ValidacionException{
+
+    public static void validarCadena(JTextField field, boolean required, String nombre) throws ValidacionException {
         String contenidoCaja = field.getText();
 
         if (required) {
@@ -28,5 +26,4 @@ public interface Validacion {
             throw new ValidacionException("La caja " + nombre + " ha de contener unicamente letras");
         }
     }
-    
 }

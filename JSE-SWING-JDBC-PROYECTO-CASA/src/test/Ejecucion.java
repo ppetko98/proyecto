@@ -5,7 +5,6 @@ import modelo.dao.Implements.EspecieControllerImpl;
 import modelo.entidades.Especie;
 import javax.swing.*;
 import java.awt.*;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,7 +13,7 @@ import src.modelo.excepciones.EspecieException;
 import static utilidades.BaseSwing.crear;
 import utilidades.Validacion;
 import utilidades.ValidacionException;
-import utilidades.VentanaPrincipal;
+//import utilidades.VentanaPrincipal;
 
 /**
  *
@@ -26,12 +25,13 @@ public class Ejecucion {
             800, 600, false, true);
     private final JFrame eliminarFrame = crear("ELIMINAR ESPECIE",
             600, 400, false, true);
-     private final JFrame agregarFrame = crear("AÑADIR ESPECIE",
+    private final JFrame agregarFrame = crear("AÑADIR ESPECIE",
             600, 400, false, true);
+    private final JFrame buscarFrame = crear("BUSCAR ESPECIE",
+            600, 400, true, true);
     private final List<Especie> especies = EspecieControllerImpl.lista;
-    
-    private final String pathImg = System.getProperty("user.dir")+"\\src\\testImages\\";
 
+    private final String pathImg = System.getProperty("user.dir") + "\\src\\testImages\\";
 
     private EspecieController controllerEspecie = new EspecieControllerImpl();
 
@@ -57,61 +57,34 @@ public class Ejecucion {
     }
 
     private void startup() {
-        
-        
+
+        eliminarFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+
         JPanel botones = new JPanel(new GridLayout(5, 0, 25, 25));
         botones.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
         JPanel contenido = new JPanel(new GridLayout(2, 1, 20, 20));
-        contenido.setBorder(BorderFactory.createEmptyBorder(10 ,100, 100, 100));
+        contenido.setBorder(BorderFactory.createEmptyBorder(10, 100, 100, 100));
         // titulo
         JLabel titulo = new JLabel("GESTION BASE DE DATOS", JLabel.NORTH_EAST);
-        Font auxFont=titulo.getFont(); 
+        Font auxFont = titulo.getFont();
         titulo.setFont(new Font(auxFont.getFontName(), auxFont.getStyle(), 30));
-        
+
         //Imagen del logo , por ejemplo 
-        ImageIcon logo = new ImageIcon(pathImg+"logo angym.png");
-        
-        /*
-        "C:\\Users\\Tamara\\Documents\\"
-                + "programación\\repositorio_proyecto_programacion\\proyecto\\"
-                + "JSE-SWING-JDBC-PROYECTO-CASA\\src\\testImages\\logo angym.png"
-        */
+        ImageIcon logo = new ImageIcon(pathImg + "logo angym.png");
+
         JLabel imagen = new JLabel(logo);
-        
-        
+
         // Botones
-        ImageIcon crearImagen = new ImageIcon(pathImg+"if_New_file_131897.png");
-        
-        /*
-        C:\\Users\\Tamara\\Documents\\"
-                + "programación\\repositorio_proyecto_programacion\\proyecto\\"
-                + "JSE-SWING-JDBC-PROYECTO-CASA
-        */
-        
-        ImageIcon editImagen = new ImageIcon(pathImg+"edit.png");
-        /*
-        C:\\Users\\Tamara\\Documents\\"
-                + "programación\\repositorio_proyecto_programacion\\proyecto\\"
-                + "JSE-SWING-JDBC-PROYECTO-CASA
-        */
-        ImageIcon eliminarImagen = new ImageIcon(pathImg+"if_Trash_empty_71063.png");
-        /*
-        C:\\Users\\Tamara\\Documents\\"
-                + "programación\\repositorio_proyecto_programacion\\proyecto\\"
-                + "JSE-SWING-JDBC-PROYECTO-CASA
-        */
-        ImageIcon buscarImagen = new ImageIcon(pathImg+"if_Preview_131689.png");
-        /*
-        C:\\Users\\Tamara\\Documents\\"
-                + "programación\\repositorio_proyecto_programacion\\proyecto\\"
-                + "JSE-SWING-JDBC-PROYECTO-CASA
-        */
-        ImageIcon cancelarImagen = new ImageIcon(pathImg+"if_Cancel_131742.png");
-        /*
-        C:\\Users\\Tamara\\Documents\\"
-                + "programación\\repositorio_proyecto_programacion\\proyecto\\"
-                + "JSE-SWING-JDBC-PROYECTO-CASA
-        */
+        ImageIcon crearImagen = new ImageIcon(pathImg + "if_New_file_131897.png");
+
+        ImageIcon editImagen = new ImageIcon(pathImg + "edit.png");
+
+        ImageIcon eliminarImagen = new ImageIcon(pathImg + "if_Trash_empty_71063.png");
+
+        ImageIcon buscarImagen = new ImageIcon(pathImg + "if_Preview_131689.png");
+
+        ImageIcon cancelarImagen = new ImageIcon(pathImg + "if_Cancel_131742.png");
+
         JButton btnCrear = new JButton("AÑADIR", crearImagen);
         JButton btnEditar = new JButton("MODIFICAR", editImagen);
         JButton btnEliminar = new JButton("ELIMINAR", eliminarImagen);
@@ -132,16 +105,21 @@ public class Ejecucion {
             } catch (EspecieException ex) {
                 Logger.getLogger(Ejecucion.class.getName()).log(Level.SEVERE, null, ex);
             }
+
         });
-         btnCrear.addActionListener(e -> {
+        btnCrear.addActionListener(e -> {
             crearEspecie();
-             // Ocultar formulario cuando se pulse el boton de X
+            // Ocultar formulario cuando se pulse el boton de X
             agregarFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
             // Mostrar formulario
             agregarFrame.setVisible(true);
         });
 
+        btnBuscar.addActionListener((ae) -> {
+            buscarEspecie(buscarFrame);
+
+        });
 
         //Vista
         JPanel mainPanel = new JPanel(new BorderLayout(40, 40));
@@ -163,20 +141,12 @@ public class Ejecucion {
     private void eliminarEspecie() throws EspecieException {
         JLabel lblSeleccion = new JLabel("SELECCIONA ESPECIE");
         JComboBox<Especie> cmbEspecies = new JComboBox<>();
-        ImageIcon eliminarImagen = new ImageIcon(pathImg+"if_Trash_empty_71063.png");
-        /*
-        C:\\Users\\Tamara\\Documents\\"
-                + "programación\\repositorio_proyecto_programacion\\proyecto\\"
-                + "JSE-SWING-JDBC-PROYECTO-CASA
-        */
+        ImageIcon eliminarImagen = new ImageIcon(pathImg + "if_Trash_empty_71063.png");
+
         JButton elimButton = new JButton("ELIMINAR", eliminarImagen);
-        
-        ImageIcon cancelarImagen = new ImageIcon(pathImg+"if_Cancel_131742.png");
-        /*
-        C:\\Users\\Tamara\\Documents\\"
-                + "programación\\repositorio_proyecto_programacion\\proyecto\\"
-                + "JSE-SWING-JDBC-PROYECTO-CASA
-        */
+
+        ImageIcon cancelarImagen = new ImageIcon(pathImg + "if_Cancel_131742.png");
+
         JButton cancelButton = new JButton("CANCELAR", cancelarImagen);
 
         for (Especie e : especies) {
@@ -222,7 +192,8 @@ public class Ejecucion {
         eliminarFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
     }
-     private void crearEspecie() {
+
+    private void crearEspecie() {
 
         JTextField txtNombre = new JTextField();
         JTextField txtAutor = new JTextField();
@@ -308,4 +279,11 @@ public class Ejecucion {
         agregarFrame.setContentPane(panel);
     }
 
+    private void buscarEspecie(JFrame frame) {
+        JPanel buscarPanel = new BuscarPanel();
+        frame.add(buscarPanel);
+
+        buscarFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        buscarFrame.setVisible(true);
+    }
 }
