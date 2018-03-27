@@ -41,7 +41,7 @@ public class EspecieControllerImpl implements EspecieController {
 
                 //connection = conexion();
                 connection = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/biologia",
-                        "root", "Stoyanov98");
+                        "root", "root");
 
                 Statement st = connection.createStatement();
 
