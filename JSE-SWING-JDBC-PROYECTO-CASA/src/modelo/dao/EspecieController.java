@@ -15,4 +15,5 @@ import java.util.List;
 public interface EspecieController {
      List<Especie> lista() throws EspecieException;
      Collection <Especie> coleccionCompleta() throws EspecieException;
+     void delete () throws EspecieException;
 }
