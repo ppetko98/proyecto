@@ -21,7 +21,7 @@ import utilidades.ValidacionException;
  *
  * @author Tamara
  */
-public class Ejecucion {
+public class PruebaConexion {
 
     private final JFrame mainFrame = crear("GESTIÓN DE ESPECIES",
             800, 600, false, true);
@@ -32,7 +32,7 @@ public class Ejecucion {
     private final JFrame modificarFrame = crear("MODIFICAR ESPECIE",
             600, 400, false, true);
     private final JFrame buscarFrame = crear("BUSCAR ESPECIE",
-            650, 450, true, true);
+            600, 400, true, true);
     private final List<Especie> especies = EspecieControllerImpl.lista;
     
     private final Collection<Especie> especiescompletas = EspecieControllerImpl.listacompleta;
@@ -42,7 +42,7 @@ public class Ejecucion {
     private EspecieController controllerEspecie = new EspecieControllerImpl();
 
     public static void main(String[] args) throws EspecieException {
-        SwingUtilities.invokeLater(() -> new Ejecucion().startup());
+        SwingUtilities.invokeLater(() -> new PruebaConexion().startup());
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
@@ -114,10 +114,9 @@ public class Ejecucion {
         
         btnEliminar.addActionListener(ae -> {
             try {
-                eliminarFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
                 eliminarEspecie();
             } catch (EspecieException ex) {
-                Logger.getLogger(Ejecucion.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(PruebaConexion.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         });
@@ -200,7 +199,9 @@ public class Ejecucion {
 
         eliminarFrame.setContentPane(eliminarPanel);
         eliminarFrame.setVisible(true);
-        //eliminarFrame.setLocationByPlatform(true);
+        eliminarFrame.setLocationByPlatform(true);
+        eliminarFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+
     }
 
     private void crearEspecie() {

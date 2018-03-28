@@ -10,6 +10,7 @@ import modelo.entidades.Especie;
 import src.modelo.excepciones.EspecieException;
 
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -26,6 +27,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import utilidades.BaseDatos;
 import utilidades.BaseSwing;
 import static utilidades.BaseSwing.crear;
 
@@ -39,20 +41,13 @@ public class EspecieControllerImpl implements EspecieController {
         if (lista.isEmpty()) {
 
             Connection connection = null;
+ try {
+                
+                connection = (Connection) BaseDatos.getConnection();
 
-            try {
+                PreparedStatement ps = connection.prepareStatement(BaseDatos.SELECT_ESPECIE);
 
-                //connection = conexion();
-                connection = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/biologia",
-                        "root", "Stoyanov98");
-
-                Statement st = connection.createStatement();
-
-                ResultSet rs = st.executeQuery("SELECT e.id_especie, g.genero_name, e.especie_name\n"
-                        + "FROM nomenclatura n INNER JOIN genero g \n"
-                        + "ON n.id_genero = g.id_genero\n"
-                        + "INNER JOIN especie e\n"
-                        + "ON n.id_especie = e.id_especie");
+                ResultSet rs = ps.executeQuery();
 
                 if (rs.next()) {
                     do {
@@ -84,7 +79,6 @@ public class EspecieControllerImpl implements EspecieController {
         }
 
         return lista;
-
     }
 
     public static Connection conexion() throws SQLException {
@@ -181,5 +175,10 @@ public class EspecieControllerImpl implements EspecieController {
         System.out.println(listacompleta);//SOLO PARA PRUEBAS!!!! ELIMINAR DESPUES IMPRIME LA LISTA PARA VER SI CARGA CORRECTAMENTE LOS DATOS
 
         return listacompleta;
+    }
+
+    @Override
+    public void delete() throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
