@@ -35,7 +35,7 @@ public class EspecieControllerImpl implements EspecieController {
     public static Collection<Especie> listacompleta = new ArrayList<>();
 
     @Override
-    public List<Especie> lista() throws EspecieException {
+    public List<Especie> lista() throws SQLException {
         if (lista.isEmpty()) {
 
             Connection connection = null;
@@ -44,7 +44,7 @@ public class EspecieControllerImpl implements EspecieController {
 
                 //connection = conexion();
                 connection = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/biologia",
-                        "root", "root");
+                        "root", "Stoyanov98");
 
                 Statement st = connection.createStatement();
 
@@ -67,17 +67,17 @@ public class EspecieControllerImpl implements EspecieController {
                     } while (rs.next());
 
                 } else {
-                    throw new EspecieException("No data available in table");
+                    throw new SQLException("No data available in table");
                 }
 
             } catch (SQLException ex) {
-                throw new EspecieException(ex.getMessage(), ex);
+                System.out.println(ex.getMessage());
             } finally {
                 if (connection != null) {
                     try {
                         connection.close();
                     } catch (SQLException ex) {
-                        throw new EspecieException(ex.getMessage(), ex);
+                        System.out.println(ex.getMessage());
                     }
                 }
             }
@@ -130,7 +130,7 @@ public class EspecieControllerImpl implements EspecieController {
     }
 
     @Override
-    public Collection<Especie> coleccionCompleta() throws EspecieException {
+    public Collection<Especie> coleccionCompleta() throws SQLException {
         if (lista.isEmpty()) {
 
             Connection connection = null;
@@ -139,7 +139,7 @@ public class EspecieControllerImpl implements EspecieController {
 
                 //connection = conexion();
                 connection = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/biologia",
-                        "root", "root");
+                        "root", "Stoyanov98");
 
                 Statement st = connection.createStatement();
 
@@ -162,17 +162,17 @@ public class EspecieControllerImpl implements EspecieController {
                     } while (rs.next());
 
                 } else {
-                    throw new EspecieException("No data available in table");
+                    throw new SQLException("No data available in table");
                 }
 
             } catch (SQLException ex) {
-                throw new EspecieException(ex.getMessage(), ex);
+                System.out.println(ex.getMessage());
             } finally {
                 if (connection != null) {
                     try {
                         connection.close();
                     } catch (SQLException ex) {
-                        throw new EspecieException(ex.getMessage(), ex);
+                        System.out.println(ex.getMessage());
                     }
                 }
             }

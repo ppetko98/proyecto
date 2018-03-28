@@ -5,6 +5,7 @@ import modelo.dao.Implements.EspecieControllerImpl;
 import modelo.entidades.Especie;
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
@@ -56,7 +57,7 @@ public class Ejecucion {
                 System.err.println(es);
             }
 
-        } catch (EspecieException e) {
+        } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
     }
@@ -113,6 +114,7 @@ public class Ejecucion {
         
         btnEliminar.addActionListener(ae -> {
             try {
+                eliminarFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
                 eliminarEspecie();
             } catch (EspecieException ex) {
                 Logger.getLogger(Ejecucion.class.getName()).log(Level.SEVERE, null, ex);
@@ -198,9 +200,7 @@ public class Ejecucion {
 
         eliminarFrame.setContentPane(eliminarPanel);
         eliminarFrame.setVisible(true);
-        eliminarFrame.setLocationByPlatform(true);
-        eliminarFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-
+        //eliminarFrame.setLocationByPlatform(true);
     }
 
     private void crearEspecie() {
