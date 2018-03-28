@@ -1,15 +1,20 @@
 package test;
 
+import com.mysql.jdbc.Connection;
 import modelo.dao.EspecieController;
 import modelo.dao.Implements.EspecieControllerImpl;
 import modelo.entidades.Especie;
 import javax.swing.*;
 import java.awt.*;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import src.modelo.excepciones.EspecieException;
+import utilidades.BaseDatos;
 
 import static utilidades.BaseSwing.crear;
 import utilidades.Validacion;
@@ -32,7 +37,7 @@ public class Ejecucion {
             600, 400, false, true);
     private final JFrame buscarFrame = crear("BUSCAR ESPECIE",
             600, 400, true, true);
-    private final List<Especie> especies = EspecieControllerImpl.lista;
+ 
     
     private final Collection<Especie> especiescompletas = EspecieControllerImpl.listacompleta;
 
@@ -50,7 +55,7 @@ public class Ejecucion {
         }
         try {
             EspecieController controller = new EspecieControllerImpl();
-            List<Especie> especies = controller.lista();
+            Collection<Especie> especies = controller.coleccionCompleta();
             for (Especie es : especies) {
 
                 System.err.println(es);
@@ -159,7 +164,7 @@ public class Ejecucion {
 
         JButton cancelButton = new JButton("CANCELAR", cancelarImagen);
 
-        for (Especie e : especies) {
+        for (Especie e : especiescompletas) {
             cmbEspecies.addItem(e);
         }
 
@@ -175,8 +180,8 @@ public class Ejecucion {
         elimButton.addActionListener(ae -> {
             Especie e = (Especie) cmbEspecies.getSelectedItem();
 
-            especies.remove(e);
-
+            especiescompletas.remove(e);
+            
             cmbEspecies.removeItem(e);
 
             eliminarFrame.setVisible(false);
@@ -268,7 +273,7 @@ public class Ejecucion {
             Especie es = new Especie(nombre, autor, descripcion, metabolismo,
                     ecologia, references);
 
-            especies.add(es);
+            especiescompletas.add(es);
 
             agregarFrame.setVisible(false);
 

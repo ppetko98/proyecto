@@ -33,54 +33,10 @@ import static utilidades.BaseSwing.crear;
 
 public class EspecieControllerImpl implements EspecieController {
 
-    public static List<Especie> lista = new ArrayList<>();
+   public static List<Especie> lista = new ArrayList<>();
     public static Collection<Especie> listacompleta = new ArrayList<>();
 
-    @Override
-    public List<Especie> lista() throws EspecieException {
-        if (lista.isEmpty()) {
-
-            Connection connection = null;
- try {
-                
-                connection = (Connection) BaseDatos.getConnection();
-
-                PreparedStatement ps = connection.prepareStatement(BaseDatos.SELECT_ESPECIE);
-
-                ResultSet rs = ps.executeQuery();
-
-                if (rs.next()) {
-                    do {
-                        int id_especie = rs.getInt("id_especie");
-                        String especie_name = rs.getString("especie_name");
-                        String genero_name = rs.getString("genero_name");
-
-                        Especie objeto = new Especie(id_especie, especie_name, genero_name);
-
-                        lista.add(objeto);
-
-                    } while (rs.next());
-
-                } else {
-                    throw new EspecieException("No data available in BBDD");
-                }
-
-            } catch (SQLException ex) {
-                throw new EspecieException(ex.getMessage(), ex);
-            } finally {
-                if (connection != null) {
-                    try {
-                        connection.close();
-                    } catch (SQLException ex) {
-                        throw new EspecieException(ex.getMessage(), ex);
-                    }
-                }
-            }
-        }
-
-        return lista;
-    }
-
+   
     public static Connection conexion() throws SQLException {
 
         JFrame conexion = crear("Conexion a base de Datos", 400, 400, false, true);
@@ -125,38 +81,97 @@ public class EspecieControllerImpl implements EspecieController {
 
     @Override
     public Collection<Especie> coleccionCompleta() throws EspecieException {
-        if (lista.isEmpty()) {
-
+      
+        
+        if (listacompleta.isEmpty()) {
             Connection connection = null;
-
             try {
+               
+                connection = (Connection) BaseDatos.getConnection();
+                
+                connection.setAutoCommit(true);
+                PreparedStatement ps = connection.prepareStatement(BaseDatos.SELECT_ESPECIE);
 
-                //connection = conexion();
-                connection = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/biologia",
-                        "root", "root");
-
-                Statement st = connection.createStatement();
-
-                ResultSet rs = st.executeQuery("SELECT e.especie_name, e.autor, e.descripcion, e.ecologia, e.metabolismo, e.references \n"
-                        + "FROM biologia.especie e;");
+                ResultSet rs = ps.executeQuery();
 
                 if (rs.next()) {
                     do {
+                        int id_especie = rs.getInt("id_especie");
                         String especie_name = rs.getString("especie_name");
-                        String autor = rs.getString("autor");
-                        String descripcion = rs.getString("descripcion");
-                        String ecologia = rs.getString("ecologia");
-                        String metabolismo = rs.getString("metabolismo");
-                        String references = rs.getString("references");
-                        
-                        Especie objeto = new Especie(especie_name, autor, descripcion, metabolismo, ecologia, references);
+                        String genero_name = rs.getString("genero_name");
+
+                        Especie objeto = new Especie(id_especie, especie_name, genero_name);
 
                         listacompleta.add(objeto);
 
                     } while (rs.next());
 
                 } else {
-                    throw new EspecieException("No data available in table");
+                    throw new EspecieException("No data available in BBDD");
+                }
+
+              
+            ps = connection.prepareStatement(BaseDatos.DELETE_ESPECIE);
+              Collection<Especie> es = new ArrayList<>();
+ for (Especie especie : es) {
+      ps.executeUpdate();
+ }
+           
+            connection.commit();
+            
+
+                
+
+
+                
+                
+            } catch (SQLException e) {
+                 
+                System.out.println("Error SQL. " + e.getMessage());
+            }finally {
+                if (connection != null) {
+                    try {
+                        connection.close();
+                    } catch (SQLException ex) {
+                        throw new EspecieException(ex.getMessage(), ex);
+                    }
+                }
+            }
+
+            System.out.println(listacompleta);//SOLO PARA PRUEBAS!!!! ELIMINAR DESPUES IMPRIME LA LISTA PARA VER SI CARGA CORRECTAMENTE LOS DATOS
+
+        }
+        return listacompleta;
+
+    }
+
+    @Override
+    public List<Especie> lista() throws EspecieException {
+       if (lista.isEmpty()) {
+
+            Connection connection = null;
+            try {
+
+                connection = (Connection) BaseDatos.getConnection();
+
+                PreparedStatement ps = connection.prepareStatement(BaseDatos.SELECT_ESPECIE);
+
+                ResultSet rs = ps.executeQuery();
+
+                if (rs.next()) {
+                    do {
+                        int id_especie = rs.getInt("id_especie");
+                        String especie_name = rs.getString("especie_name");
+                        String genero_name = rs.getString("genero_name");
+
+                        Especie objeto = new Especie(id_especie, especie_name, genero_name);
+
+                        lista.add(objeto);
+
+                    } while (rs.next());
+
+                } else {
+                    throw new EspecieException("No data available in BBDD");
                 }
 
             } catch (SQLException ex) {
@@ -172,13 +187,7 @@ public class EspecieControllerImpl implements EspecieController {
             }
         }
 
-        System.out.println(listacompleta);//SOLO PARA PRUEBAS!!!! ELIMINAR DESPUES IMPRIME LA LISTA PARA VER SI CARGA CORRECTAMENTE LOS DATOS
-
-        return listacompleta;
+        return lista;
     }
 
-    @Override
-    public void delete() throws EspecieException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }
