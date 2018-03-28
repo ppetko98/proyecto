@@ -6,7 +6,10 @@
 package test;
 
 import java.awt.Image;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Icon;
@@ -14,12 +17,15 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.SwingUtilities;
+import javax.swing.table.TableModel;
 import modelo.dao.Implements.EspecieControllerImpl;
 import modelo.entidades.Especie;
 import src.modelo.excepciones.EspecieException;
 import utilidades.Validacion;
 import utilidades.ValidacionException;
+import vista.EspecieTableModel;
 
 /**
  *
@@ -71,6 +77,7 @@ public class BuscarPanel extends JPanel {
             }
         });
 
+        jScrollPane2.setVisible(false);
         tablaEspecie.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -84,17 +91,27 @@ public class BuscarPanel extends JPanel {
         ));
         jScrollPane2.setViewportView(tablaEspecie);
 
-        cbEspecie1.setText("cbEspecie1");
+        cbEspecie1.setText("Autor");
+        cbEspecie1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbEspecie1ActionPerformed(evt);
+            }
+        });
 
-        cbEspecie2.setText("cbEspecie2");
+        cbEspecie2.setText("Ecologia");
 
-        cbEspecie3.setText("cbEspecie3");
+        cbEspecie3.setText("Referencias");
 
-        cbEspecie4.setText("cbEspecie4");
+        cbEspecie4.setText("Secuencia");
 
-        cbEspecie5.setText("cbEspecie5");
+        cbEspecie5.setText("Longitud");
+        cbEspecie5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbEspecie5ActionPerformed(evt);
+            }
+        });
 
-        cbEspecie6.setText("cbEspecie6");
+        cbEspecie6.setText("Topología");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -169,7 +186,12 @@ public class BuscarPanel extends JPanel {
 
         List<Especie> especies = EspecieControllerImpl.lista;
         Especie especiebuscada = null;
-
+        
+        Map<Integer,String> props = new TreeMap<>();
+        props.put(1, "descripcion");
+        props.put(2, "metabolismo");
+        props.put(3, "secuencia");
+        
         try {
             Validacion.validarCadena(textBuscarEspecie, true, "Buscar Especie");
             boolean found = false;
@@ -193,20 +215,52 @@ public class BuscarPanel extends JPanel {
                     JOptionPane.ERROR_MESSAGE);
         }//Validacion Especie
 
+        //SE DEBERÁ HACER CON CONSULTA SQL
         String pathImg = System.getProperty("user.dir") + "\\src\\testImages\\"
-                + especiebuscada.getEspecie_name() + ".png";
+                + especiebuscada.getEspecie_name() + ".png";//direccion de las imagenes
 
         ImageIcon imagen = new ImageIcon(pathImg);
 
         Image image = imagen.getImage().getScaledInstance(lblImagen.getSize().width, lblImagen.getSize().height, 0);
 
         lblImagen.setIcon(new ImageIcon(image));
-        //lblImagen.setText(especiebuscada.getEspecie_name());
         lblImagen.setVisible(true);
-
-        //SwingUtilities.updateComponentTreeUI(this);
-
+        
+        //CHECKBOX PARA LA TABLA
+        if (cbEspecie1.isSelected()) {
+            props.put(4, "autor");
+        }if (cbEspecie2.isSelected()) {
+            props.put(5, "ecologia");
+        }if (cbEspecie3.isSelected()) {
+            props.put(6, "references");
+        }if (cbEspecie4.isSelected()) {
+            props.put(7, "es_genomico_plasmido");
+        }if (cbEspecie5.isSelected()) {
+            props.put(8, "longitud");
+        }if (cbEspecie6.isSelected()) {
+            props.put(9, "topologia");
+        }
+        
+        try {
+            TableModel modelo = new EspecieTableModel(props);
+            tablaEspecie.setModel(modelo);
+            
+            jScrollPane2.setVisible(true);
+            tablaEspecie.setVisible(true);
+            
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        
     }//GEN-LAST:event_btnBuscarEspecieActionPerformed
+
+    private void cbEspecie1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEspecie1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbEspecie1ActionPerformed
+
+    private void cbEspecie5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEspecie5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbEspecie5ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

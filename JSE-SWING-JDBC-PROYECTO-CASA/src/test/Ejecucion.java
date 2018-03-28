@@ -9,6 +9,7 @@ import java.awt.*;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
@@ -36,8 +37,9 @@ public class Ejecucion {
     private final JFrame modificarFrame = crear("MODIFICAR ESPECIE",
             600, 400, false, true);
     private final JFrame buscarFrame = crear("BUSCAR ESPECIE",
-            600, 400, true, true);
- 
+            650, 450, true, true);
+    private final List<Especie> especies = EspecieControllerImpl.lista;
+
     
     private final Collection<Especie> especiescompletas = EspecieControllerImpl.listacompleta;
 
@@ -61,7 +63,7 @@ public class Ejecucion {
                 System.err.println(es);
             }
 
-        } catch (EspecieException e) {
+        } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
     }
@@ -118,6 +120,7 @@ public class Ejecucion {
         
         btnEliminar.addActionListener(ae -> {
             try {
+                eliminarFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
                 eliminarEspecie();
             } catch (EspecieException ex) {
                 Logger.getLogger(Ejecucion.class.getName()).log(Level.SEVERE, null, ex);
@@ -203,9 +206,7 @@ public class Ejecucion {
 
         eliminarFrame.setContentPane(eliminarPanel);
         eliminarFrame.setVisible(true);
-        eliminarFrame.setLocationByPlatform(true);
-        eliminarFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-
+        //eliminarFrame.setLocationByPlatform(true);
     }
 
     private void crearEspecie() {

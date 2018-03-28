@@ -157,37 +157,46 @@
               </Table>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jScrollPane2.setVisible(false);&#xd;&#xa;"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>
     <Component class="javax.swing.JCheckBox" name="cbEspecie1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="cbEspecie1"/>
+        <Property name="text" type="java.lang.String" value="Autor"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbEspecie1ActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JCheckBox" name="cbEspecie2">
       <Properties>
-        <Property name="text" type="java.lang.String" value="cbEspecie2"/>
+        <Property name="text" type="java.lang.String" value="Ecologia"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="cbEspecie3">
       <Properties>
-        <Property name="text" type="java.lang.String" value="cbEspecie3"/>
+        <Property name="text" type="java.lang.String" value="Referencias"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="cbEspecie4">
       <Properties>
-        <Property name="text" type="java.lang.String" value="cbEspecie4"/>
+        <Property name="text" type="java.lang.String" value="Secuencia"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="cbEspecie5">
       <Properties>
-        <Property name="text" type="java.lang.String" value="cbEspecie5"/>
+        <Property name="text" type="java.lang.String" value="Longitud"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbEspecie5ActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JCheckBox" name="cbEspecie6">
       <Properties>
-        <Property name="text" type="java.lang.String" value="cbEspecie6"/>
+        <Property name="text" type="java.lang.String" value="Topolog&#xed;a"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblImagen">
