@@ -1,24 +1,15 @@
 package test;
 
-import com.mysql.jdbc.Connection;
 import modelo.dao.EspecieController;
 import modelo.dao.Implements.EspecieControllerImpl;
 import modelo.entidades.Especie;
 import javax.swing.*;
 import java.awt.*;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import modelo.dao.Implements.GeneroControllerImpl;
 import static modelo.dao.Implements.GeneroControllerImpl.listagenero;
 import modelo.entidades.Genero;
-import src.modelo.excepciones.EspecieException;
-import utilidades.BaseDatos;
 
 import static utilidades.BaseSwing.crear;
 import utilidades.Validacion;
@@ -35,9 +26,9 @@ public class Ejecucion {
             800, 600, false, true);
     private final JFrame agregarFrame = crear("AÑADIR ESPECIE",
             600, 400, false, true);
-     private final JFrame agregarFrame2 = crear("AÑADIR GENERO",
+    private final JFrame agregarFrame2 = crear("AÑADIR GENERO",
             600, 400, false, true);
-      private final JFrame agregarFrame3 = crear("LO QUE SEA",
+    private final JFrame agregarFrame3 = crear("LO QUE SEA",
             600, 400, false, true);
     private final JFrame eliminarFrame = crear("ELIMINAR ESPECIE",
             600, 400, false, true);
@@ -60,24 +51,22 @@ public class Ejecucion {
 
     private EspecieController controllerEspecie = new EspecieControllerImpl();
 
-    public static void main(String[] args) throws EspecieException {
+    public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new Ejecucion().startup());
         try {
             Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            System.out.println("Error al cargar los driver");
-            System.exit(0);
-        }
-        try {
+
             EspecieController controller = new EspecieControllerImpl();
             Collection<Especie> especies = controller.coleccionCompleta();
             for (Especie es : especies) {
 
                 System.err.println(es);
             }
-
         } catch (SQLException e) {
             System.err.println(e.getMessage());
+        } catch (ClassNotFoundException e) {
+            System.out.println("Error al cargar los driver");
+            System.exit(0);
         }
     }
 
@@ -142,12 +131,7 @@ public class Ejecucion {
         });
 
         btnEliminar.addActionListener(ae -> {
-            try {
-                eliminarFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-                eliminarEspecie();
-            } catch (EspecieException ex) {
-                Logger.getLogger(Ejecucion.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            eliminarEspecie();
 
         });
 
@@ -158,8 +142,9 @@ public class Ejecucion {
 
         btnCancelar.addActionListener((ae) -> {
             // Cierra la ventana principal, pero si no lo vamos a usar se quita el boton
-            mainFrame.setVisible(false);
+            mainFrame.setVisible(false);//Esto lo pone en invisible pero NO cierra el programa
 
+            System.exit(0);//Esto SI cierra el programa
         });
 
         //Vista
@@ -179,7 +164,7 @@ public class Ejecucion {
 
     }
 
-    private void eliminarEspecie() throws EspecieException {
+    private void eliminarEspecie() {
         JLabel lblSeleccion = new JLabel("SELECCIONE ESPECIE");
         JComboBox<Especie> cmbEspecies = new JComboBox<>();
 
@@ -224,10 +209,10 @@ public class Ejecucion {
         eliminarPanel.add(northPanel, BorderLayout.NORTH);
         eliminarPanel.add(centerPanel, BorderLayout.CENTER);
         eliminarPanel.add(southPanel, BorderLayout.SOUTH);
-
+        eliminarFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         eliminarFrame.setContentPane(eliminarPanel);
         eliminarFrame.setVisible(true);
-        eliminarFrame.setLocationByPlatform(true);
+        //eliminarFrame.setLocationByPlatform(true); ***NO TOCAR SALTA EXCEPCION!***
     }
 
     private void crearEspecie() {
@@ -260,11 +245,11 @@ public class Ejecucion {
         datos.add(txtEcologia);
         datos.add(lblReferences);
         datos.add(txtReferences);
-        
+
         ImageIcon siguienteImagen = new ImageIcon(pathImg + "if_next_293276.png");
         JButton buttonOK = new JButton("SIGUIENTE", siguienteImagen);
         ImageIcon cancelarImagen = new ImageIcon(pathImg + "if_Cancel_131742.png");
-        JButton buttonKO = new JButton("CANCELAR",cancelarImagen);
+        JButton buttonKO = new JButton("CANCELAR", cancelarImagen);
 
         JPanel inferior = new JPanel();
         inferior.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -300,7 +285,7 @@ public class Ejecucion {
             especiescompletas.add(es);
 
             agregarFrame.setVisible(false);
-         crearGenero();
+            crearGenero();
             agregarFrame2.setVisible(true);
 
         });
@@ -318,10 +303,10 @@ public class Ejecucion {
         agregarFrame.setContentPane(panel);
     }
 
-    private void crearGenero(){
-         JLabel lblSeleccion = new JLabel("SELECCIONE GENERO");
+    private void crearGenero() {
+        JLabel lblSeleccion = new JLabel("SELECCIONE GENERO");
         JComboBox<Genero> cmbGenero = new JComboBox<>();
-        
+
         ImageIcon siguienteImagen = new ImageIcon(pathImg + "if_next_293276.png");
         JButton siguenteButton = new JButton("SIGUIENTE", siguienteImagen);
 
@@ -330,7 +315,7 @@ public class Ejecucion {
 
         JPanel inferior = new JPanel();
         inferior.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        
+
         for (Genero g : listagenero) {
             cmbGenero.addItem(g);
         }
@@ -346,7 +331,7 @@ public class Ejecucion {
         southPanel.add(siguenteButton);
         siguenteButton.addActionListener(ae -> {
             Genero g = (Genero) cmbGenero.getSelectedItem();
-            
+
             agregarFrame3.setVisible(true);
 
         });
@@ -363,16 +348,14 @@ public class Ejecucion {
         eliminarPanel.add(centerPanel, BorderLayout.CENTER);
         eliminarPanel.add(southPanel, BorderLayout.SOUTH);
 
-       agregarFrame.setContentPane(eliminarPanel);
+        agregarFrame.setContentPane(eliminarPanel);
         agregarFrame.setVisible(true);
         agregarFrame.setLocationByPlatform(true);
     }
-        
-    
+
     private void buscarEspecie(JFrame frame) {
         JPanel buscarPanel = new BuscarPanel();
         frame.add(buscarPanel);
-
         buscarFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         buscarFrame.setVisible(true);
     }
@@ -380,8 +363,7 @@ public class Ejecucion {
     private void modificarEspecie() {
         JLabel lblSeleccion = new JLabel("SELECCIONE LA ESPECIE QUE DESEA MODIFICAR");
         JComboBox<Especie> cmbEspecies = new JComboBox<>();
-        
-       
+
         ImageIcon siguienteImagen = new ImageIcon(pathImg + "if_next_293276.png");
         JButton siguenteButton = new JButton("SIGUIENTE", siguienteImagen);
 
@@ -391,8 +373,6 @@ public class Ejecucion {
         JPanel inferior = new JPanel();
         inferior.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-    
-        
         for (Especie e : especiescompletas) {
             cmbEspecies.addItem(e);
         }
@@ -410,6 +390,7 @@ public class Ejecucion {
             Especie e = (Especie) cmbEspecies.getSelectedItem();
 
             modificarDatosEspecie();
+            modificarDatosFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
             modificarDatosFrame.setVisible(true);
 
         });
@@ -428,7 +409,8 @@ public class Ejecucion {
 
         modificarFrame.setContentPane(eliminarPanel);
         modificarFrame.setVisible(true);
-        modificarFrame.setLocationByPlatform(true);
+        modificarFrame.setLocationByPlatform(false);
+
     }
 
     private void modificarDatosEspecie() {
@@ -511,7 +493,7 @@ public class Ejecucion {
                     ecologia, references);
 
             especiescompletas.add(es);
-
+            nomenclaturaFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
             nomenclaturaFrame.setVisible(true);
 
         });

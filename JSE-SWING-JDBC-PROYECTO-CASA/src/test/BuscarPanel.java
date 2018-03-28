@@ -21,8 +21,10 @@ import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.table.TableModel;
 import modelo.dao.Implements.EspecieControllerImpl;
+import modelo.entidades.CBPropiedad;
 import modelo.entidades.Especie;
-import src.modelo.excepciones.EspecieException;
+import modelo.excepciones.EspecieException;
+import utilidades.BaseDatos;
 import utilidades.Validacion;
 import utilidades.ValidacionException;
 import vista.EspecieTableModel;
@@ -184,13 +186,16 @@ public class BuscarPanel extends JPanel {
 
         String especieString = textBuscarEspecie.getText();
 
-        List<Especie> especies = EspecieControllerImpl.lista;
+        List<Especie> especies = null;
+        try {
+            especies = new EspecieControllerImpl().lista();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        
         Especie especiebuscada = null;
         
-        Map<Integer,String> props = new TreeMap<>();
-        props.put(1, "descripcion");
-        props.put(2, "metabolismo");
-        props.put(3, "secuencia");
+        Map<Integer,CBPropiedad> props = new TreeMap<>();
         
         try {
             Validacion.validarCadena(textBuscarEspecie, true, "Buscar Especie");
@@ -226,21 +231,31 @@ public class BuscarPanel extends JPanel {
         lblImagen.setIcon(new ImageIcon(image));
         lblImagen.setVisible(true);
         
+        int id = especiebuscada.getId_especie();
+        
+        CBPropiedad descripcion = new CBPropiedad("descripcion", 1, BaseDatos.SELECT_DESCRIPCION+id);
+        CBPropiedad metabolismo = new CBPropiedad("metabolismo", 2, BaseDatos.SELECT_METABOLISMO+id);
+        CBPropiedad secuencia = new CBPropiedad("secuencia", 3, BaseDatos.SELECT_SECUENCIA+id);
+        
+        props.put(descripcion.getId(), descripcion);
+        props.put(metabolismo.getId(), metabolismo);
+        props.put(secuencia.getId(), secuencia);
+       /*
         //CHECKBOX PARA LA TABLA
         if (cbEspecie1.isSelected()) {
-            props.put(4, "autor");
+            props.put("autor", "autor");
         }if (cbEspecie2.isSelected()) {
-            props.put(5, "ecologia");
+            props.put("ecologia", "ecologia");
         }if (cbEspecie3.isSelected()) {
-            props.put(6, "references");
+            props.put("references", "references");
         }if (cbEspecie4.isSelected()) {
-            props.put(7, "es_genomico_plasmido");
+            props.put("es_genomico_plasmido", "es_genomico_plasmido");
         }if (cbEspecie5.isSelected()) {
-            props.put(8, "longitud");
+            props.put("longitud", "longitud");
         }if (cbEspecie6.isSelected()) {
-            props.put(9, "topologia");
+            props.put("topologia", "topologia");
         }
-        
+        */
         try {
             TableModel modelo = new EspecieTableModel(props);
             tablaEspecie.setModel(modelo);
