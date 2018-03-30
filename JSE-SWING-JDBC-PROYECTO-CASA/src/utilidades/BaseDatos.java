@@ -5,16 +5,15 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public interface BaseDatos {
-    
-    
+
     /*
 	 * Constantes utilizadas en el ejemplo
      */
     String DRIVERS = "com.mysql.jdbc.Driver";
     String URL = "jdbc:mysql://localhost:3306/biologia";
     String USUARIO = "root";
-    String CLAVE = "root";
-    
+    String CLAVE = "Stoyanov98";
+
     String SELECT_ESPECIE
             = "SELECT e.id_especie, g.genero_name, e.especie_name\n"
             + "FROM nomenclatura n INNER JOIN genero g \n"
@@ -22,15 +21,17 @@ public interface BaseDatos {
             + "INNER JOIN especie e\n"
             + "ON n.id_especie = e.id_especie";
 
+    String DELETE_ESPECIE = "DELETE FROM biologia.especie where id_especie= ";
 
-   String DELETE_ESPECIE ="DELETE FROM biologia.especie where id_especie= " ;
-  
-          
-    String SELECT_TABLA = "";
-    
     String SELECT_DESCRIPCION = "SELECT descripcion FROM biologia.especie WHERE especie.id_especie = ";
     String SELECT_METABOLISMO = "SELECT metabolismo FROM biologia.especie WHERE especie.id_especie = ";
     String SELECT_SECUENCIA = "SELECT fasta FROM genetica INNER JOIN especie WHERE genetica.id_secuencia = especie.id_secuencia AND especie.id_especie = ";
+    String SELECT_AUTOR = "SELECT autor FROM especie WHERE id_especie = ";
+    String SELECT_ECOLOGIA = "SELECT ecologia FROM especie WHERE id_especie = ";
+    String SELECT_REFERENCES = "SELECT especie.references FROM especie WHERE id_especie = ";
+    String SELECT_ES_GENOMICO_PLASMIDO = "SELECT genetica.es_genomico_plasmido  FROM genetica inner join especie on genetica.id_secuencia = especie.id_secuencia where especie.id_especie = ";
+    String SELECT_LONGITUD = "SELECT genetica.longitud FROM genetica INNER JOIN especie WHERE genetica.id_secuencia = especie.id_secuencia AND especie.id_especie = ";
+    String SELECT_TOPOLOGIA = "SELECT genetica.topologia FROM genetica INNER JOIN especie WHERE genetica.id_secuencia = especie.id_secuencia AND especie.id_especie = ";
 
     /*"DELETE e.id_especie, e.especie_name, e.autor, e.descripcion, e.imagen, e.ecologia, e.metabolismo, e.references, e.id_secuencia,\n" +
 "g.id_secuencia, g.es_genomico_plasmido, g.fasta, g.topologia, g.longitud, g.last_update,\n" +

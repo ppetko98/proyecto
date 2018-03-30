@@ -6,7 +6,6 @@
 package modelo.entidades;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,6 +22,10 @@ public class CBPropiedad {
     String ResultSet;
     PreparedStatement ps;
     ResultSet rs;
+    
+    public CBPropiedad(CBPropiedad cbp){
+        this(cbp.getPropiedad(), cbp.getId(), cbp.getPreparedStatement(), cbp.getResultSet());
+    }
 
     public CBPropiedad(String propiedad, int id, String PreparedStatement, String ResultSet) {
         this.propiedad = propiedad;

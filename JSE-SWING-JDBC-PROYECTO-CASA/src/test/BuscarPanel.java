@@ -7,8 +7,10 @@ package test;
 
 import java.awt.Image;
 import java.sql.SQLException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -195,7 +197,21 @@ public class BuscarPanel extends JPanel {
         
         Especie especiebuscada = null;
         
-        Map<Integer,CBPropiedad> props = new TreeMap<>();
+       // Map<Integer,CBPropiedad> props = new TreeMap<>();
+        
+        Comparator comparator = new Comparator<CBPropiedad>() {
+            @Override
+            public int compare(CBPropiedad o1, CBPropiedad o2) {
+                if (o1.getId() > o2.getId()) {
+                    return 1;
+                } else if (o1.getId() < o2.getId()) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            }
+        };//comparador para priority queue
+        PriorityQueue<CBPropiedad>props = new PriorityQueue<>(comparator);
         
         try {
             Validacion.validarCadena(textBuscarEspecie, true, "Buscar Especie");
@@ -236,26 +252,43 @@ public class BuscarPanel extends JPanel {
         CBPropiedad descripcion = new CBPropiedad("descripcion", 1, BaseDatos.SELECT_DESCRIPCION+id);
         CBPropiedad metabolismo = new CBPropiedad("metabolismo", 2, BaseDatos.SELECT_METABOLISMO+id);
         CBPropiedad secuencia = new CBPropiedad("secuencia", 3, BaseDatos.SELECT_SECUENCIA+id);
-        
+        /*
         props.put(descripcion.getId(), descripcion);
         props.put(metabolismo.getId(), metabolismo);
         props.put(secuencia.getId(), secuencia);
-       /*
+       */
+        props.add(descripcion);
+        props.add(metabolismo);
+        props.add(secuencia);
+        
         //CHECKBOX PARA LA TABLA
         if (cbEspecie1.isSelected()) {
-            props.put("autor", "autor");
-        }if (cbEspecie2.isSelected()) {
-            props.put("ecologia", "ecologia");
-        }if (cbEspecie3.isSelected()) {
-            props.put("references", "references");
-        }if (cbEspecie4.isSelected()) {
-            props.put("es_genomico_plasmido", "es_genomico_plasmido");
-        }if (cbEspecie5.isSelected()) {
-            props.put("longitud", "longitud");
-        }if (cbEspecie6.isSelected()) {
-            props.put("topologia", "topologia");
+            CBPropiedad autor = new CBPropiedad("autor", 4, BaseDatos.SELECT_AUTOR+id);
+            //props.put(autor.getId(), autor);
+            props.add(autor);
         }
-        */
+        if (cbEspecie2.isSelected()) {
+            CBPropiedad ecologia = new CBPropiedad("ecologia", 5, BaseDatos.SELECT_ECOLOGIA+id);
+            //props.put(ecologia.getId(), ecologia);
+            props.add(ecologia);
+        }if (cbEspecie3.isSelected()) {
+            CBPropiedad references = new CBPropiedad("references", 6, BaseDatos.SELECT_REFERENCES+id);
+            //props.put(secuencia.getId(), references);
+            props.add(references);
+        }if (cbEspecie4.isSelected()) {
+            CBPropiedad es_genomico_plasmido = new CBPropiedad("es_genomico_plasmido", 7, BaseDatos.SELECT_ES_GENOMICO_PLASMIDO+id);
+            //props.put(es_genomico_plasmido.getId(), es_genomico_plasmido);
+            props.add(es_genomico_plasmido);
+        }if (cbEspecie5.isSelected()) {
+            CBPropiedad longitud = new CBPropiedad("longitud", 8, BaseDatos.SELECT_LONGITUD+id);
+            //props.put(longitud.getId(), longitud);
+            props.add(longitud);
+        }if (cbEspecie6.isSelected()) {
+            CBPropiedad topologia = new CBPropiedad("topologia", 9, BaseDatos.SELECT_TOPOLOGIA+id);
+            //props.put(topologia.getId(), topologia);
+            props.add(topologia);
+        }
+        
         try {
             TableModel modelo = new EspecieTableModel(props);
             tablaEspecie.setModel(modelo);
@@ -266,7 +299,7 @@ public class BuscarPanel extends JPanel {
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-        
+        props.clear();
     }//GEN-LAST:event_btnBuscarEspecieActionPerformed
 
     private void cbEspecie1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEspecie1ActionPerformed
