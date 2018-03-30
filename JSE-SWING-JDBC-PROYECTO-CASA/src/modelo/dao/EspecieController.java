@@ -18,9 +18,9 @@ import java.util.List;
 public interface EspecieController {
 
      
-    //void delete (Especie especieCompleta, Connection connection) throws EspecieException;
+   
 
      List<Especie> lista() throws SQLException;
      Collection <Especie> coleccionCompleta() throws SQLException;
-    
+   void delete () throws EspecieException;
 }

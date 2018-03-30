@@ -13,7 +13,7 @@ public interface BaseDatos {
     String DRIVERS = "com.mysql.jdbc.Driver";
     String URL = "jdbc:mysql://localhost:3306/biologia";
     String USUARIO = "root";
-    String CLAVE = "Stoyanov98";
+    String CLAVE = "root";
     
     String SELECT_ESPECIE
             = "SELECT e.id_especie, g.genero_name, e.especie_name\n"
@@ -22,13 +22,10 @@ public interface BaseDatos {
             + "INNER JOIN especie e\n"
             + "ON n.id_especie = e.id_especie";
 
-    String DELETE_ESPECIE = "DELETE e, g, n \n"
-            + "FROM especie e \n"
-            + "LEFT JOIN genetica g \n"
-            + "ON e.id_secuencia = g.id_secuencia\n"
-            + "LEFT JOIN nomenclatura n\n"
-            + "ON e.id_especie = n.id_especie";
 
+   String DELETE_ESPECIE ="DELETE FROM biologia.especie where id_especie= " ;
+  
+          
     String SELECT_TABLA = "";
     
     String SELECT_DESCRIPCION = "SELECT descripcion FROM biologia.especie WHERE especie.id_especie = ";
@@ -42,7 +39,16 @@ public interface BaseDatos {
 "INNER JOIN nomenclatura n \n" +
 "ON e.id_especie = n.id_especie\n" +
 "INNER JOIN genetica g\n" +
-"ON e.id_secuencia = g.id_secuencia";*/
+"ON e.id_secuencia = g.id_secuencia";
+    
+    
+      "DELETE e, g, n \n"
+            + "FROM especie e \n"
+            + "LEFT JOIN genetica g \n"
+            + "ON e.id_secuencia = g.id_secuencia\n"
+            + "LEFT JOIN nomenclatura n\n"
+            + "ON e.id_especie = n.id_especie"
+            +"WHERE id_especie= AND id_secuencia= ";*/
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USUARIO, CLAVE);
     }

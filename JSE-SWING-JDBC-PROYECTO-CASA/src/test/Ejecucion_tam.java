@@ -25,7 +25,7 @@ import utilidades.ValidacionException;
  *
  * @author Tamara
  */
-public class Ejecucion {
+public class Ejecucion_tam {
 
     private final JFrame mainFrame = crear("GESTIÓN DE ESPECIES",
             800, 600, false, true);
@@ -57,7 +57,7 @@ public class Ejecucion {
     private EspecieController controllerEspecie = new EspecieControllerImpl();
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new Ejecucion().startup());
+        SwingUtilities.invokeLater(() -> new Ejecucion_tam().startup());
         try {
             Class.forName("com.mysql.jdbc.Driver");
 
@@ -101,7 +101,6 @@ public class Ejecucion {
         ImageIcon buscarImagen = new ImageIcon(pathImg + "if_Preview_131689.png");
 
         ImageIcon cancelarImagen = new ImageIcon(pathImg + "if_Cancel_131742.png");
-        
 
         JButton btnCrear = new JButton("AÑADIR", crearImagen);
         JButton btnEditar = new JButton("MODIFICAR", editImagen);
@@ -198,7 +197,6 @@ public class Ejecucion {
             especiescompletas.remove(e);
 
             cmbEspecies.removeItem(e);
-            
             
           EspecieControllerImpl nuevControllerImpl = new EspecieControllerImpl();  
             try {

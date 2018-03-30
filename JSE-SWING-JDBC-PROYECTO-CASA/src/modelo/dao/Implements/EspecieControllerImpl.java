@@ -10,12 +10,15 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import modelo.excepciones.EspecieException;
 import utilidades.BaseDatos;
 
 public class EspecieControllerImpl implements EspecieController {
 
     public static List<Especie> lista = new ArrayList<>();
     public static Collection<Especie> listacompleta = new ArrayList<>();
+
+   
 
     @Override
     public List<Especie> lista() throws SQLException {
@@ -71,7 +74,7 @@ public class EspecieControllerImpl implements EspecieController {
 
                 connection = (Connection) BaseDatos.getConnection();
 
-                connection.setAutoCommit(true);
+                connection.setAutoCommit(false);
                 PreparedStatement ps = connection.prepareStatement(BaseDatos.SELECT_ESPECIE);
 
                 ResultSet rs = ps.executeQuery();
@@ -95,7 +98,29 @@ public class EspecieControllerImpl implements EspecieController {
                     throw new SQLException("No data available in table");
                 }
 
-                ps = connection.prepareStatement(BaseDatos.DELETE_ESPECIE);
+               
+                connection.commit();
+
+            } catch (SQLException e) {
+
+                System.out.println("Error SQL. " + e.getMessage());
+            } 
+
+                   }
+        return listacompleta;
+
+    }
+
+      
+    @Override
+    public void delete() throws EspecieException {
+        Connection connection = null;
+            try {
+
+                connection = (Connection) BaseDatos.getConnection();
+
+                connection.setAutoCommit(false);
+                PreparedStatement ps =  connection.prepareStatement(BaseDatos.DELETE_ESPECIE);
                 Collection<Especie> es = new ArrayList<>();
                 for (Especie especie : es) {
                     ps.executeUpdate();
@@ -116,10 +141,7 @@ public class EspecieControllerImpl implements EspecieController {
                 }
             }
 
-            System.out.println(listacompleta);//SOLO PARA PRUEBAS!!!! ELIMINAR DESPUES IMPRIME LA LISTA PARA VER SI CARGA CORRECTAMENTE LOS DATOS
-
-        }
-        return listacompleta;
-
     }
-}
+        
+    }
+
