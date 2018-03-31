@@ -11,9 +11,10 @@ import java.util.Iterator;
 import java.util.PriorityQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import modelo.entidades.CBPropiedad;
+import modelo.entidades.Especie;
+import modelo.entidades.Genetica;
 
 /**
  *
@@ -23,10 +24,14 @@ public class EspecieTableModel extends AbstractTableModel {
 
     private PriorityQueue<CBPropiedad> propiedades;
     private PriorityQueue<CBPropiedad> columnas;
+    Especie e;
+    Genetica g;
 
-    public EspecieTableModel(PriorityQueue<CBPropiedad> propiedades) throws SQLException {
+    public EspecieTableModel(PriorityQueue<CBPropiedad> propiedades, Especie e, Genetica g) throws SQLException {
         this.propiedades = new PriorityQueue<>(propiedades);
         this.columnas = new PriorityQueue<>(propiedades.comparator());
+        this.e = e;
+        this.g = g;
 
         Iterator<CBPropiedad> it = propiedades.iterator();
 
@@ -37,7 +42,7 @@ public class EspecieTableModel extends AbstractTableModel {
         for (CBPropiedad cb : propiedades) {
             System.out.println(cb.getId() + "\t" + cb.getPropiedad());
         }
-        
+
     }
 
     @Override
@@ -53,15 +58,16 @@ public class EspecieTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch (columnIndex) {
-            case 0:
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-            case 7:
-            case 8:
+            case 0: //return e.getDescripcion();
+            case 1: //return e.getMetabolismo();
+            case 2: //return g.getFasta();
+            case 3: //return e.getAutor();
+            case 4: //return e.getEcologia();
+            case 5: //return e.getReferences();
+            case 6: //return g.isEs_genomico_plasmido();
+            case 7: //return g.getLongitud();
+            case 8: //return g.getTopologia();
+
                 if (propiedades.peek() != null) {
                     try {
                         CBPropiedad prop = propiedades.poll();
@@ -115,18 +121,23 @@ public class EspecieTableModel extends AbstractTableModel {
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        switch (columnIndex){
-            case 0: 
+        switch (columnIndex) {
+            case 0:
             case 1:
+                return e.getClass();
             case 2:
+                return g.getClass();
             case 3:
             case 4:
             case 5:
+                return e.getClass();
             case 6:
             case 7:
-            case 8: return CBPropiedad.class;
-                default:return Object.class;
+            case 8:
+                return g.getClass();
+            default:
+                return null;
         }
     }
-    
+
 }

@@ -53,8 +53,8 @@ public class Ejecucion {
     private final JFrame modificarSecuenciaFrame = crear("MODIFICAR GENETICA",
             600, 400, false, true);
 
-    private final JFrame buscarFrame = crear("BUSCAR ESPECIE1",
-            650, 450, true, true);
+    private final JFrame buscarFrame = crear("BUSCAR ESPECIE",
+            760, 450, true, true);
     private final List<Especie> especies = EspecieControllerImpl.lista;
     
     
@@ -395,8 +395,8 @@ public class Ejecucion {
     }
 
     private void buscarEspecie(JFrame frame) {
-        JPanel buscarPanel1 = new BuscarPanel1();
-        frame.add(buscarPanel1);
+        JPanel buscarPanel = new BuscarPanel();
+        frame.add(buscarPanel);
         buscarFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         buscarFrame.setVisible(true);
     }
