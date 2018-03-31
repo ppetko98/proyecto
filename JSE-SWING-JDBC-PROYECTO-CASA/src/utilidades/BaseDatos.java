@@ -12,7 +12,7 @@ public interface BaseDatos {
     String DRIVERS = "com.mysql.jdbc.Driver";
     String URL = "jdbc:mysql://localhost:3306/biologia";
     String USUARIO = "root";
-    String CLAVE = "root";
+    String CLAVE = "Stoyanov98";
 
     String SELECT_ESPECIE
             = "SELECT e.id_especie, g.genero_name, e.especie_name\n"

@@ -29,12 +29,17 @@ public class EspecieTableModel extends AbstractTableModel {
     public EspecieTableModel(PriorityQueue<CBPropiedad> propiedades) throws SQLException {
         this.propiedades = propiedades;
         this.columnas = new PriorityQueue<>(propiedades.comparator());
+         /*
+        for (Object object : propiedades.toArray()) {
+            columnas.add((CBPropiedad) object);
+        }
+       
         Iterator<CBPropiedad> it = propiedades.iterator();
         
         while (it.hasNext()){
-            columnas.add(it.next());
+            columnas.add(new CBPropiedad(it.next()));
         }
-       
+       */
         
         for (CBPropiedad cb : propiedades) {
             System.out.println(cb.getId() + "\t" + cb.getPropiedad());
@@ -64,7 +69,7 @@ public class EspecieTableModel extends AbstractTableModel {
             case 6:
             case 7:
             case 8:
-                if (propiedades.peek() != null) {
+                if (this.propiedades.peek() != null) {
                     try {
                         CBPropiedad prop = propiedades.poll();
                         prop.execute();
@@ -100,10 +105,10 @@ public class EspecieTableModel extends AbstractTableModel {
             case 5://return props.get(6).getPropiedad();
             case 6://return props.get(7).getPropiedad();
             case 7://return props.get(8).getPropiedad();
-            case 8:
+            case 8:/*
                 if (columnas.peek() != null) {
                     return columnas.poll().getPropiedad();
-                }
+                }*/
             default:
                 return null;
         }
