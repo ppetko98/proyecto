@@ -591,7 +591,8 @@ public class Ejecucion {
         JPanel northPanel = new JPanel();
         northPanel.setLayout(new FlowLayout(1, 20, 20));
         JPanel centerRPanel = new JPanel();
-        centerRPanel.setLayout(new GridLayout(3, 0, 2, 40));
+        centerRPanel.setLayout(new GridLayout(3, 0, 1, 60));
+        centerRPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 30, 30));
         JPanel centerLPanel = new JPanel();
         centerLPanel.setLayout(new GridLayout(3, 0, 2, 40));
         JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
