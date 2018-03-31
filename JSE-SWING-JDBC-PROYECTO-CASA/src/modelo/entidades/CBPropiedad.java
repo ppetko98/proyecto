@@ -24,7 +24,7 @@ public class CBPropiedad {
     ResultSet rs;
     
     public CBPropiedad(CBPropiedad cbp){
-        this(cbp.getPropiedad(), cbp.getId(), cbp.getPreparedStatement(), cbp.getResultSet());
+        this(cbp.getPropiedad(), cbp.getId(), cbp.getResultSet());
     }
 
     public CBPropiedad(String propiedad, int id, String PreparedStatement, String ResultSet) {
