@@ -25,7 +25,9 @@ public class EspecieTableModel extends AbstractTableModel {
     private PriorityQueue<CBPropiedad> propiedades;
     private PriorityQueue<CBPropiedad> columnas;
     private Queue<CBPropiedad> column;
-
+/*
+    PETKO GUAPETON
+    */
     public EspecieTableModel(PriorityQueue<CBPropiedad> propiedades) throws SQLException {
         this.propiedades = propiedades;
         this.columnas = new PriorityQueue<>(propiedades.comparator());
