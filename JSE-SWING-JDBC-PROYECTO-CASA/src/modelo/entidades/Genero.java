@@ -78,7 +78,7 @@ public class Genero {
 
     @Override
     public String toString() {
-        return "Genero{" + "id_genero=" + id_genero + ", genero_name=" + genero_name + ", autor=" + autor + ", descripcion=" + descripcion + ", references=" + references + ", last_update=" + last_update + '}';
+        return genero_name;
     }
     
     

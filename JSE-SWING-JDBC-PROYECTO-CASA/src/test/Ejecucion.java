@@ -13,7 +13,14 @@ import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static modelo.dao.Implements.GeneroControllerImpl.listagenero;
+import modelo.dao.Implements.NomenclaturaControllerImpl;
+import modelo.dao.NomenclaturaController;
+import modelo.entidades.Clase;
+import modelo.entidades.Dominio;
+import modelo.entidades.Familia;
+import modelo.entidades.Filo;
 import modelo.entidades.Genero;
+import modelo.entidades.Orden;
 import modelo.excepciones.EspecieException;
 
 import static utilidades.BaseSwing.crear;
@@ -49,12 +56,22 @@ public class Ejecucion {
     private final JFrame buscarFrame = crear("BUSCAR ESPECIE",
             650, 450, true, true);
     private final List<Especie> especies = EspecieControllerImpl.lista;
+    
+    
+    private final List<Dominio> dominios = NomenclaturaControllerImpl.listaDominio;
+    private final List<Filo> filos = NomenclaturaControllerImpl.listaFilo;
+    private final List<Clase> clases = NomenclaturaControllerImpl.listaClase;
+    private final List<Familia> familias = NomenclaturaControllerImpl.listaFam;
+    private final List<Orden> ordenes = NomenclaturaControllerImpl.listaO;
+    private final List<Genero> generos = NomenclaturaControllerImpl.listaG;
 
     private final Collection<Especie> especiescompletas = EspecieControllerImpl.listacompleta;
 
     private final String pathImg = System.getProperty("user.dir") + "\\src\\testImages\\";
 
-    private EspecieController controllerEspecie = new EspecieControllerImpl();
+    //private EspecieController controllerEspecie = new EspecieControllerImpl();
+    
+    //private NomenclaturaController controllerNomenclatura = new NomenclaturaControllerImpl();
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new Ejecucion().startup());
@@ -67,6 +84,16 @@ public class Ejecucion {
 
                 System.err.println(es);
             }
+            
+           NomenclaturaController ncontroller = new NomenclaturaControllerImpl();
+           List<Dominio> dominios = ncontroller.listaDominio();
+             for (Dominio dom : dominios) {
+
+                System.err.println(dom);
+            }
+            
+           
+           
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         } catch (ClassNotFoundException e) {
@@ -364,7 +391,7 @@ public class Ejecucion {
 
         agregarFrame.setContentPane(eliminarPanel);
         agregarFrame.setVisible(true);
-        agregarFrame.setLocationByPlatform(true);
+        
     }
 
     private void buscarEspecie(JFrame frame) {
@@ -423,7 +450,7 @@ public class Ejecucion {
 
         modificarFrame.setContentPane(eliminarPanel);
         modificarFrame.setVisible(true);
-        modificarFrame.setLocationByPlatform(false);
+        
 
     }
 
@@ -507,6 +534,7 @@ public class Ejecucion {
                     ecologia, references);
 
             especiescompletas.add(es);
+            modificarClasificacion ();          
             nomenclaturaFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
             nomenclaturaFrame.setVisible(true);
 
@@ -525,5 +553,78 @@ public class Ejecucion {
         panel.add(datos, BorderLayout.CENTER);
 
         modificarDatosFrame.setContentPane(panel);
+    }
+
+    private void modificarClasificacion() {
+        JLabel lblSeleccion = new JLabel("CLASIFICACIÓN");
+       
+        
+        JComboBox<Dominio> cmbDominios = new JComboBox<>();
+        
+        JComboBox<Filo> cmbFilos = new JComboBox<>();
+        JComboBox<Clase> cmbClases = new JComboBox<>();
+        JComboBox<Familia> cmbFamilias = new JComboBox<>();
+        JComboBox<Orden> cmbOrdenes = new JComboBox<>();
+        JComboBox<Genero> cmbGeneros = new JComboBox<>();
+        
+        JLabel lblDominio = new JLabel("DOMINIO", JLabel.LEFT);
+        JLabel lblFilo = new JLabel("FILO", JLabel.RIGHT);
+        JLabel lblClase = new JLabel("CLASE", JLabel.RIGHT);
+        JLabel lblFamilia = new JLabel("FAMILIA", JLabel.RIGHT);
+        JLabel lblOrden = new JLabel("ORDEN", JLabel.RIGHT);
+        JLabel lblGenero = new JLabel("GENERO", JLabel.RIGHT);
+        
+        
+        
+        ImageIcon prevImagen = new ImageIcon(pathImg + "if_pre_293277.png");
+        JButton buttonprev = new JButton("ANTERIOR", prevImagen);
+        ImageIcon siguienteImagen = new ImageIcon(pathImg + "if_next_293276.png");
+        JButton buttonOK = new JButton("SIGUIENTE", siguienteImagen);
+        ImageIcon cancelarImagen = new ImageIcon(pathImg + "if_Cancel_131742.png");
+        JButton buttonKO = new JButton("CANCELAR", cancelarImagen);
+
+      
+
+        for (Dominio d : dominios) {
+            cmbDominios.addItem(d);
+        }
+
+        JPanel northPanel = new JPanel();
+        northPanel.setLayout(new FlowLayout(1, 50, 50));
+        JPanel centerPanel = new JPanel();
+        JPanel southPanel = new JPanel();
+
+        northPanel.add(lblSeleccion);
+        
+        
+       centerPanel.add(cmbDominios);
+       centerPanel.add(lblDominio);
+
+       southPanel.add(buttonOK);
+       buttonKO.addActionListener((ActionEvent ae) -> {
+       Dominio d = (Dominio) cmbDominios.getSelectedItem();
+
+            
+
+        nomenclaturaFrame.setVisible(false);
+
+        JOptionPane.showMessageDialog(null, "Los datos se han añadido a la Base de Datos");
+        });
+
+        southPanel.add(buttonKO);
+
+        buttonOK.addActionListener(ae -> {
+            //Frame.setVisible(false);
+        });
+
+        JPanel modClasPanel = new JPanel(new GridLayout(3, 0, 20, 20));
+        modClasPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
+        modClasPanel.add(northPanel, BorderLayout.NORTH);
+        modClasPanel.add(centerPanel, BorderLayout.CENTER);
+        modClasPanel.add(southPanel, BorderLayout.SOUTH);
+        
+        nomenclaturaFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        nomenclaturaFrame.setContentPane(modClasPanel);
+        nomenclaturaFrame.setVisible(true);
     }
 }

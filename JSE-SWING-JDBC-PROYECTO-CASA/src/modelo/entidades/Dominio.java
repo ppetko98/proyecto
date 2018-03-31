@@ -14,6 +14,10 @@ public class Dominio {
     public Dominio() {
     }
 
+    public Dominio(String dominio_name) {
+        this.dominio_name = dominio_name;
+    }
+
     public Dominio(int id_dominio, String dominio_name, String autor, String descripcion, String references, int imagen, Date last_update) {
         this.id_dominio = id_dominio;
         this.dominio_name = dominio_name;
@@ -82,7 +86,7 @@ public class Dominio {
 
     @Override
     public String toString() {
-        return "Dominio{" + "id_dominio=" + id_dominio + ", dominio_name=" + dominio_name + ", autor=" + autor + ", descripcion=" + descripcion + ", references=" + references + ", imagen=" + imagen + ", last_update=" + last_update + '}';
+        return dominio_name ;
     }
     
     

@@ -12,7 +12,7 @@ public interface BaseDatos {
     String DRIVERS = "com.mysql.jdbc.Driver";
     String URL = "jdbc:mysql://localhost:3306/biologia";
     String USUARIO = "root";
-    String CLAVE = "Stoyanov98";
+    String CLAVE = "root";
 
     String SELECT_ESPECIE
             = "SELECT e.id_especie, g.genero_name, e.especie_name\n"
@@ -20,8 +20,17 @@ public interface BaseDatos {
             + "ON n.id_genero = g.id_genero\n"
             + "INNER JOIN especie e\n"
             + "ON n.id_especie = e.id_especie";
+    
+    String SELECT_GENERO = "SELECT genero_name FROM biologia.genero";
+    String SELECT_FAMILIA = "SELECT familia_name FROM biologia.genero";
+    String SELECT_ORDEN = "SELECT orden_name FROM biologia.genero";
+    String SELECT_CLASE = "SELECT clase_name FROM biologia.genero";
+    String SELECT_FILO = "SELECT filo_name FROM biologia.genero";
+    String SELECT_DOMINIO = "SELECT dominio_name FROM biologia.dominio";
+   
+           
 
-    String DELETE_ESPECIE = "DELETE FROM biologia.especie where id_especie= ";
+  
 
     String SELECT_DESCRIPCION = "SELECT descripcion FROM biologia.especie WHERE especie.id_especie = ";
     String SELECT_METABOLISMO = "SELECT metabolismo FROM biologia.especie WHERE especie.id_especie = ";
@@ -32,6 +41,9 @@ public interface BaseDatos {
     String SELECT_ES_GENOMICO_PLASMIDO = "SELECT genetica.es_genomico_plasmido  FROM genetica inner join especie on genetica.id_secuencia = especie.id_secuencia where especie.id_especie = ";
     String SELECT_LONGITUD = "SELECT genetica.longitud FROM genetica INNER JOIN especie WHERE genetica.id_secuencia = especie.id_secuencia AND especie.id_especie = ";
     String SELECT_TOPOLOGIA = "SELECT genetica.topologia FROM genetica INNER JOIN especie WHERE genetica.id_secuencia = especie.id_secuencia AND especie.id_especie = ";
+    
+    
+    String DELETE_ESPECIE = "DELETE FROM biologia.especie where id_especie= ";
 
     /*"DELETE e.id_especie, e.especie_name, e.autor, e.descripcion, e.imagen, e.ecologia, e.metabolismo, e.references, e.id_secuencia,\n" +
 "g.id_secuencia, g.es_genomico_plasmido, g.fasta, g.topologia, g.longitud, g.last_update,\n" +

@@ -22,5 +22,5 @@ public interface EspecieController {
 
      List<Especie> lista() throws SQLException;
      Collection <Especie> coleccionCompleta() throws SQLException;
-   void delete () throws EspecieException;
+     void delete () throws EspecieException;
 }
