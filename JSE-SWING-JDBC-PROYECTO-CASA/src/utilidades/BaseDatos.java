@@ -2,6 +2,7 @@ package utilidades;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public interface BaseDatos {
@@ -30,11 +31,12 @@ public interface BaseDatos {
    
            
 
-  
+    String SELECT_TABLA ="SELECT e.descripcion, e.metabolismo, g.fasta FROM especie e INNER JOIN genetica g ON e.id_secuencia = g.id_secuencia WHERE e.id_especie =";
 
     String SELECT_DESCRIPCION = "SELECT descripcion FROM biologia.especie WHERE especie.id_especie = ";
     String SELECT_METABOLISMO = "SELECT metabolismo FROM biologia.especie WHERE especie.id_especie = ";
     String SELECT_SECUENCIA = "SELECT fasta FROM genetica INNER JOIN especie WHERE genetica.id_secuencia = especie.id_secuencia AND especie.id_especie = ";
+    
     String SELECT_AUTOR = "SELECT autor FROM especie WHERE id_especie = ";
     String SELECT_ECOLOGIA = "SELECT ecologia FROM especie WHERE id_especie = ";
     String SELECT_REFERENCES = "SELECT especie.references FROM especie WHERE id_especie = ";
@@ -66,6 +68,11 @@ public interface BaseDatos {
         return DriverManager.getConnection(URL, USUARIO, CLAVE);
     }
 
+    public static ResultSet executeQuery(String sql, Integer id) throws SQLException{
+        Connection connection = getConnection();
+        ResultSet rs = connection.createStatement().executeQuery(sql+id+";");
+        return rs;
+    }
     /*
     public static Connection conexion() throws SQLException {
 

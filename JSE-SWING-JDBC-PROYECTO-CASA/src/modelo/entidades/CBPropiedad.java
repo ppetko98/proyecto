@@ -88,9 +88,10 @@ public class CBPropiedad {
         this.rs = rs;
     }
     
-    public void execute() throws SQLException{
+    public ResultSet execute() throws SQLException{
         Connection connection = BaseDatos.getConnection();
         this.rs = connection.createStatement().executeQuery(this.ResultSet);
+        return rs;
     }
     
     public void executeps() throws SQLException{

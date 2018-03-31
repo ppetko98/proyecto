@@ -6,35 +6,36 @@
 package test;
 
 import java.awt.Image;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.PriorityQueue;
-import javax.swing.DefaultCellEditor;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableModel;
 import modelo.dao.Implements.EspecieControllerImpl;
 import modelo.entidades.CBPropiedad;
 import modelo.entidades.Especie;
+import modelo.entidades.Genetica;
 import modelo.excepciones.EspecieException;
 import utilidades.BaseDatos;
 import utilidades.Validacion;
 import utilidades.ValidacionException;
-import vista.EspecieTableModel;
+import vista.EspecieTableModel1;
 
 /**
  *
  * @author ppetk
  */
-public class BuscarPanel extends JPanel {
+public class BuscarPanel1 extends JPanel {
 
-    public BuscarPanel() {
+    public BuscarPanel1() {
         initComponents();
     }
 
@@ -187,38 +188,42 @@ public class BuscarPanel extends JPanel {
         String especieString = textBuscarEspecie.getText();
 
         List<Especie> especies = null;
+        
         try {
             especies = new EspecieControllerImpl().lista();
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            Logger.getLogger(BuscarPanel1.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         Especie especiebuscada = null;
-        
-        Comparator comparator = new Comparator<CBPropiedad>() {
-            @Override
-            public int compare(CBPropiedad o1, CBPropiedad o2) {
-                if (o1.getId() > o2.getId()) {
-                    return 1;
-                } else if (o1.getId() < o2.getId()) {
-                    return -1;
-                } else {
-                    return 0;
+        Genetica genetica = null;
+        /*
+            Comparator comparator = new Comparator<CBPropiedad>() {
+                @Override
+                public int compare(CBPropiedad o1, CBPropiedad o2) {
+                    if (o1.getId() > o2.getId()) {
+                        return 1;
+                    } else if (o1.getId() < o2.getId()) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
                 }
-            }
-        };//comparador para priority queue
-        PriorityQueue<CBPropiedad>props = new PriorityQueue<>(comparator);
-        
+            };//comparador para priority queue
+         */
         try {
             Validacion.validarCadena(textBuscarEspecie, true, "Buscar Especie");
             boolean found = false;
-            
+
             for (Especie e : especies) {
                 if (e.getEspecie_name().equals(especieString)) {
                     especiebuscada = e;
-                    found=true;
+                    genetica = new Genetica();
+                    genetica.setId_secuencia(e.getId_secuencia());
+                    found = true;
                 }
             }//foreach recorre especies
+
             
             if (!found) {
                 throw new EspecieException("Especie no encontrada");
@@ -242,59 +247,111 @@ public class BuscarPanel extends JPanel {
 
         lblImagen.setIcon(new ImageIcon(image));
         lblImagen.setVisible(true);
-        
-        int id = especiebuscada.getId_especie();
-        
-        CBPropiedad descripcion = new CBPropiedad("descripcion", 1, BaseDatos.SELECT_DESCRIPCION+id);
-        CBPropiedad metabolismo = new CBPropiedad("metabolismo", 2, BaseDatos.SELECT_METABOLISMO+id);
-        CBPropiedad secuencia = new CBPropiedad("secuencia", 3, BaseDatos.SELECT_SECUENCIA+id);
 
-        props.add(descripcion);
-        props.add(metabolismo);
-        props.add(secuencia);
-        
+        int id = especiebuscada.getId_especie();
+        ResultSet rs = null;
+        List<String> propiedades = new ArrayList<>(9);
+        Map<Integer, String> props = new TreeMap<>();
+        try {
+            rs = BaseDatos.executeQuery(BaseDatos.SELECT_TABLA,id);
+            if (rs.next()) {
+                especiebuscada.setDescripcion(rs.getString(1));
+                //propiedades.add(0,"Descripcion");
+                props.put(0, "Descripcion");
+                
+                especiebuscada.setMetabolismo(rs.getString(2));
+                //propiedades.add(1,"Metabolismo");
+                props.put(1,"Metabolismo");
+                
+                genetica.setFasta(rs.getString(3));
+                //propiedades.add(2,"Fasta");
+                props.put(2,"Fasta");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(BuscarPanel1.class.getName()).log(Level.SEVERE, null, ex);
+        }
         //CHECKBOX PARA LA TABLA
         if (cbEspecie1.isSelected()) {
-            CBPropiedad autor = new CBPropiedad("autor", 4, BaseDatos.SELECT_AUTOR+id);
-            props.add(autor);
+            try {
+                rs = BaseDatos.executeQuery(BaseDatos.SELECT_AUTOR, id);
+                if (rs.next()) {
+                    especiebuscada.setAutor(rs.getString(1));
+                    //propiedades.add(3,"Autor");
+                    props.put(3,"Autor");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(BuscarPanel1.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         if (cbEspecie2.isSelected()) {
-            CBPropiedad ecologia = new CBPropiedad("ecologia", 5, BaseDatos.SELECT_ECOLOGIA+id);
-            props.add(ecologia);
-        }if (cbEspecie3.isSelected()) {
-            CBPropiedad references = new CBPropiedad("references", 6, BaseDatos.SELECT_REFERENCES+id);
-            props.add(references);
-        }if (cbEspecie4.isSelected()) {
-            CBPropiedad es_genomico_plasmido = new CBPropiedad("es_genomico_plasmido", 7, BaseDatos.SELECT_ES_GENOMICO_PLASMIDO+id);
-            props.add(es_genomico_plasmido);
-        }if (cbEspecie5.isSelected()) {
-            CBPropiedad longitud = new CBPropiedad("longitud", 8, BaseDatos.SELECT_LONGITUD+id);
-            props.add(longitud);
-        }if (cbEspecie6.isSelected()) {
-            CBPropiedad topologia = new CBPropiedad("topologia", 9, BaseDatos.SELECT_TOPOLOGIA+id);
-            props.add(topologia);
+            try {
+                rs = BaseDatos.executeQuery(BaseDatos.SELECT_ECOLOGIA, id);
+                if (rs.next()) {
+                    especiebuscada.setEcologia(rs.getString(1));
+                   // propiedades.add(4,"Ecologia");
+                    props.put(4,"Ecologia");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(BuscarPanel1.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (cbEspecie3.isSelected()) {
+            try {
+                rs = BaseDatos.executeQuery(BaseDatos.SELECT_REFERENCES, id);
+                if (rs.next()) {
+                    especiebuscada.setReferences(rs.getString(1));
+//                    propiedades.add(5,"References");
+                    props.put(5,"References");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(BuscarPanel1.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (cbEspecie4.isSelected()) {
+            try {
+                rs = BaseDatos.executeQuery(BaseDatos.SELECT_ES_GENOMICO_PLASMIDO, id);
+                if (rs.next()) {
+                    genetica.setEs_genomico_plasmido(rs.getBoolean(1));
+                  //  propiedades.add(6,"es_genomico_plasmido");
+                    props.put(6,"es_genomico_plasmido");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(BuscarPanel1.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (cbEspecie5.isSelected()) {
+            try {
+                rs = BaseDatos.executeQuery(BaseDatos.SELECT_LONGITUD, id);
+                if (rs.next()) {
+                    genetica.setLongitud(rs.getInt(1));
+                    //propiedades.add(7,"Longitud");
+                    props.put(7,"Longitud");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(BuscarPanel1.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (cbEspecie6.isSelected()) {
+            try {
+                rs = BaseDatos.executeQuery(BaseDatos.SELECT_TOPOLOGIA, id);
+                if (rs.next()) {
+                    genetica.setTopologia(rs.getString(1));
+                    //propiedades.add(8, "Topologia");
+                    props.put(8, "Topologia");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(BuscarPanel1.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         
-        try {
-            TableModel modelo = new EspecieTableModel(props);
-            tablaEspecie.setModel(modelo);
-            tablaEspecie.setRowHeight(tablaEspecie.getSize().height);
-            tablaEspecie.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    
-                }
-            
-            });
-            
-            
-            jScrollPane2.setVisible(true);
-            jScrollPane2.setEnabled(false);
-            tablaEspecie.setVisible(true);
-            
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
+        //TableModel modelo = new EspecieTableModel1(especiebuscada, genetica,propiedades);
+        TableModel modelo = new EspecieTableModel1(especiebuscada, genetica,props);
+        tablaEspecie.setModel(modelo);
+        tablaEspecie.setRowHeight(tablaEspecie.getSize().height);
+        jScrollPane2.setVisible(true);
+        jScrollPane2.setEnabled(false);
+        tablaEspecie.setVisible(true);
+        propiedades.clear();
     }//GEN-LAST:event_btnBuscarEspecieActionPerformed
 
     private void cbEspecie1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEspecie1ActionPerformed
