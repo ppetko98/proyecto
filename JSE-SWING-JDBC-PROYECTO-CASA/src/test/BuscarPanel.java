@@ -10,9 +10,12 @@ import java.sql.SQLException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
+import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableModel;
 import modelo.dao.Implements.EspecieControllerImpl;
 import modelo.entidades.CBPropiedad;
@@ -85,6 +88,8 @@ public class BuscarPanel extends JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tablaEspecie.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        tablaEspecie.setRowSelectionAllowed(false);
         jScrollPane2.setViewportView(tablaEspecie);
 
         cbEspecie1.setText("Autor");
@@ -189,8 +194,6 @@ public class BuscarPanel extends JPanel {
         
         Especie especiebuscada = null;
         
-       // Map<Integer,CBPropiedad> props = new TreeMap<>();
-        
         Comparator comparator = new Comparator<CBPropiedad>() {
             @Override
             public int compare(CBPropiedad o1, CBPropiedad o2) {
@@ -244,11 +247,7 @@ public class BuscarPanel extends JPanel {
         CBPropiedad descripcion = new CBPropiedad("descripcion", 1, BaseDatos.SELECT_DESCRIPCION+id);
         CBPropiedad metabolismo = new CBPropiedad("metabolismo", 2, BaseDatos.SELECT_METABOLISMO+id);
         CBPropiedad secuencia = new CBPropiedad("secuencia", 3, BaseDatos.SELECT_SECUENCIA+id);
-        /*
-        props.put(descripcion.getId(), descripcion);
-        props.put(metabolismo.getId(), metabolismo);
-        props.put(secuencia.getId(), secuencia);
-       */
+
         props.add(descripcion);
         props.add(metabolismo);
         props.add(secuencia);
@@ -256,36 +255,32 @@ public class BuscarPanel extends JPanel {
         //CHECKBOX PARA LA TABLA
         if (cbEspecie1.isSelected()) {
             CBPropiedad autor = new CBPropiedad("autor", 4, BaseDatos.SELECT_AUTOR+id);
-            //props.put(autor.getId(), autor);
             props.add(autor);
         }
         if (cbEspecie2.isSelected()) {
             CBPropiedad ecologia = new CBPropiedad("ecologia", 5, BaseDatos.SELECT_ECOLOGIA+id);
-            //props.put(ecologia.getId(), ecologia);
             props.add(ecologia);
         }if (cbEspecie3.isSelected()) {
             CBPropiedad references = new CBPropiedad("references", 6, BaseDatos.SELECT_REFERENCES+id);
-            //props.put(secuencia.getId(), references);
             props.add(references);
         }if (cbEspecie4.isSelected()) {
             CBPropiedad es_genomico_plasmido = new CBPropiedad("es_genomico_plasmido", 7, BaseDatos.SELECT_ES_GENOMICO_PLASMIDO+id);
-            //props.put(es_genomico_plasmido.getId(), es_genomico_plasmido);
             props.add(es_genomico_plasmido);
         }if (cbEspecie5.isSelected()) {
             CBPropiedad longitud = new CBPropiedad("longitud", 8, BaseDatos.SELECT_LONGITUD+id);
-            //props.put(longitud.getId(), longitud);
             props.add(longitud);
         }if (cbEspecie6.isSelected()) {
             CBPropiedad topologia = new CBPropiedad("topologia", 9, BaseDatos.SELECT_TOPOLOGIA+id);
-            //props.put(topologia.getId(), topologia);
             props.add(topologia);
         }
         
         try {
             TableModel modelo = new EspecieTableModel(props);
             tablaEspecie.setModel(modelo);
+            tablaEspecie.setRowHeight(tablaEspecie.getSize().height);
             
             jScrollPane2.setVisible(true);
+            jScrollPane2.setEnabled(false);
             tablaEspecie.setVisible(true);
             
         } catch (SQLException ex) {
