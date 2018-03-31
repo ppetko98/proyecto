@@ -560,7 +560,6 @@ public class Ejecucion {
        
         
         JComboBox<Dominio> cmbDominios = new JComboBox<>();
-        
         JComboBox<Filo> cmbFilos = new JComboBox<>();
         JComboBox<Clase> cmbClases = new JComboBox<>();
         JComboBox<Familia> cmbFamilias = new JComboBox<>();
@@ -568,8 +567,8 @@ public class Ejecucion {
         JComboBox<Genero> cmbGeneros = new JComboBox<>();
         
         JLabel lblDominio = new JLabel("DOMINIO", JLabel.LEFT);
-        JLabel lblFilo = new JLabel("FILO", JLabel.RIGHT);
-        JLabel lblClase = new JLabel("CLASE", JLabel.RIGHT);
+        JLabel lblFilo = new JLabel("FILO", JLabel.LEFT);
+        JLabel lblClase = new JLabel("CLASE", JLabel.LEFT);
         JLabel lblFamilia = new JLabel("FAMILIA", JLabel.RIGHT);
         JLabel lblOrden = new JLabel("ORDEN", JLabel.RIGHT);
         JLabel lblGenero = new JLabel("GENERO", JLabel.RIGHT);
@@ -590,37 +589,61 @@ public class Ejecucion {
         }
 
         JPanel northPanel = new JPanel();
-        northPanel.setLayout(new FlowLayout(1, 50, 50));
-        JPanel centerPanel = new JPanel();
-        JPanel southPanel = new JPanel();
+        northPanel.setLayout(new FlowLayout(1, 20, 20));
+        JPanel centerRPanel = new JPanel();
+        centerRPanel.setLayout(new GridLayout(3, 0, 2, 40));
+        JPanel centerLPanel = new JPanel();
+        centerLPanel.setLayout(new GridLayout(3, 0, 2, 40));
+        JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
-        northPanel.add(lblSeleccion);
+       northPanel.add(lblSeleccion);
         
+       centerRPanel.add(lblDominio); 
+       centerRPanel.add(cmbDominios);
+       centerRPanel.add(lblFilo);
+       centerRPanel.add(cmbFilos);
+       centerRPanel.add(lblClase);
+       centerRPanel.add(cmbClases);
+       
+       centerLPanel.add(lblFamilia);
+       centerLPanel.add(cmbFamilias);
+       centerLPanel.add(lblOrden);
+       centerLPanel.add(cmbOrdenes);
+       centerLPanel.add(lblGenero);
+       centerLPanel.add(cmbGeneros);
+       
         
-       centerPanel.add(cmbDominios);
-       centerPanel.add(lblDominio);
 
+        //BOnton anterior
+        southPanel.add(buttonprev);
+
+        buttonprev.addActionListener(ae -> {
+        modificarDatosFrame.setVisible(true);
+        nomenclaturaFrame.setVisible(false);
+        });
+       
+       //BOnton siguiente
        southPanel.add(buttonOK);
        buttonKO.addActionListener((ActionEvent ae) -> {
        Dominio d = (Dominio) cmbDominios.getSelectedItem();
-
-            
-
+        
         nomenclaturaFrame.setVisible(false);
 
         JOptionPane.showMessageDialog(null, "Los datos se han añadido a la Base de Datos");
         });
-
+        //Boton cancelar
         southPanel.add(buttonKO);
 
         buttonOK.addActionListener(ae -> {
-            //Frame.setVisible(false);
+        nomenclaturaFrame.setVisible(false);
         });
 
-        JPanel modClasPanel = new JPanel(new GridLayout(3, 0, 20, 20));
-        modClasPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
+        JPanel modClasPanel = new JPanel(new BorderLayout (10,10));
+        modClasPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 50));
+        
         modClasPanel.add(northPanel, BorderLayout.NORTH);
-        modClasPanel.add(centerPanel, BorderLayout.CENTER);
+        modClasPanel.add(centerRPanel, BorderLayout.EAST);
+        modClasPanel.add(centerLPanel, BorderLayout.WEST);
         modClasPanel.add(southPanel, BorderLayout.SOUTH);
         
         nomenclaturaFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
