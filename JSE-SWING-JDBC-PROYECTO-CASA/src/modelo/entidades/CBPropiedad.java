@@ -24,7 +24,7 @@ public class CBPropiedad {
     ResultSet rs;
     
     public CBPropiedad(CBPropiedad cbp){
-        this(cbp.getPropiedad(), cbp.getId(), cbp.getPreparedStatement(), cbp.getResultSet());
+        this(cbp.getPropiedad(), cbp.getId(), cbp.getResultSet());
     }
 
     public CBPropiedad(String propiedad, int id, String PreparedStatement, String ResultSet) {
@@ -88,9 +88,10 @@ public class CBPropiedad {
         this.rs = rs;
     }
     
-    public void execute() throws SQLException{
+    public ResultSet execute() throws SQLException{
         Connection connection = BaseDatos.getConnection();
         this.rs = connection.createStatement().executeQuery(this.ResultSet);
+        return rs;
     }
     
     public void executeps() throws SQLException{

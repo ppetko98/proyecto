@@ -10,9 +10,12 @@ public class Genetica {
     private int longitud;
     private String topologia;
     private Date last_update;
-    private byte [] fasta;
+    private String fasta;
 
-    public Genetica(int id_secuencia, boolean es_genomico_plasmido, int longitud, String topologia, Date last_update, byte[] fasta) {
+    public Genetica() {
+    }
+    
+    public Genetica(int id_secuencia, boolean es_genomico_plasmido, int longitud, String topologia, Date last_update, String fasta) {
         this.id_secuencia = id_secuencia;
         this.es_genomico_plasmido = es_genomico_plasmido;
         this.longitud = longitud;
@@ -61,11 +64,11 @@ public class Genetica {
         this.last_update = last_update;
     }
 
-    public byte[] getFasta() {
+    public String getFasta() {
         return fasta;
     }
 
-    public void setFasta(byte[] fasta) {
+    public void setFasta(String fasta) {
         this.fasta = fasta;
     }
 
@@ -77,7 +80,7 @@ public class Genetica {
                 ", longitud=" + longitud +
                 ", topologia='" + topologia + '\'' +
                 ", last_update=" + last_update +
-                ", fasta=" + Arrays.toString(fasta) +
+                ", fasta=" + fasta.substring(0,10) +
                 '}';
     }
 

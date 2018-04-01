@@ -12,7 +12,7 @@ public class Especie {
     private String ecologia;
     private String references;
     private int id_secuencia;
-
+    
     public Especie() {
     }
 
@@ -125,10 +125,10 @@ public class Especie {
     public void setId_secuencia(int id_secuencia) {
         this.id_secuencia = id_secuencia;
     }
-    
 
     
-
+    
+    
     @Override
     public String toString() {
         return  id_especie + " " + genero_name + " " + especie_name ;

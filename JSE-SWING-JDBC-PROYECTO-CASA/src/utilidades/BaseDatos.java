@@ -2,6 +2,7 @@ package utilidades;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public interface BaseDatos {
@@ -12,7 +13,7 @@ public interface BaseDatos {
     String DRIVERS = "com.mysql.jdbc.Driver";
     String URL = "jdbc:mysql://localhost:3306/biologia";
     String USUARIO = "root";
-    String CLAVE = "root";
+    String CLAVE = "Stoyanov98";
 
     String SELECT_ESPECIE
             = "SELECT e.id_especie, g.genero_name, e.especie_name\n"
@@ -30,11 +31,12 @@ public interface BaseDatos {
    
            
 
-  
+    String SELECT_TABLA ="SELECT e.descripcion, e.metabolismo, g.fasta FROM especie e INNER JOIN genetica g ON e.id_secuencia = g.id_secuencia WHERE e.id_especie =";
 
     String SELECT_DESCRIPCION = "SELECT descripcion FROM biologia.especie WHERE especie.id_especie = ";
     String SELECT_METABOLISMO = "SELECT metabolismo FROM biologia.especie WHERE especie.id_especie = ";
     String SELECT_SECUENCIA = "SELECT fasta FROM genetica INNER JOIN especie WHERE genetica.id_secuencia = especie.id_secuencia AND especie.id_especie = ";
+    
     String SELECT_AUTOR = "SELECT autor FROM especie WHERE id_especie = ";
     String SELECT_ECOLOGIA = "SELECT ecologia FROM especie WHERE id_especie = ";
     String SELECT_REFERENCES = "SELECT especie.references FROM especie WHERE id_especie = ";
@@ -44,6 +46,16 @@ public interface BaseDatos {
     
     
     String DELETE_ESPECIE = "DELETE FROM biologia.especie where id_especie= ";
+    
+    String SELECT_ARBOL = "SELECT d.dominio_name dominio, f.filo_name filo, c.clase_name clase, o.orden_name orden, fam.familia_name familia, g.genero_name genero, e.especie_name especie\n" +
+"FROM nomenclatura n INNER JOIN dominio d ON n.id_dominio=d.id_dominio\n" +
+"INNER JOIN filo f ON n.id_filo=f.id_filo\n" +
+"INNER JOIN clase c ON n.id_clase=c.id_clase\n" +
+"INNER JOIN orden o ON n.id_orden=o.id_orden\n" +
+"INNER JOIN familia fam ON n.id_familia=fam.id_familia\n" +
+"INNER JOIN genero g ON n.id_genero=g.id_genero\n" +
+"INNER JOIN especie e ON n.id_especie=e.id_especie\n" +
+"WHERE e.id_especie= ";
 
     /*"DELETE e.id_especie, e.especie_name, e.autor, e.descripcion, e.imagen, e.ecologia, e.metabolismo, e.references, e.id_secuencia,\n" +
 "g.id_secuencia, g.es_genomico_plasmido, g.fasta, g.topologia, g.longitud, g.last_update,\n" +
@@ -66,6 +78,11 @@ public interface BaseDatos {
         return DriverManager.getConnection(URL, USUARIO, CLAVE);
     }
 
+    public static ResultSet executeQuery(String sql, Integer id) throws SQLException{
+        Connection connection = getConnection();
+        ResultSet rs = connection.createStatement().executeQuery(sql+id+";");
+        return rs;
+    }
     /*
     public static Connection conexion() throws SQLException {
 

@@ -7,13 +7,16 @@ package vista;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.PriorityQueue;
-import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.AbstractTableModel;
 import modelo.entidades.CBPropiedad;
+import modelo.entidades.Especie;
+import modelo.entidades.Genetica;
 
 /**
  *
@@ -21,25 +24,28 @@ import modelo.entidades.CBPropiedad;
  */
 public class EspecieTableModel extends AbstractTableModel {
 
-    //private Map<Integer, CBPropiedad> props;
-    private PriorityQueue<CBPropiedad> propiedades;
-    private PriorityQueue<CBPropiedad> columnas;
-    private Queue<CBPropiedad> column;
+    private final PriorityQueue<CBPropiedad> propiedades;
+    private final PriorityQueue<CBPropiedad> columnas;
+    private final List<String> list;
+    Especie e;
+    Genetica g;
 
-    public EspecieTableModel(PriorityQueue<CBPropiedad> propiedades) throws SQLException {
-        this.propiedades = propiedades;
+    public EspecieTableModel(PriorityQueue<CBPropiedad> propiedades, Especie e, Genetica g) throws SQLException {
+        this.propiedades = new PriorityQueue<>(propiedades);
         this.columnas = new PriorityQueue<>(propiedades.comparator());
+        this.e = e;
+        this.g = g;
+
         Iterator<CBPropiedad> it = propiedades.iterator();
-        
-        while (it.hasNext()){
-            columnas.add(it.next());
+
+        while (it.hasNext()) {
+            columnas.add(new CBPropiedad(it.next()));
         }
-       
-        
+
         for (CBPropiedad cb : propiedades) {
             System.out.println(cb.getId() + "\t" + cb.getPropiedad());
         }
-        
+        list = new ArrayList<>();
     }
 
     @Override
@@ -55,15 +61,16 @@ public class EspecieTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch (columnIndex) {
-            case 0:
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-            case 7:
-            case 8:
+            case 0: //return e.getDescripcion();
+            case 1: //return e.getMetabolismo();
+            case 2: //return g.getFasta();
+            case 3: //return e.getAutor();
+            case 4: //return e.getEcologia();
+            case 5: //return e.getReferences();
+            case 6: //return g.isEs_genomico_plasmido();
+            case 7: //return g.getLongitud();
+            case 8: //return g.getTopologia();
+
                 if (propiedades.peek() != null) {
                     try {
                         CBPropiedad prop = propiedades.poll();
@@ -72,17 +79,21 @@ public class EspecieTableModel extends AbstractTableModel {
                         ResultSet rs = prop.getRs();
                         if (rs.next()) {
                             if (prop.getPropiedad().equals("es_genomico_plasmido")) {
-                                return (rs.getBoolean(1) ? "genomico" : "plasmido");
+                                String boole = (rs.getBoolean(1) ? "genomico" : "plasmido");
+                                list.add(boole);
+                                return boole;
                             } else {
-                                return rs.getString(1);
+                                String res = rs.getString(1);
+                                list.add(res);
+                                return res;
                             }
                         }
                     } catch (SQLException ex) {
                         Logger.getLogger(EspecieTableModel.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                }
-                else
+                } else {
                     System.out.println("PEEK == NULL!!! ");
+                }
             default:
                 System.out.print("ESTO FALLA!");
                 return null;
@@ -92,14 +103,14 @@ public class EspecieTableModel extends AbstractTableModel {
     @Override
     public String getColumnName(int column) {
         switch (column) {
-            case 0://return props.get(1).getPropiedad();
-            case 1://return props.get(2).getPropiedad();
-            case 2://return props.get(3).getPropiedad();
-            case 3://return props.get(4).getPropiedad();
-            case 4://return props.get(5).getPropiedad();
-            case 5://return props.get(6).getPropiedad();
-            case 6://return props.get(7).getPropiedad();
-            case 7://return props.get(8).getPropiedad();
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
             case 8:
                 if (columnas.peek() != null) {
                     return columnas.poll().getPropiedad();
@@ -107,7 +118,7 @@ public class EspecieTableModel extends AbstractTableModel {
             default:
                 return null;
         }
-        
+
     }
 
     @Override
@@ -115,27 +126,29 @@ public class EspecieTableModel extends AbstractTableModel {
         return false;
     }
 
-    /*
-    public EspecieTableModel(Map<Integer, CBPropiedad> props) throws SQLException {
-        this.props = props;
-        Comparator comparator = new Comparator<CBPropiedad>() {
-            @Override
-            public int compare(CBPropiedad o1, CBPropiedad o2) {
-                if (o1.getId() > o2.getId()) {
-                    return 1;
-                } else if (o1.getId() < o2.getId()) {
-                    return -1;
-                } else {
-                    return 0;
-                }
-            }
-        };
-        propiedades = new PriorityQueue(comparator);
-        propiedades.addAll(this.props.values());
-     
-        for (CBPropiedad cb : propiedades) {
-            System.out.println(cb.getId() + "\t" + cb.getPropiedad());
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        switch (columnIndex) {
+            case 0:
+            case 1:
+                return e.getClass();
+            case 2:
+                return g.getClass();
+            case 3:
+            case 4:
+            case 5:
+                return e.getClass();
+            case 6:
+            case 7:
+            case 8:
+                return g.getClass();
+            default:
+                return null;
         }
     }
-     */
+
+    public List<String> getList() {
+        return list;
+    }
+
 }

@@ -47,7 +47,7 @@ public class Ejecucion_tam {
             600, 400, false, true);
 
     private final JFrame buscarFrame = crear("BUSCAR ESPECIE",
-            650, 450, true, true);
+            760, 450, true, true);
     private final List<Especie> especies = EspecieControllerImpl.lista;
 
     private final Collection<Especie> especiescompletas = EspecieControllerImpl.listacompleta;
