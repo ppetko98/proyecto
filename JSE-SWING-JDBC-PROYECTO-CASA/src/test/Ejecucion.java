@@ -569,9 +569,9 @@ public class Ejecucion {
         JLabel lblDominio = new JLabel("DOMINIO", JLabel.LEFT);
         JLabel lblFilo = new JLabel("FILO", JLabel.LEFT);
         JLabel lblClase = new JLabel("CLASE", JLabel.LEFT);
-        JLabel lblFamilia = new JLabel("FAMILIA", JLabel.RIGHT);
-        JLabel lblOrden = new JLabel("ORDEN", JLabel.RIGHT);
-        JLabel lblGenero = new JLabel("GENERO", JLabel.RIGHT);
+        JLabel lblFamilia = new JLabel("FAMILIA          ", JLabel.LEFT);
+        JLabel lblOrden = new JLabel("ORDEN          ", JLabel.LEFT);
+        JLabel lblGenero = new JLabel("GENERO          ", JLabel.LEFT);
         
         
         
@@ -591,10 +591,11 @@ public class Ejecucion {
         JPanel northPanel = new JPanel();
         northPanel.setLayout(new FlowLayout(1, 20, 20));
         JPanel centerRPanel = new JPanel();
-        centerRPanel.setLayout(new GridLayout(3, 0, 1, 60));
-        centerRPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 30, 30));
+        centerRPanel.setLayout(new GridLayout(3, 0, 1, 40));
+        centerRPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 30, 40));
         JPanel centerLPanel = new JPanel();
-        centerLPanel.setLayout(new GridLayout(3, 0, 2, 40));
+        centerLPanel.setLayout(new GridLayout(3, 0 ,1, 40));
+        centerLPanel.setBorder(BorderFactory.createEmptyBorder(10,30, 30, 10));
         JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
        northPanel.add(lblSeleccion);
@@ -640,7 +641,7 @@ public class Ejecucion {
         });
 
         JPanel modClasPanel = new JPanel(new BorderLayout (10,10));
-        modClasPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 50));
+        modClasPanel.setBorder(BorderFactory.createEmptyBorder(10, 60, 10, 50));
         
         modClasPanel.add(northPanel, BorderLayout.NORTH);
         modClasPanel.add(centerRPanel, BorderLayout.EAST);
