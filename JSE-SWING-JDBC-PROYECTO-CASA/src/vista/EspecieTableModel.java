@@ -7,7 +7,9 @@ package vista;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.PriorityQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,8 +24,9 @@ import modelo.entidades.Genetica;
  */
 public class EspecieTableModel extends AbstractTableModel {
 
-    private PriorityQueue<CBPropiedad> propiedades;
-    private PriorityQueue<CBPropiedad> columnas;
+    private final PriorityQueue<CBPropiedad> propiedades;
+    private final PriorityQueue<CBPropiedad> columnas;
+    private final List<String> list;
     Especie e;
     Genetica g;
 
@@ -42,7 +45,7 @@ public class EspecieTableModel extends AbstractTableModel {
         for (CBPropiedad cb : propiedades) {
             System.out.println(cb.getId() + "\t" + cb.getPropiedad());
         }
-
+        list = new ArrayList<>();
     }
 
     @Override
@@ -76,9 +79,13 @@ public class EspecieTableModel extends AbstractTableModel {
                         ResultSet rs = prop.getRs();
                         if (rs.next()) {
                             if (prop.getPropiedad().equals("es_genomico_plasmido")) {
-                                return (rs.getBoolean(1) ? "genomico" : "plasmido");
+                                String boole = (rs.getBoolean(1) ? "genomico" : "plasmido");
+                                list.add(boole);
+                                return boole;
                             } else {
-                                return rs.getString(1);
+                                String res = rs.getString(1);
+                                list.add(res);
+                                return res;
                             }
                         }
                     } catch (SQLException ex) {
@@ -138,6 +145,10 @@ public class EspecieTableModel extends AbstractTableModel {
             default:
                 return null;
         }
+    }
+
+    public List<String> getList() {
+        return list;
     }
 
 }

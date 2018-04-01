@@ -6,9 +6,12 @@
 package test;
 
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Comparator;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.TreeMap;
@@ -17,7 +20,11 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.JTree;
+import javax.swing.table.DefaultTableColumnModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -70,12 +77,16 @@ public class BuscarPanel extends JPanel {
         setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         setPreferredSize(new java.awt.Dimension(600, 400));
         setRequestFocusEnabled(false);
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         textBuscarEspecie.setText("Buscar Especie...");
         textBuscarEspecie.setToolTipText("");
+        add(textBuscarEspecie, new org.netbeans.lib.awtextra.AbsoluteConstraints(75, 52, 161, -1));
 
         jScrollPane1.setVisible(false);
         jScrollPane1.setViewportView(treeEspecie);
+
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 185, 246, 203));
 
         btnBuscarEspecie.setText("Buscar");
         btnBuscarEspecie.addActionListener(new java.awt.event.ActionListener() {
@@ -83,6 +94,10 @@ public class BuscarPanel extends JPanel {
                 btnBuscarEspecieActionPerformed(evt);
             }
         });
+        add(btnBuscarEspecie, new org.netbeans.lib.awtextra.AbsoluteConstraints(285, 51, -1, -1));
+
+        jScrollPane2.setBackground(new java.awt.Color(255, 255, 255));
+        jScrollPane2.setAutoscrolls(true);
 
         jScrollPane2.setVisible(false);
         tablaEspecie.setModel(new javax.swing.table.DefaultTableModel(
@@ -97,7 +112,13 @@ public class BuscarPanel extends JPanel {
             }
         ));
         tablaEspecie.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        tablaEspecie.setFocusable(false);
+        tablaEspecie.setGridColor(new java.awt.Color(255, 255, 255));
+        tablaEspecie.setRowSelectionAllowed(false);
+        tablaEspecie.setShowHorizontalLines(false);
         jScrollPane2.setViewportView(tablaEspecie);
+
+        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(267, 185, -1, 203));
 
         cbEspecie1.setText("Autor");
         cbEspecie1.addActionListener(new java.awt.event.ActionListener() {
@@ -105,12 +126,16 @@ public class BuscarPanel extends JPanel {
                 cbEspecie1ActionPerformed(evt);
             }
         });
+        add(cbEspecie1, new org.netbeans.lib.awtextra.AbsoluteConstraints(32, 105, -1, -1));
 
         cbEspecie2.setText("Ecologia");
+        add(cbEspecie2, new org.netbeans.lib.awtextra.AbsoluteConstraints(32, 128, -1, -1));
 
         cbEspecie3.setText("Referencias");
+        add(cbEspecie3, new org.netbeans.lib.awtextra.AbsoluteConstraints(32, 151, -1, -1));
 
         cbEspecie4.setText("Secuencia");
+        add(cbEspecie4, new org.netbeans.lib.awtextra.AbsoluteConstraints(144, 105, -1, -1));
 
         cbEspecie5.setText("Longitud");
         cbEspecie5.addActionListener(new java.awt.event.ActionListener() {
@@ -118,74 +143,11 @@ public class BuscarPanel extends JPanel {
                 cbEspecie5ActionPerformed(evt);
             }
         });
+        add(cbEspecie5, new org.netbeans.lib.awtextra.AbsoluteConstraints(144, 128, -1, -1));
 
         cbEspecie6.setText("Topología");
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addComponent(textBuscarEspecie, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cbEspecie1)
-                            .addComponent(cbEspecie2)
-                            .addComponent(cbEspecie3))
-                        .addGap(29, 29, 29)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cbEspecie4)
-                            .addComponent(cbEspecie5)
-                            .addComponent(cbEspecie6))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(49, 49, 49)
-                .addComponent(btnBuscarEspecie)
-                .addGap(39, 39, 39)
-                .addComponent(lblImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(154, 154, 154))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(8, 8, 8)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 466, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(50, 50, 50)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnBuscarEspecie)
-                            .addComponent(textBuscarEspecie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(31, 31, 31)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cbEspecie1)
-                            .addComponent(cbEspecie4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cbEspecie2)
-                            .addComponent(cbEspecie5))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cbEspecie3)
-                            .addComponent(cbEspecie6))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(96, 96, 96))
-        );
+        add(cbEspecie6, new org.netbeans.lib.awtextra.AbsoluteConstraints(144, 151, -1, -1));
+        add(lblImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(389, 24, 200, 150));
 
         getAccessibleContext().setAccessibleDescription("");
     }// </editor-fold>//GEN-END:initComponents
@@ -404,18 +366,15 @@ public class BuscarPanel extends JPanel {
             TableModel modelo = new EspecieTableModel(props, especiebuscada, genetica);
             tablaEspecie.setModel(modelo);
             tablaEspecie.setRowHeight(tablaEspecie.getSize().height);
-            /*
-            tablaEspecie.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    
-                }
-            
-            });
-             */
-            jScrollPane2.setVisible(true);
-            jScrollPane2.setEnabled(false);
+            TableColumnModel column = tablaEspecie.getColumnModel();
+            Enumeration<TableColumn> columns = column.getColumns();
+            while (columns.hasMoreElements()) {
+                columns.nextElement().setMinWidth(110);
+            }
+            tablaEspecie.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+            jScrollPane2.setVisible(true);  
             tablaEspecie.setVisible(true);
+            //jScrollPane2.setEnabled(false);
 
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
