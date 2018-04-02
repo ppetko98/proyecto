@@ -53,6 +53,7 @@ public class NomenclaturaControllerImpl implements NomenclaturaController {
                         Dominio objeto = new Dominio (dominio_name);
 
                         listaDominio.add(objeto);
+                        
 
                     } while (rs.next());
 
@@ -78,27 +79,227 @@ public class NomenclaturaControllerImpl implements NomenclaturaController {
 
     @Override
     public List<Filo> listaFilo() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       if (listaFilo.isEmpty()) {
+
+            Connection connection = null;
+            try {
+
+                connection = (Connection) BaseDatos.getConnection();
+
+                PreparedStatement ps = connection.prepareStatement(BaseDatos.SELECT_FILO);
+
+                ResultSet rs = ps.executeQuery();
+                Statement st = connection.createStatement();
+
+                if (rs.next()) {
+                    do {
+                        String filo_name = rs.getString("filo_name");
+
+                        Filo objeto = new Filo (filo_name);
+
+                        listaFilo.add(objeto);
+                        
+
+                    } while (rs.next());
+
+                } else {
+                    throw new SQLException("No data available in table");
+                }
+
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            } finally {
+                if (connection != null) {
+                    try {
+                        connection.close();
+                    } catch (SQLException ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                }
+            }
+        }
+
+        return listaFilo;
     }
 
     @Override
     public List<Clase> listaClase() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (listaClase.isEmpty()) {
+
+            Connection connection = null;
+            try {
+
+                connection = (Connection) BaseDatos.getConnection();
+
+                PreparedStatement ps = connection.prepareStatement(BaseDatos.SELECT_CLASE);
+
+                ResultSet rs = ps.executeQuery();
+                Statement st = connection.createStatement();
+
+                if (rs.next()) {
+                    do {
+                        String clase_name = rs.getString("clase_name");
+
+                        Clase objeto = new Clase (clase_name);
+
+                        listaClase.add(objeto);
+                        
+
+                    } while (rs.next());
+
+                } else {
+                    throw new SQLException("No data available in table");
+                }
+
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            } finally {
+                if (connection != null) {
+                    try {
+                        connection.close();
+                    } catch (SQLException ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                }
+            }
+        }
+
+        return listaClase;
     }
 
     @Override
     public List<Orden> listaOrden() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         if (listaO.isEmpty()) {
+
+            Connection connection = null;
+            try {
+
+                connection = (Connection) BaseDatos.getConnection();
+
+                PreparedStatement ps = connection.prepareStatement(BaseDatos.SELECT_ORDEN);
+
+                ResultSet rs = ps.executeQuery();
+                Statement st = connection.createStatement();
+
+                if (rs.next()) {
+                    do {
+                        String orden_name = rs.getString("orden_name");
+
+                        Orden objeto = new Orden (orden_name);
+
+                        listaO.add(objeto);
+                        
+
+                    } while (rs.next());
+
+                } else {
+                    throw new SQLException("No data available in table");
+                }
+
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            } finally {
+                if (connection != null) {
+                    try {
+                        connection.close();
+                    } catch (SQLException ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                }
+            }
+        }
+
+        return listaO;
     }
 
     @Override
     public List<Familia> listaFamilia() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (listaFam.isEmpty()) {
+
+            Connection connection = null;
+            try {
+
+                connection = (Connection) BaseDatos.getConnection();
+
+                PreparedStatement ps = connection.prepareStatement(BaseDatos.SELECT_FAMILIA);
+
+                ResultSet rs = ps.executeQuery();
+                Statement st = connection.createStatement();
+
+                if (rs.next()) {
+                    do {
+                        String familia_name = rs.getString("familia_name");
+
+                        Familia objeto = new Familia (familia_name);
+
+                        listaFam.add(objeto);
+                        
+
+                    } while (rs.next());
+
+                } else {
+                    throw new SQLException("No data available in table");
+                }
+
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            } finally {
+                if (connection != null) {
+                    try {
+                        connection.close();
+                    } catch (SQLException ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                }
+            }
+        }
+
+        return listaFam;
     }
 
     @Override
     public List<Genero> listaGenero() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+      if (listaG.isEmpty()) {
+
+            Connection connection = null;
+            try {
+
+                connection = (Connection) BaseDatos.getConnection();
+
+                PreparedStatement ps = connection.prepareStatement(BaseDatos.SELECT_GENERO);
+
+                ResultSet rs = ps.executeQuery();
+                Statement st = connection.createStatement();
+
+                if (rs.next()) {
+                    do {
+                        String genero_name = rs.getString("genero_name");
+
+                        Genero objeto = new Genero (genero_name);
+
+                       listaG.add(objeto);
+                        
+
+                    } while (rs.next());
+
+                } else {
+                    throw new SQLException("No data available in table");
+                }
+
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            } finally {
+                if (connection != null) {
+                    try {
+                        connection.close();
+                    } catch (SQLException ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                }
+            }
+        }
+
+        return listaG;
     }
 
 }

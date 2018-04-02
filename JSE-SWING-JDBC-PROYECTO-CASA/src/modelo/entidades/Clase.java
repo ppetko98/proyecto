@@ -9,6 +9,11 @@ public class Clase {
     private String descripcion, References;
     private Date last_update;
 
+    public Clase(String clase_name) {
+        this.clase_name = clase_name;
+    }
+    
+      
     public Clase(int id_clase, String clase_name, String autor, String descripcion, String references, Date last_update) {
         this.id_clase = id_clase;
         this.clase_name = clase_name;
@@ -71,13 +76,6 @@ public class Clase {
 
     @Override
     public String toString() {
-        return "Clase{" +
-                "id_clase=" + id_clase +
-                ", clase_name='" + clase_name + '\'' +
-                ", autor='" + autor + '\'' +
-                ", descripcion='" + descripcion + '\'' +
-                ", References='" + References + '\'' +
-                ", last_update=" + last_update +
-                '}';
+        return clase_name;
     }
 }

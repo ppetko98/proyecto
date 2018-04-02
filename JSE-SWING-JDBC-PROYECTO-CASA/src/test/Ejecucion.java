@@ -35,7 +35,7 @@ import utilidades.ValidacionException;
 public class Ejecucion {
 
     private final JFrame mainFrame = crear("GESTIÓN DE ESPECIES",
-            800, 600, false, true);
+            850, 600, false, true);
     private final JFrame agregarFrame = crear("AÑADIR ESPECIE",
             600, 400, false, true);
     private final JFrame agregarFrame2 = crear("AÑADIR GENERO",
@@ -49,7 +49,7 @@ public class Ejecucion {
     private final JFrame modificarDatosFrame = crear("MODIFICAR DATOS DE LA ESPECIE SELECIONADA",
             600, 400, false, true);
     private final JFrame nomenclaturaFrame = crear("MODIFICAR CLASIFICACION",
-            600, 400, false, true);
+            850, 400, false, true);
     private final JFrame modificarSecuenciaFrame = crear("MODIFICAR GENETICA",
             600, 400, false, true);
 
@@ -92,6 +92,41 @@ public class Ejecucion {
                 System.err.println(dom);
             }
             
+           NomenclaturaController filcontroller = new NomenclaturaControllerImpl();
+           List<Filo> filos = filcontroller.listaFilo();
+             for (Filo fil : filos) {
+
+                System.err.println(fil);
+            }
+             
+             NomenclaturaController clascontroller = new NomenclaturaControllerImpl();
+           List<Clase> clases = clascontroller.listaClase();
+             for (Clase clas : clases) {
+
+                System.err.println(clas);
+            }
+             
+             NomenclaturaController fcontroller = new NomenclaturaControllerImpl();
+           List<Familia> familias = fcontroller.listaFamilia();
+             for (Familia fa : familias) {
+
+                System.err.println(fa);
+            }
+             
+              NomenclaturaController ocontroller = new NomenclaturaControllerImpl();
+           List<Orden> ordenes = ocontroller.listaOrden();
+             for (Orden or : ordenes) {
+
+                System.err.println(or);
+            }
+             
+             
+             NomenclaturaController gcontroller = new NomenclaturaControllerImpl();
+           List<Genero> generos = gcontroller.listaGenero();
+             for (Genero g : generos) {
+
+                System.err.println(g);
+            }
            
            
         } catch (SQLException e) {
@@ -569,9 +604,9 @@ public class Ejecucion {
         JLabel lblDominio = new JLabel("DOMINIO", JLabel.LEFT);
         JLabel lblFilo = new JLabel("FILO", JLabel.LEFT);
         JLabel lblClase = new JLabel("CLASE", JLabel.LEFT);
-        JLabel lblFamilia = new JLabel("FAMILIA          ", JLabel.LEFT);
-        JLabel lblOrden = new JLabel("ORDEN          ", JLabel.LEFT);
-        JLabel lblGenero = new JLabel("GENERO          ", JLabel.LEFT);
+        JLabel lblFamilia = new JLabel("FAMILIA      ", JLabel.LEFT);
+        JLabel lblOrden = new JLabel("ORDEN       ", JLabel.LEFT);
+        JLabel lblGenero = new JLabel("GENERO      ", JLabel.LEFT);
         
         
         
@@ -584,35 +619,51 @@ public class Ejecucion {
 
       
 
-        for (Dominio d : dominios) {
+       for (Dominio d : dominios) {
             cmbDominios.addItem(d);
+        }
+       
+        for (Filo fi: filos) {
+            cmbFilos.addItem(fi);
+        }
+         for (Clase c : clases) {
+            cmbClases.addItem(c);
+        }
+          for (Familia fa : familias) {
+            cmbFamilias.addItem(fa);
+        }
+           for (Orden o : ordenes) {
+            cmbOrdenes.addItem(o);
+        }
+            for (Genero g : generos) {
+            cmbGeneros.addItem(g);
         }
 
         JPanel northPanel = new JPanel();
         northPanel.setLayout(new FlowLayout(1, 20, 20));
         JPanel centerRPanel = new JPanel();
-        centerRPanel.setLayout(new GridLayout(3, 0, 1, 40));
-        centerRPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 30, 40));
+        centerRPanel.setLayout(new GridLayout(3, 2, 1, 20));
+        centerRPanel.setBorder(BorderFactory.createEmptyBorder(10, 5, 30, 5));
         JPanel centerLPanel = new JPanel();
-        centerLPanel.setLayout(new GridLayout(3, 0 ,1, 40));
-        centerLPanel.setBorder(BorderFactory.createEmptyBorder(10,30, 30, 10));
+        centerLPanel.setLayout(new GridLayout(3, 0 ,1, 20));
+        centerLPanel.setBorder(BorderFactory.createEmptyBorder(10, 5, 30, 5));
         JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
        northPanel.add(lblSeleccion);
         
-       centerRPanel.add(lblDominio); 
-       centerRPanel.add(cmbDominios);
-       centerRPanel.add(lblFilo);
-       centerRPanel.add(cmbFilos);
-       centerRPanel.add(lblClase);
-       centerRPanel.add(cmbClases);
+       centerLPanel.add(lblDominio); 
+       centerLPanel.add(cmbDominios);
+       centerLPanel.add(lblFilo);
+       centerLPanel.add(cmbFilos);
+       centerLPanel.add(lblClase);
+       centerLPanel.add(cmbClases);
        
-       centerLPanel.add(lblFamilia);
-       centerLPanel.add(cmbFamilias);
-       centerLPanel.add(lblOrden);
-       centerLPanel.add(cmbOrdenes);
-       centerLPanel.add(lblGenero);
-       centerLPanel.add(cmbGeneros);
+       centerRPanel.add(lblFamilia);
+       centerRPanel.add(cmbFamilias);
+       centerRPanel.add(lblOrden);
+       centerRPanel.add(cmbOrdenes);
+       centerRPanel.add(lblGenero);
+       centerRPanel.add(cmbGeneros);
        
         
 
@@ -628,7 +679,11 @@ public class Ejecucion {
        southPanel.add(buttonOK);
        buttonKO.addActionListener((ActionEvent ae) -> {
        Dominio d = (Dominio) cmbDominios.getSelectedItem();
-        
+       Filo fi = (Filo) cmbFilos.getSelectedItem();
+       Clase c = (Clase) cmbClases.getSelectedItem();
+       Familia fa = (Familia) cmbFamilias.getSelectedItem();
+       Orden o = (Orden) cmbOrdenes.getSelectedItem();
+       Genero g = (Genero) cmbGeneros.getSelectedItem();
         nomenclaturaFrame.setVisible(false);
 
         JOptionPane.showMessageDialog(null, "Los datos se han añadido a la Base de Datos");
@@ -637,7 +692,7 @@ public class Ejecucion {
         southPanel.add(buttonKO);
 
         buttonOK.addActionListener(ae -> {
-        nomenclaturaFrame.setVisible(false);
+        modificarSecuenciaFrame.setVisible(true);
         });
 
         JPanel modClasPanel = new JPanel(new BorderLayout (10,10));
