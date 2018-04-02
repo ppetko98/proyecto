@@ -261,14 +261,15 @@ public class Ejecucion {
 
             cmbEspecies.removeItem(e);
             
-            
+            //EspecieController.delete(e);
           EspecieControllerImpl nuevControllerImpl = new EspecieControllerImpl();  
             try {
-                nuevControllerImpl.delete();
+                EspecieController.delete(e);
             } catch (EspecieException ex) {
                 Logger.getLogger(Ejecucion.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(Ejecucion.class.getName()).log(Level.SEVERE, null, ex);
             }
-
             eliminarFrame.setVisible(false);
 
             JOptionPane.showMessageDialog(null, "Se ha eliminado la especie seleccionada");

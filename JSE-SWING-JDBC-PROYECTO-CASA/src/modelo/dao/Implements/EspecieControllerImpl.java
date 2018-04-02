@@ -110,38 +110,5 @@ public class EspecieControllerImpl implements EspecieController {
         return listacompleta;
 
     }
-
-      
-    @Override
-    public void delete() throws EspecieException {
-        Connection connection = null;
-            try {
-
-                connection = (Connection) BaseDatos.getConnection();
-
-                connection.setAutoCommit(false);
-                PreparedStatement ps =  connection.prepareStatement(BaseDatos.DELETE_ESPECIE);
-                Collection<Especie> es = new ArrayList<>();
-                for (Especie especie : es) {
-                    ps.executeUpdate();
-                }
-
-                connection.commit();
-
-            } catch (SQLException e) {
-
-                System.out.println("Error SQL. " + e.getMessage());
-            } finally {
-                if (connection != null) {
-                    try {
-                        connection.close();
-                    } catch (SQLException ex) {
-
-                    }
-                }
-            }
-
-    }
-        
-    }
+}
 

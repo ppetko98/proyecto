@@ -8,14 +8,19 @@ package test;
 import java.awt.Image;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -111,8 +116,18 @@ public class BuscarPanel extends JPanel {
         });
 
         cbEspecie2.setText("Ecologia");
+        cbEspecie2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbEspecie2ActionPerformed(evt);
+            }
+        });
 
         cbEspecie3.setText("Referencias");
+        cbEspecie3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbEspecie3ActionPerformed(evt);
+            }
+        });
 
         cbEspecie4.setText("Secuencia");
         cbEspecie4.addActionListener(new java.awt.event.ActionListener() {
@@ -214,7 +229,7 @@ public class BuscarPanel extends JPanel {
 
         Especie especiebuscada = null;
         Genetica genetica = null;
-
+        
         Comparator comparator = new Comparator<CBPropiedad>() {
             @Override
             public int compare(CBPropiedad o1, CBPropiedad o2) {
@@ -265,16 +280,11 @@ public class BuscarPanel extends JPanel {
         lblImagen.setIcon(new ImageIcon(image));
         lblImagen.setVisible(true);
 
+        
+        
         try {
 
             treeEspecie.setModel(new DefaultTreeModel(arbolEspecie(especiebuscada)));
-            treeEspecie.setShowsRootHandles(true);
-            treeEspecie.setExpandsSelectedPaths(true);
-            treeEspecie.setToggleClickCount(1);
-
-            //jScrollPane1.setSize(treeEspecie.getSize().width,treeEspecie.getSize().height);
-            jScrollPane1.setVisible(true);
-            treeEspecie.setVisible(true);
 
         } catch (SQLException ex) {
             Logger.getLogger(BuscarPanel.class.getName()).log(Level.SEVERE, null, ex);
@@ -282,8 +292,8 @@ public class BuscarPanel extends JPanel {
 
         int id = especiebuscada.getId_especie();
         ResultSet rs = null;
-        //List<String> propiedades = new ArrayList<>(9);
-        //Map<Integer, String> props = new TreeMap<>();
+        List<String> propiedades = new ArrayList<>();
+        Map<String, String> propiedadesMap = new TreeMap<>();
 
         CBPropiedad descripcion = new CBPropiedad("descripcion", 1, BaseDatos.SELECT_DESCRIPCION + id);
         CBPropiedad metabolismo = new CBPropiedad("metabolismo", 2, BaseDatos.SELECT_METABOLISMO + id);
@@ -294,13 +304,13 @@ public class BuscarPanel extends JPanel {
             if (rs.next()) {
                 especiebuscada.setDescripcion(rs.getString(1));
                 //propiedades.add(0,"Descripcion");
-                //props.put(0, "Descripcion");
+                propiedadesMap.put("Descripcion",rs.getString(1));
                 especiebuscada.setMetabolismo(rs.getString(2));
                 //propiedades.add(1,"Metabolismo");
-                //props.put(1,"Metabolismo");
+                propiedadesMap.put("Metabolismo",rs.getString(2));
                 genetica.setFasta(rs.getString(3));
                 //propiedades.add(2,"Fasta");
-                //props.put(2,"Fasta");
+                propiedadesMap.put("Fasta",rs.getString(3));
             }
         } catch (SQLException ex) {
             Logger.getLogger(BuscarPanel.class.getName()).log(Level.SEVERE, null, ex);
@@ -320,7 +330,7 @@ public class BuscarPanel extends JPanel {
                 if (rs.next()) {
                     especiebuscada.setAutor(rs.getString(1));
                     //propiedades.add(3,"Autor");
-                    //props.put(3,"Autor");
+                    propiedadesMap.put("Autor",rs.getString(1));
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(BuscarPanel.class.getName()).log(Level.SEVERE, null, ex);
@@ -336,7 +346,7 @@ public class BuscarPanel extends JPanel {
                 if (rs.next()) {
                     especiebuscada.setEcologia(rs.getString(1));
                     //propiedades.add(4,"Ecologia");
-                    //props.put(4,"Ecologia");
+                    propiedadesMap.put("Ecologia",rs.getString(1));
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(BuscarPanel.class.getName()).log(Level.SEVERE, null, ex);
@@ -352,7 +362,7 @@ public class BuscarPanel extends JPanel {
                 if (rs.next()) {
                     especiebuscada.setReferences(rs.getString(1));
                     //propiedades.add(5,"References");
-                    //props.put(5,"References");
+                    propiedadesMap.put("References",rs.getString(1));
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(BuscarPanel.class.getName()).log(Level.SEVERE, null, ex);
@@ -368,7 +378,7 @@ public class BuscarPanel extends JPanel {
                 if (rs.next()) {
                     genetica.setEs_genomico_plasmido(rs.getBoolean(1));
                     //propiedades.add(6,"es_genomico_plasmido");
-                    //props.put(6,"es_genomico_plasmido");
+                    propiedadesMap.put("es_genomico_plasmido", Boolean.toString(rs.getBoolean(1)));
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(BuscarPanel.class.getName()).log(Level.SEVERE, null, ex);
@@ -384,7 +394,7 @@ public class BuscarPanel extends JPanel {
                 if (rs.next()) {
                     genetica.setLongitud(rs.getInt(1));
                     //propiedades.add(7,"Longitud");
-                    //props.put(7,"Longitud");
+                    propiedadesMap.put("Longitud",rs.getString(1));
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(BuscarPanel.class.getName()).log(Level.SEVERE, null, ex);
@@ -400,7 +410,7 @@ public class BuscarPanel extends JPanel {
                 if (rs.next()) {
                     genetica.setTopologia(rs.getString(1));
                     //propiedades.add(8, "Topologia");
-                    //props.put(8, "Topologia");
+                    propiedadesMap.put("Topologia",rs.getString(1));
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(BuscarPanel.class.getName()).log(Level.SEVERE, null, ex);
@@ -413,16 +423,9 @@ public class BuscarPanel extends JPanel {
             tablaEspecie.setModel(modelo);
             int heightable = tablaEspecie.getSize().height;
             tablaEspecie.setRowHeight(heightable);
-            /*
-            TableColumnModel column = tablaEspecie.getColumnModel();
-            Enumeration<TableColumn> columns = column.getColumns();
-            int columWidth = 110;
-            while (columns.hasMoreElements()) {
-                columns.nextElement().setMinWidth(columWidth);
-            }
-            tablaEspecie.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-            tablaEspecie.setSize(columWidth*tablaEspecie.getColumnCount(), heightable);
-             */
+            
+            crearListener();
+            
             jScrollPane2.setVisible(true);
             tablaEspecie.setVisible(true);
             jScrollPane2.setEnabled(true);
@@ -433,7 +436,7 @@ public class BuscarPanel extends JPanel {
     }//GEN-LAST:event_btnBuscarEspecieActionPerformed
 
     private void cbEspecie1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEspecie1ActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_cbEspecie1ActionPerformed
 
     private void cbEspecie5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEspecie5ActionPerformed
@@ -448,6 +451,14 @@ public class BuscarPanel extends JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_cbEspecie6ActionPerformed
 
+    private void cbEspecie2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEspecie2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbEspecie2ActionPerformed
+
+    private void cbEspecie3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEspecie3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbEspecie3ActionPerformed
+    
     private DefaultMutableTreeNode arbolEspecie(Especie e) throws SQLException {
         int id_especie = e.getId_especie();
         ResultSet rs = BaseDatos.executeQuery(BaseDatos.SELECT_ARBOL, id_especie);
@@ -476,9 +487,26 @@ public class BuscarPanel extends JPanel {
             familiaNode.add(generoNode);
             generoNode.add(especieLeaf);
         }
+            treeEspecie.setShowsRootHandles(true);
+            treeEspecie.setExpandsSelectedPaths(true);
+            treeEspecie.setToggleClickCount(1);
+            jScrollPane1.setVisible(true);
+            treeEspecie.setVisible(true);
+
         return dominioRoot;
     }
 
+    private void crearListener(){
+        tablaEspecie.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                int index = tablaEspecie.getSelectedColumn();
+                List<String> lista = EspecieTableModel.getList();
+                JOptionPane.showMessageDialog(null, lista.get(index));
+            }
+        });
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscarEspecie;
     private javax.swing.ButtonGroup buttonGroup1;

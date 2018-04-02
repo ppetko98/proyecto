@@ -26,7 +26,7 @@ public class EspecieTableModel extends AbstractTableModel {
 
     private final PriorityQueue<CBPropiedad> propiedades;
     private final PriorityQueue<CBPropiedad> columnas;
-    private final List<String> list;
+    private static List<String> list;
     Especie e;
     Genetica g;
 
@@ -41,11 +41,24 @@ public class EspecieTableModel extends AbstractTableModel {
         while (it.hasNext()) {
             columnas.add(new CBPropiedad(it.next()));
         }
-
-        for (CBPropiedad cb : propiedades) {
-            System.out.println(cb.getId() + "\t" + cb.getPropiedad());
-        }
         list = new ArrayList<>();
+        for (CBPropiedad cb : propiedades) {
+            String propiedad = cb.getPropiedad();
+            System.out.println(cb.getId() + "\t" + propiedad);
+            switch (propiedad){
+                case "descripcion":list.add(e.getDescripcion());break;
+                case "metabolismo":list.add(e.getMetabolismo());break;
+                case "secuencia":list.add(g.getFasta());break;
+                case "autor":list.add(e.getAutor());break;
+                case "ecologia":list.add(e.getEcologia());break;
+                case "references":list.add(e.getReferences());break;
+                case "es_genomico_plasmido":list.add(g.isEs_genomico_plasmido() ? "genomico" : "plasmido");break;
+                case "longitud":list.add(Integer.toString(g.getLongitud()));break;
+                case "topologia":list.add(g.getTopologia());break;
+                default:
+            }
+            
+        }
     }
 
     @Override
@@ -60,6 +73,9 @@ public class EspecieTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
+        
+        //return list.get(columnIndex);
+        
         switch (columnIndex) {
             case 0: //return e.getDescripcion();
             case 1: //return e.getMetabolismo();
@@ -80,11 +96,9 @@ public class EspecieTableModel extends AbstractTableModel {
                         if (rs.next()) {
                             if (prop.getPropiedad().equals("es_genomico_plasmido")) {
                                 String boole = (rs.getBoolean(1) ? "genomico" : "plasmido");
-                                list.add(boole);
                                 return boole;
                             } else {
                                 String res = rs.getString(1);
-                                list.add(res);
                                 return res;
                             }
                         }
@@ -98,6 +112,7 @@ public class EspecieTableModel extends AbstractTableModel {
                 System.out.print("ESTO FALLA!");
                 return null;
         }
+
     }
 
     @Override
@@ -147,7 +162,7 @@ public class EspecieTableModel extends AbstractTableModel {
         }
     }
 
-    public List<String> getList() {
+    public static List<String> getList() {
         return list;
     }
 
