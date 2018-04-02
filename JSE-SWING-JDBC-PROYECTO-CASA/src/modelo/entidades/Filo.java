@@ -15,6 +15,11 @@ public class Filo {
     public Filo() {
     }
 
+    public Filo(String filo_name) {
+        this.filo_name = filo_name;
+    }
+
+    
     public Filo(int id_filo, String filo_name, String autor, String descripcion, String references, Date last_update, String imagen) {
         this.id_filo = id_filo;
         this.filo_name = filo_name;
@@ -83,7 +88,7 @@ public class Filo {
 
     @Override
     public String toString() {
-        return "Filo{" + "id_filo=" + id_filo + ", filo_name=" + filo_name + ", autor=" + autor + ", descripcion=" + descripcion + ", references=" + references + ", last_update=" + last_update + ", imagen=" + imagen + '}';
+        return  filo_name ;
     }
     
     

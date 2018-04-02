@@ -13,6 +13,10 @@ public class Genero {
     public Genero() {
     }
 
+    public Genero(String genero_name) {
+        this.genero_name = genero_name;
+    }
+
     public Genero(int id_genero, String genero_name, String autor, String descripcion, String references, Date last_update) {
         this.id_genero = id_genero;
         this.genero_name = genero_name;

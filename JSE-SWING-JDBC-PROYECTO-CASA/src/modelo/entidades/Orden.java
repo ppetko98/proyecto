@@ -10,6 +10,10 @@ public class Orden {
     private Date last_update;
     private String imagen;
 
+    public Orden(String orden_name) {
+        this.orden_name = orden_name;
+    }
+      
     public Orden(int id_orden, String orden_name, String autor, String descripcion, String references, Date last_update, String imagen) {
         this.id_orden = id_orden;
         this.orden_name = orden_name;
@@ -81,15 +85,7 @@ public class Orden {
 
     @Override
     public String toString() {
-        return "Orden{" +
-                "id_orden=" + id_orden +
-                ", orden_name='" + orden_name + '\'' +
-                ", autor='" + autor + '\'' +
-                ", descripcion='" + descripcion + '\'' +
-                ", references='" + references + '\'' +
-                ", last_update=" + last_update +
-                ", imagen='" + imagen + '\'' +
-                '}';
+        return orden_name ;
     }
 
 }
