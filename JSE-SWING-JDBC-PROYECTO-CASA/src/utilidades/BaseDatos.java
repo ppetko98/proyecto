@@ -83,6 +83,16 @@ public interface BaseDatos {
         ResultSet rs = connection.createStatement().executeQuery(sql+id+";");
         return rs;
     }
+    
+    public static int executeUpdate(String sql, Integer id) throws SQLException{
+        Connection connection = getConnection();
+        connection.setAutoCommit(false);
+        int res = connection.prepareStatement(sql+id+";").executeUpdate();
+        connection.commit();
+        
+        
+        return res;
+    }
     /*
     public static Connection conexion() throws SQLException {
 
