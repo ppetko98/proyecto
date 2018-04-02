@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static modelo.dao.Implements.GeneroControllerImpl.listagenero;
 import modelo.dao.Implements.NomenclaturaControllerImpl;
 import modelo.dao.NomenclaturaController;
 import modelo.entidades.Clase;
@@ -38,9 +37,9 @@ public class Ejecucion {
             850, 600, false, true);
     private final JFrame agregarFrame = crear("AÑADIR ESPECIE",
             600, 400, false, true);
-    private final JFrame agregarFrame2 = crear("AÑADIR GENERO",
+    private final JFrame agregarFrame2 = crear("AÑADIR DATOS",
             600, 400, false, true);
-    private final JFrame agregarFrame3 = crear("LO QUE SEA",
+    private final JFrame agregarFrame3 = crear("AÑADIR DATOS 2",
             600, 400, false, true);
     private final JFrame eliminarFrame = crear("ELIMINAR ESPECIE",
             600, 400, false, true);
@@ -361,7 +360,7 @@ public class Ejecucion {
             especiescompletas.add(es);
 
             agregarFrame.setVisible(false);
-            crearGenero();
+            
             agregarFrame2.setVisible(true);
 
         });
@@ -379,55 +378,7 @@ public class Ejecucion {
         agregarFrame.setContentPane(panel);
     }
 
-    private void crearGenero() {
-        JLabel lblSeleccion = new JLabel("SELECCIONE GENERO");
-        JComboBox<Genero> cmbGenero = new JComboBox<>();
-
-        ImageIcon siguienteImagen = new ImageIcon(pathImg + "if_next_293276.png");
-        JButton siguenteButton = new JButton("SIGUIENTE", siguienteImagen);
-
-        ImageIcon cancelarImagen = new ImageIcon(pathImg + "if_Cancel_131742.png");
-        JButton cancelButton = new JButton("CANCELAR", cancelarImagen);
-
-        JPanel inferior = new JPanel();
-        inferior.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-        for (Genero g : listagenero) {
-            cmbGenero.addItem(g);
-        }
-
-        JPanel northPanel = new JPanel();
-        northPanel.setLayout(new FlowLayout(1, 50, 50));
-        JPanel centerPanel = new JPanel();
-        JPanel southPanel = new JPanel();
-
-        northPanel.add(lblSeleccion);
-        centerPanel.add(cmbGenero);
-
-        southPanel.add(siguenteButton);
-        siguenteButton.addActionListener(ae -> {
-            Genero g = (Genero) cmbGenero.getSelectedItem();
-
-            agregarFrame3.setVisible(true);
-
-        });
-
-        southPanel.add(cancelButton);
-
-        cancelButton.addActionListener(ae -> {
-            agregarFrame2.setVisible(false);
-        });
-
-        JPanel eliminarPanel = new JPanel(new GridLayout(3, 0, 20, 20));
-        eliminarPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
-        eliminarPanel.add(northPanel, BorderLayout.NORTH);
-        eliminarPanel.add(centerPanel, BorderLayout.CENTER);
-        eliminarPanel.add(southPanel, BorderLayout.SOUTH);
-
-        agregarFrame.setContentPane(eliminarPanel);
-        agregarFrame.setVisible(true);
-        
-    }
+   
 
     private void buscarEspecie(JFrame frame) {
         JPanel buscarPanel = new BuscarPanel();
@@ -708,3 +659,71 @@ public class Ejecucion {
         nomenclaturaFrame.setVisible(true);
     }
 }
+/*
+private void crearDatos(){
+JLabel lblSeleccion = new JLabel("SELECCIONE LOS DATOS QUE DESEA");
+
+        JComboBox<Dominio> cmbDominios = new JComboBox<>();
+        JComboBox<Clase> cmbClases = new JComboBox<>();
+        JComboBox<Genero> cmbGeneros = new JComboBox<>();
+
+        JLabel lblDominio = new JLabel("DOMINIO", JLabel.CENTER);
+        JLabel lblClase = new JLabel("CLASE", JLabel.CENTER);
+        JLabel lblGenero = new JLabel("GENERO", JLabel.CENTER);
+
+        ImageIcon prevImagen = new ImageIcon(pathImg + "if_pre_293277.png");
+        JButton buttonprev = new JButton("ANTERIOR", prevImagen);
+        ImageIcon siguienteImagen = new ImageIcon(pathImg + "if_next_293276.png");
+        JButton buttonOK = new JButton("SIGUIENTE", siguienteImagen);
+        ImageIcon cancelarImagen = new ImageIcon(pathImg + "if_Cancel_131742.png");
+        JButton buttonKO = new JButton("CANCELAR", cancelarImagen);
+
+        for (Dominio d : dominios) {
+            cmbDominios.addItem(d);
+        }
+
+        JPanel northPanel = new JPanel();
+        northPanel.setLayout(new FlowLayout(1, 20, 20));
+        JPanel centerRPanel = new JPanel();
+        centerRPanel.setLayout(new GridLayout(3, 0, 1, 60));
+        centerRPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 30, 30));
+        JPanel centerLPanel = new JPanel();
+        centerLPanel.setLayout(new GridLayout(3, 0, 2, 40));
+        JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
+        northPanel.add(lblSeleccion);
+
+        centerRPanel.add(lblDominio);
+        centerRPanel.add(cmbDominios);      
+        centerRPanel.add(lblClase);
+        centerRPanel.add(cmbClases);
+        centerLPanel.add(lblGenero);
+        centerLPanel.add(cmbGeneros);
+
+        //BOnton anterior
+        southPanel.add(buttonprev);
+
+        buttonprev.addActionListener(ae -> {
+            agregarFrame.setVisible(true);
+            agregarFrame2.setVisible(false);
+        });
+
+        //BOnton siguiente
+        southPanel.add(buttonOK);
+        buttonKO.addActionListener((ActionEvent ae) -> {
+            Dominio d = (Dominio) cmbDominios.getSelectedItem();
+
+            agregarFrame2.setVisible(false);
+
+            JOptionPane.showMessageDialog(null, "Los datos se han añadido a la Base de Datos");
+        });
+        //Boton cancelar
+        southPanel.add(buttonKO);
+
+        buttonOK.addActionListener(ae -> {
+            agregarFrame3.setVisible(true);
+          
+        });
+}
+
+*/

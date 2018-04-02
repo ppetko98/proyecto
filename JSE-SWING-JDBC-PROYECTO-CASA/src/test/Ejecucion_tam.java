@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static modelo.dao.Implements.GeneroControllerImpl.listagenero;
+
 import modelo.entidades.Genero;
 import modelo.excepciones.EspecieException;
 
@@ -297,7 +297,6 @@ public class Ejecucion_tam {
             especiescompletas.add(es);
 
             agregarFrame.setVisible(false);
-            crearGenero();
             agregarFrame2.setVisible(true);
 
         });
@@ -315,55 +314,7 @@ public class Ejecucion_tam {
         agregarFrame.setContentPane(panel);
     }
 
-    private void crearGenero() {
-        JLabel lblSeleccion = new JLabel("SELECCIONE GENERO");
-        JComboBox<Genero> cmbGenero = new JComboBox<>();
-
-        ImageIcon siguienteImagen = new ImageIcon(pathImg + "if_next_293276.png");
-        JButton siguenteButton = new JButton("SIGUIENTE", siguienteImagen);
-
-        ImageIcon cancelarImagen = new ImageIcon(pathImg + "if_Cancel_131742.png");
-        JButton cancelButton = new JButton("CANCELAR", cancelarImagen);
-
-        JPanel inferior = new JPanel();
-        inferior.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-        for (Genero g : listagenero) {
-            cmbGenero.addItem(g);
-        }
-
-        JPanel northPanel = new JPanel();
-        northPanel.setLayout(new FlowLayout(1, 50, 50));
-        JPanel centerPanel = new JPanel();
-        JPanel southPanel = new JPanel();
-
-        northPanel.add(lblSeleccion);
-        centerPanel.add(cmbGenero);
-
-        southPanel.add(siguenteButton);
-        siguenteButton.addActionListener(ae -> {
-            Genero g = (Genero) cmbGenero.getSelectedItem();
-
-            agregarFrame3.setVisible(true);
-
-        });
-
-        southPanel.add(cancelButton);
-
-        cancelButton.addActionListener(ae -> {
-            agregarFrame2.setVisible(false);
-        });
-
-        JPanel eliminarPanel = new JPanel(new GridLayout(3, 0, 20, 20));
-        eliminarPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
-        eliminarPanel.add(northPanel, BorderLayout.NORTH);
-        eliminarPanel.add(centerPanel, BorderLayout.CENTER);
-        eliminarPanel.add(southPanel, BorderLayout.SOUTH);
-
-        agregarFrame.setContentPane(eliminarPanel);
-        agregarFrame.setVisible(true);
-        agregarFrame.setLocationByPlatform(true);
-    }
+   
 
     private void buscarEspecie(JFrame frame) {
         JPanel buscarPanel = new BuscarPanel();
