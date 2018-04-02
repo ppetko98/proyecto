@@ -6,30 +6,19 @@
 package test;
 
 import java.awt.Image;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Comparator;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.PriorityQueue;
-import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.JTree;
-import javax.swing.table.DefaultTableColumnModel;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeModel;
-import javax.swing.tree.TreeNode;
 import modelo.dao.Implements.EspecieControllerImpl;
 import modelo.entidades.CBPropiedad;
 import modelo.entidades.Especie;
@@ -77,16 +66,12 @@ public class BuscarPanel extends JPanel {
         setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         setPreferredSize(new java.awt.Dimension(600, 400));
         setRequestFocusEnabled(false);
-        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         textBuscarEspecie.setText("Buscar Especie...");
         textBuscarEspecie.setToolTipText("");
-        add(textBuscarEspecie, new org.netbeans.lib.awtextra.AbsoluteConstraints(75, 52, 161, -1));
 
         jScrollPane1.setVisible(false);
         jScrollPane1.setViewportView(treeEspecie);
-
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 185, 246, 203));
 
         btnBuscarEspecie.setText("Buscar");
         btnBuscarEspecie.addActionListener(new java.awt.event.ActionListener() {
@@ -94,7 +79,6 @@ public class BuscarPanel extends JPanel {
                 btnBuscarEspecieActionPerformed(evt);
             }
         });
-        add(btnBuscarEspecie, new org.netbeans.lib.awtextra.AbsoluteConstraints(285, 51, -1, -1));
 
         jScrollPane2.setBackground(new java.awt.Color(255, 255, 255));
         jScrollPane2.setAutoscrolls(true);
@@ -111,6 +95,7 @@ public class BuscarPanel extends JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tablaEspecie.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
         tablaEspecie.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         tablaEspecie.setFocusable(false);
         tablaEspecie.setGridColor(new java.awt.Color(255, 255, 255));
@@ -118,24 +103,18 @@ public class BuscarPanel extends JPanel {
         tablaEspecie.setShowHorizontalLines(false);
         jScrollPane2.setViewportView(tablaEspecie);
 
-        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(267, 185, -1, 203));
-
         cbEspecie1.setText("Autor");
         cbEspecie1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbEspecie1ActionPerformed(evt);
             }
         });
-        add(cbEspecie1, new org.netbeans.lib.awtextra.AbsoluteConstraints(32, 105, -1, -1));
 
         cbEspecie2.setText("Ecologia");
-        add(cbEspecie2, new org.netbeans.lib.awtextra.AbsoluteConstraints(32, 128, -1, -1));
 
         cbEspecie3.setText("Referencias");
-        add(cbEspecie3, new org.netbeans.lib.awtextra.AbsoluteConstraints(32, 151, -1, -1));
 
         cbEspecie4.setText("Secuencia");
-        add(cbEspecie4, new org.netbeans.lib.awtextra.AbsoluteConstraints(144, 105, -1, -1));
 
         cbEspecie5.setText("Longitud");
         cbEspecie5.addActionListener(new java.awt.event.ActionListener() {
@@ -143,11 +122,72 @@ public class BuscarPanel extends JPanel {
                 cbEspecie5ActionPerformed(evt);
             }
         });
-        add(cbEspecie5, new org.netbeans.lib.awtextra.AbsoluteConstraints(144, 128, -1, -1));
 
         cbEspecie6.setText("Topología");
-        add(cbEspecie6, new org.netbeans.lib.awtextra.AbsoluteConstraints(144, 151, -1, -1));
-        add(lblImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(389, 24, 200, 150));
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(43, 43, 43)
+                                .addComponent(textBuscarEspecie, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(cbEspecie1)
+                                .addGap(59, 59, 59)
+                                .addComponent(cbEspecie4))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(cbEspecie2)
+                                .addGap(47, 47, 47)
+                                .addComponent(cbEspecie5))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(cbEspecie3)
+                                .addGap(29, 29, 29)
+                                .addComponent(cbEspecie6)))
+                        .addGap(49, 49, 49)
+                        .addComponent(btnBuscarEspecie)
+                        .addGap(39, 39, 39)
+                        .addComponent(lblImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(textBuscarEspecie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(33, 33, 33)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cbEspecie1)
+                            .addComponent(cbEspecie4))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cbEspecie2)
+                            .addComponent(cbEspecie5))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cbEspecie3)
+                            .addComponent(cbEspecie6)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addComponent(btnBuscarEspecie))
+                    .addComponent(lblImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(11, 11, 11)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
 
         getAccessibleContext().setAccessibleDescription("");
     }// </editor-fold>//GEN-END:initComponents
@@ -216,24 +256,21 @@ public class BuscarPanel extends JPanel {
         lblImagen.setIcon(new ImageIcon(image));
         lblImagen.setVisible(true);
 
-        
         try {
-            
+
             treeEspecie.setModel(new DefaultTreeModel(arbolEspecie(especiebuscada)));
             treeEspecie.setShowsRootHandles(true);
             treeEspecie.setExpandsSelectedPaths(true);
             treeEspecie.setToggleClickCount(1);
-            
+
             //jScrollPane1.setSize(treeEspecie.getSize().width,treeEspecie.getSize().height);
             jScrollPane1.setVisible(true);
             treeEspecie.setVisible(true);
-     
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(BuscarPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
+
         int id = especiebuscada.getId_especie();
         ResultSet rs = null;
         //List<String> propiedades = new ArrayList<>(9);
@@ -365,16 +402,21 @@ public class BuscarPanel extends JPanel {
         try {
             TableModel modelo = new EspecieTableModel(props, especiebuscada, genetica);
             tablaEspecie.setModel(modelo);
-            tablaEspecie.setRowHeight(tablaEspecie.getSize().height);
+            int heightable = tablaEspecie.getSize().height;
+            tablaEspecie.setRowHeight(heightable);
+            /*
             TableColumnModel column = tablaEspecie.getColumnModel();
             Enumeration<TableColumn> columns = column.getColumns();
+            int columWidth = 110;
             while (columns.hasMoreElements()) {
-                columns.nextElement().setMinWidth(110);
+                columns.nextElement().setMinWidth(columWidth);
             }
             tablaEspecie.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-            jScrollPane2.setVisible(true);  
+            tablaEspecie.setSize(columWidth*tablaEspecie.getColumnCount(), heightable);
+             */
+            jScrollPane2.setVisible(true);
             tablaEspecie.setVisible(true);
-            //jScrollPane2.setEnabled(false);
+            jScrollPane2.setEnabled(true);
 
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -389,7 +431,7 @@ public class BuscarPanel extends JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_cbEspecie5ActionPerformed
 
-    private DefaultMutableTreeNode arbolEspecie (Especie e) throws SQLException{
+    private DefaultMutableTreeNode arbolEspecie(Especie e) throws SQLException {
         int id_especie = e.getId_especie();
         ResultSet rs = BaseDatos.executeQuery(BaseDatos.SELECT_ARBOL, id_especie);
         DefaultMutableTreeNode dominioRoot = new DefaultMutableTreeNode();
@@ -401,15 +443,15 @@ public class BuscarPanel extends JPanel {
             String familia = rs.getString(5);
             String genero = rs.getString(6);
             String especie = rs.getString(7);
-            
-            dominioRoot=new DefaultMutableTreeNode(dominio,true);
-            DefaultMutableTreeNode filoNode=new DefaultMutableTreeNode(filo,true);
-            DefaultMutableTreeNode claseNode=new DefaultMutableTreeNode(clase,true);
-            DefaultMutableTreeNode ordenNode=new DefaultMutableTreeNode(orden,true);
-            DefaultMutableTreeNode familiaNode=new DefaultMutableTreeNode(familia,true);
-            DefaultMutableTreeNode generoNode=new DefaultMutableTreeNode(genero,true);
-            DefaultMutableTreeNode especieLeaf=new DefaultMutableTreeNode(especie,false);
-            
+
+            dominioRoot = new DefaultMutableTreeNode(dominio, true);
+            DefaultMutableTreeNode filoNode = new DefaultMutableTreeNode(filo, true);
+            DefaultMutableTreeNode claseNode = new DefaultMutableTreeNode(clase, true);
+            DefaultMutableTreeNode ordenNode = new DefaultMutableTreeNode(orden, true);
+            DefaultMutableTreeNode familiaNode = new DefaultMutableTreeNode(familia, true);
+            DefaultMutableTreeNode generoNode = new DefaultMutableTreeNode(genero, true);
+            DefaultMutableTreeNode especieLeaf = new DefaultMutableTreeNode(especie, false);
+
             dominioRoot.add(filoNode);
             filoNode.add(claseNode);
             claseNode.add(ordenNode);
