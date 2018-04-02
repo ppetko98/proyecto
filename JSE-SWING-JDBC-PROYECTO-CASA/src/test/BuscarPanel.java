@@ -115,6 +115,11 @@ public class BuscarPanel extends JPanel {
         cbEspecie3.setText("Referencias");
 
         cbEspecie4.setText("Secuencia");
+        cbEspecie4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbEspecie4ActionPerformed(evt);
+            }
+        });
 
         cbEspecie5.setText("Longitud");
         cbEspecie5.addActionListener(new java.awt.event.ActionListener() {
@@ -124,6 +129,11 @@ public class BuscarPanel extends JPanel {
         });
 
         cbEspecie6.setText("Topología");
+        cbEspecie6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbEspecie6ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -132,33 +142,33 @@ public class BuscarPanel extends JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(31, 31, 31)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(cbEspecie2)
+                                    .addComponent(cbEspecie1))
+                                .addGap(42, 42, 42)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(cbEspecie4)
+                                    .addComponent(cbEspecie5)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(43, 43, 43)
                                 .addComponent(textBuscarEspecie, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(cbEspecie1)
-                                .addGap(59, 59, 59)
-                                .addComponent(cbEspecie4))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(cbEspecie2)
-                                .addGap(47, 47, 47)
-                                .addComponent(cbEspecie5))
-                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(cbEspecie3)
-                                .addGap(29, 29, 29)
-                                .addComponent(cbEspecie6)))
-                        .addGap(49, 49, 49)
-                        .addComponent(btnBuscarEspecie)
-                        .addGap(39, 39, 39)
-                        .addComponent(lblImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                                .addGap(24, 24, 24)
+                                .addComponent(cbEspecie6)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                        .addComponent(btnBuscarEspecie)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -167,21 +177,20 @@ public class BuscarPanel extends JPanel {
                 .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addComponent(textBuscarEspecie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(33, 33, 33)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(27, 27, 27)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(textBuscarEspecie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnBuscarEspecie))
+                        .addGap(31, 31, 31)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cbEspecie1)
                             .addComponent(cbEspecie4))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cbEspecie2)
                             .addComponent(cbEspecie5))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cbEspecie3)
                             .addComponent(cbEspecie6)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addComponent(btnBuscarEspecie))
                     .addComponent(lblImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -430,6 +439,14 @@ public class BuscarPanel extends JPanel {
     private void cbEspecie5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEspecie5ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbEspecie5ActionPerformed
+
+    private void cbEspecie4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEspecie4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbEspecie4ActionPerformed
+
+    private void cbEspecie6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEspecie6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbEspecie6ActionPerformed
 
     private DefaultMutableTreeNode arbolEspecie(Especie e) throws SQLException {
         int id_especie = e.getId_especie();
