@@ -184,6 +184,7 @@ public class Ejecucion {
             // Ocultar formulario cuando se pulse el boton de X
             agregarFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
+            //agregarFrame.setLocationRelativeTo(null);
             // Mostrar formulario
             agregarFrame.setVisible(true);
         });
@@ -226,7 +227,7 @@ public class Ejecucion {
         contenido.add(imagen, BorderLayout.WEST);
 
         mainFrame.setContentPane(mainPanel);
-        mainFrame.setLocationByPlatform(true);
+        //mainFrame.setLocationByPlatform(true);
         mainFrame.setVisible(true);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
