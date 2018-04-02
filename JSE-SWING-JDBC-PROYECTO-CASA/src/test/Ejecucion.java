@@ -46,7 +46,7 @@ public class Ejecucion {
     private final JFrame modificarFrame = crear("MODIFICAR ESPECIE",
             600, 400, false, true);
     private final JFrame modificarDatosFrame = crear("MODIFICAR DATOS DE LA ESPECIE SELECIONADA",
-            600, 400, false, true);
+            600, 400, true, true);
     private final JFrame nomenclaturaFrame = crear("MODIFICAR CLASIFICACION",
             850, 400, false, true);
     private final JFrame modificarSecuenciaFrame = crear("MODIFICAR GENETICA",
@@ -452,6 +452,16 @@ public class Ejecucion {
         JTextField txtMetabolismo = new JTextField();
         JTextField txtEcologia = new JTextField();
         JTextField txtReferences = new JTextField();
+        
+        
+        JTextField txtTopologia = new JTextField();
+        JTextField txtLongitug = new JTextField();
+        JRadioButton genomico = new JRadioButton(pathImg, true);
+        JButton imagen = new JButton();
+        JButton fasta = new JButton();
+        
+        JFileChooser chImangen = new JFileChooser();
+        JFileChooser chSecuencia= new JFileChooser();
 
         JLabel lblNombre = new JLabel("NOMBRE", JLabel.RIGHT);
         JLabel lblAutor = new JLabel("AUTOR", JLabel.RIGHT);
@@ -459,6 +469,11 @@ public class Ejecucion {
         JLabel lblMetabolismo = new JLabel("METABOLISMO", JLabel.RIGHT);
         JLabel lblEcologia = new JLabel("ECOLOGIA", JLabel.RIGHT);
         JLabel lblReferences = new JLabel("REFERENCES", JLabel.RIGHT);
+        
+        
+        JLabel lblLogitud = new JLabel("LONGITUD DE LA SECUENCIA ", JLabel.RIGHT);
+        JLabel lbltiposec = new JLabel ("TIPO DE SECUENCIA");
+        JLabel lblTopologia = new JLabel ("TOPOLOGIA");
 
         JPanel datos = new JPanel();
         datos.setLayout(new GridLayout(6, 0, 40, 15));
@@ -474,6 +489,22 @@ public class Ejecucion {
         datos.add(txtEcologia);
         datos.add(lblReferences);
         datos.add(txtReferences);
+        
+     
+        JPanel archivo = new JPanel();
+        archivo.setLayout(new GridLayout(3, 0, 40, 15)); 
+        JPanel botones = new JPanel();
+              
+        archivo.add(lblTopologia);
+        archivo.add(txtTopologia);
+        archivo.add(lblLogitud);
+        archivo.add(txtLongitug);
+        archivo.add(lbltiposec);
+        archivo.add(genomico);
+        archivo.add(botones);
+        archivo.add(fasta);
+        archivo.add(imagen);
+        //archivo.add(chImangen);
 
         ImageIcon prevImagen = new ImageIcon(pathImg + "if_pre_293277.png");
         JButton buttonprev = new JButton("ANTERIOR", prevImagen);
@@ -538,9 +569,11 @@ public class Ejecucion {
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 20));
         inferior.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         datos.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 150));
+        archivo.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 150));
 
         panel.add(inferior, BorderLayout.SOUTH);
-        panel.add(datos, BorderLayout.CENTER);
+        panel.add(datos, BorderLayout.EAST);
+        panel.add(archivo, BorderLayout.WEST);
 
         modificarDatosFrame.setContentPane(panel);
     }
