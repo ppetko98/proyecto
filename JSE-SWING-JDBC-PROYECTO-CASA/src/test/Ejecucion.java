@@ -363,6 +363,8 @@ public class Ejecucion {
             agregarFrame.setVisible(false);
             
             agregarFrame2.setVisible(true);
+            
+            
 
         });
         inferior.add(buttonKO);
@@ -629,23 +631,30 @@ public class Ejecucion {
        
        //BOnton siguiente
        southPanel.add(buttonOK);
-       buttonKO.addActionListener((ActionEvent ae) -> {
-       Dominio d = (Dominio) cmbDominios.getSelectedItem();
+       
+       buttonOK.addActionListener(ae -> {
+           Dominio d = (Dominio) cmbDominios.getSelectedItem();
        Filo fi = (Filo) cmbFilos.getSelectedItem();
        Clase c = (Clase) cmbClases.getSelectedItem();
        Familia fa = (Familia) cmbFamilias.getSelectedItem();
        Orden o = (Orden) cmbOrdenes.getSelectedItem();
-       Genero g = (Genero) cmbGeneros.getSelectedItem();
+       Genero g = (Genero) cmbGeneros.getSelectedItem(); 
+            
+        modificarSecuenciaFrame.setVisible(true);
+        });
+       
+       
+       //Boton cancelar
+        southPanel.add(buttonKO);
+       buttonKO.addActionListener((ActionEvent ae) -> {
+       
         nomenclaturaFrame.setVisible(false);
 
         JOptionPane.showMessageDialog(null, "Los datos se han añadido a la Base de Datos");
         });
-        //Boton cancelar
-        southPanel.add(buttonKO);
+        
 
-        buttonOK.addActionListener(ae -> {
-        modificarSecuenciaFrame.setVisible(true);
-        });
+        
 
         JPanel modClasPanel = new JPanel(new BorderLayout (10,10));
         modClasPanel.setBorder(BorderFactory.createEmptyBorder(10, 60, 10, 50));
