@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static javax.swing.JOptionPane.QUESTION_MESSAGE;
+import static javax.swing.JOptionPane.YES_NO_CANCEL_OPTION;
 import modelo.dao.Implements.NomenclaturaControllerImpl;
 import modelo.dao.NomenclaturaController;
 import modelo.entidades.Clase;
@@ -51,7 +53,7 @@ public class Ejecucion {
             850, 400, false, true);
     private final JFrame fastaFrame = crear("MODIFICAR DATOS DE LA ESPECIE SELECIONADA",
             850, 400, false, true);
-    
+
     private final JFrame nomenclaturaFrame = crear("MODIFICAR CLASIFICACION",
             850, 600, false, true);
 
@@ -77,53 +79,61 @@ public class Ejecucion {
         try {
             Class.forName("com.mysql.jdbc.Driver");
 
-            EspecieController controller = new EspecieControllerImpl();
-            Collection<Especie> especies = controller.coleccionCompleta();
-            for (Especie es : especies) {
+            EspecieController econtroller = new EspecieControllerImpl();
+            List<Especie>especies = econtroller.lista();
+            /*for (Especie e : especies) {
 
-                System.err.println(es);
+                System.err.println();
+            }*/
+
+                    
+            EspecieController controller = new EspecieControllerImpl();
+            Collection<Especie> especies2 = controller.coleccionCompleta();
+            for (Especie esp : especies2) {
+
+                System.err.println();
             }
 
             NomenclaturaController ncontroller = new NomenclaturaControllerImpl();
             List<Dominio> dominios = ncontroller.listaDominio();
             for (Dominio dom : dominios) {
 
-                System.err.println(dom);
+                System.err.println();
             }
 
             NomenclaturaController filcontroller = new NomenclaturaControllerImpl();
             List<Filo> filos = filcontroller.listaFilo();
             for (Filo fil : filos) {
 
-                System.err.println(fil);
+                System.err.println();
             }
 
             NomenclaturaController clascontroller = new NomenclaturaControllerImpl();
             List<Clase> clases = clascontroller.listaClase();
             for (Clase clas : clases) {
 
-                System.err.println(clas);
+                System.err.println();
             }
 
             NomenclaturaController fcontroller = new NomenclaturaControllerImpl();
             List<Familia> familias = fcontroller.listaFamilia();
             for (Familia fa : familias) {
 
-                System.err.println(fa);
+                System.err.println();
             }
 
             NomenclaturaController ocontroller = new NomenclaturaControllerImpl();
             List<Orden> ordenes = ocontroller.listaOrden();
             for (Orden or : ordenes) {
 
-                System.err.println(or);
+                System.err.println();
             }
 
             NomenclaturaController gcontroller = new NomenclaturaControllerImpl();
             List<Genero> generos = gcontroller.listaGenero();
             for (Genero g : generos) {
 
-                System.err.println(g);
+                System.err.println();
             }
 
         } catch (SQLException e) {
@@ -161,6 +171,9 @@ public class Ejecucion {
 
         ImageIcon cancelarImagen = new ImageIcon(pathImg + "if_Cancel_131742.png");
 
+        /*Por si queremos cambiar la posicion del texto en el boton
+        btnCrear.setHorizontalTextPosition(JButton.CENTER);
+        btnCrear.setVerticalTextPosition(JButton.BOTTOM);*/
         JButton btnCrear = new JButton("AÑADIR", crearImagen);
         JButton btnEditar = new JButton("MODIFICAR", editImagen);
         JButton btnEliminar = new JButton("ELIMINAR", eliminarImagen);
@@ -238,7 +251,7 @@ public class Ejecucion {
         ImageIcon cancelarImagen = new ImageIcon(pathImg + "if_Cancel_131742.png");
         JButton cancelButton = new JButton("CANCELAR", cancelarImagen);
 
-        for (Especie e : especiescompletas) {
+        for (Especie e : especies) {
             cmbEspecies.addItem(e);
         }
 
@@ -254,7 +267,8 @@ public class Ejecucion {
         elimButton.addActionListener((ActionEvent ae) -> {
             Especie e = (Especie) cmbEspecies.getSelectedItem();
 
-            especiescompletas.remove(e);
+            JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea eliminar " + e + "?");
+            especies.remove(e);
 
             cmbEspecies.removeItem(e);
 
@@ -269,7 +283,6 @@ public class Ejecucion {
             }
             eliminarFrame.setVisible(false);
 
-            JOptionPane.showMessageDialog(null, "Se ha eliminado la especie seleccionada");
         });
 
         southPanel.add(cancelButton);
@@ -356,7 +369,7 @@ public class Ejecucion {
             Especie es = new Especie(nombre, autor, descripcion, metabolismo,
                     ecologia, references);
 
-            especiescompletas.add(es);
+            especies.add(es);
 
             agregarFrame.setVisible(false);
 
@@ -397,7 +410,7 @@ public class Ejecucion {
         JPanel inferior = new JPanel();
         inferior.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        for (Especie e : especiescompletas) {
+        for (Especie e : especies) {
             cmbEspecies.addItem(e);
         }
 
@@ -437,6 +450,8 @@ public class Ejecucion {
     }
 
     private void modificarDatosEspecie() {
+        
+       
 
         JTextField txtNombre = new JTextField(JTextField.LEFT);
         JTextField txtAutor = new JTextField();
@@ -444,6 +459,16 @@ public class Ejecucion {
         JTextField txtMetabolismo = new JTextField();
         JTextField txtEcologia = new JTextField();
         JTextField txtReferences = new JTextField();
+        
+        
+        // Mostrar en las cajas de texto (JTextField) los campos del objeto
+        for (Especie e : especies){
+            txtNombre.setText(e.getEspecie_name());
+            txtAutor.setText(e.getAutor());
+            txtDecripcion.setText(e.getDescripcion());
+        txtMetabolismo.setText(e.getMetabolismo());
+       txtEcologia.setText(e.getEcologia());
+       txtReferences.setText(e.getReferences());}
 
         JTextField txtTopologia = new JTextField();
         JTextField txtLongitud = new JTextField();
@@ -452,12 +477,14 @@ public class Ejecucion {
 
         ImageIcon FotoImagen = new ImageIcon(pathImg + "if_image-x-generic_118887.png");
         JButton buttonImagen = new JButton("IMAGEN", FotoImagen);
+       
         buttonImagen.setPreferredSize(new Dimension(120, 60));
         buttonImagen.addActionListener(e -> {
             JFileChooser chImangen = new JFileChooser();
             JPanel imagenPanel = new JPanel();
             imagenPanel.add(chImangen);
             imagenFrame.setContentPane(imagenPanel);
+            imagenFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
             imagenFrame.setVisible(true);
         });
 
@@ -469,6 +496,7 @@ public class Ejecucion {
             JPanel fastaPanel = new JPanel();
             fastaPanel.add(chSecuencia);
             fastaFrame.setContentPane(fastaPanel);
+            fastaFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
             fastaFrame.setVisible(true);
         });
 
@@ -542,9 +570,12 @@ public class Ejecucion {
 
         inferior.add(buttonOK);
         buttonOK.addActionListener(ae -> {
-            inferior.add(buttonOK);
+            
+           
+            
 
             try {
+                
 
                 Validacion.validarCadena(txtNombre, true, "Nombre");
                 Validacion.validarCadena(txtAutor, true, "Autor");
@@ -571,6 +602,14 @@ public class Ejecucion {
                     ecologia, references);
 
             especiescompletas.add(es);
+              // Mostrar en las cajas de texto (JTextField) los campos del objeto
+        // Empleado recibido como argumento
+            txtNombre.setText(es.getEspecie_name());
+            txtAutor.setText(String.valueOf(es.getAutor()));
+            txtDecripcion.setText(es.getDescripcion());
+        txtMetabolismo.setText(es.getMetabolismo());
+       txtEcologia.setText(es.getEcologia());
+       txtReferences.setText(es.getReferences());
             modificarClasificacion();
             nomenclaturaFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
             nomenclaturaFrame.setVisible(true);

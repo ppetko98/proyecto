@@ -23,6 +23,8 @@ public class Especie {
     }
 
     public Especie(String especie_name, String autor, String descripcion, String metabolismo, String ecologia, String references) {
+        this.id_especie = id_especie;
+        this.genero_name = genero_name;
         this.especie_name = especie_name;
         this.autor = autor;
         this.descripcion = descripcion;

@@ -21,6 +21,7 @@ public interface BaseDatos {
             + "ON n.id_genero = g.id_genero\n"
             + "INNER JOIN especie e\n"
             + "ON n.id_especie = e.id_especie";
+     
     
     String SELECT_GENERO = "SELECT genero_name FROM biologia.genero";
     String SELECT_FAMILIA = "SELECT familia_name FROM biologia.familia";
