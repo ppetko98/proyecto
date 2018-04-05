@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static javax.swing.JOptionPane.QUESTION_MESSAGE;
+import static javax.swing.JOptionPane.YES_NO_CANCEL_OPTION;
 import modelo.dao.Implements.NomenclaturaControllerImpl;
 import modelo.dao.NomenclaturaController;
 import modelo.entidades.Clase;
@@ -51,7 +53,7 @@ public class Ejecucion {
             850, 400, false, true);
     private final JFrame fastaFrame = crear("MODIFICAR DATOS DE LA ESPECIE SELECIONADA",
             850, 400, false, true);
-    
+
     private final JFrame nomenclaturaFrame = crear("MODIFICAR CLASIFICACION",
             850, 600, false, true);
 
@@ -254,6 +256,7 @@ public class Ejecucion {
         elimButton.addActionListener((ActionEvent ae) -> {
             Especie e = (Especie) cmbEspecies.getSelectedItem();
 
+            JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea eliminar " + e + "?");
             especiescompletas.remove(e);
 
             cmbEspecies.removeItem(e);
@@ -269,7 +272,6 @@ public class Ejecucion {
             }
             eliminarFrame.setVisible(false);
 
-            JOptionPane.showMessageDialog(null, "Se ha eliminado la especie seleccionada");
         });
 
         southPanel.add(cancelButton);
