@@ -163,6 +163,9 @@ public class Ejecucion {
 
         ImageIcon cancelarImagen = new ImageIcon(pathImg + "if_Cancel_131742.png");
 
+        /*Por si queremos cambiar la posicion del texto en el boton
+        btnCrear.setHorizontalTextPosition(JButton.CENTER);
+        btnCrear.setVerticalTextPosition(JButton.BOTTOM);*/
         JButton btnCrear = new JButton("AÑADIR", crearImagen);
         JButton btnEditar = new JButton("MODIFICAR", editImagen);
         JButton btnEliminar = new JButton("ELIMINAR", eliminarImagen);
@@ -454,6 +457,7 @@ public class Ejecucion {
 
         ImageIcon FotoImagen = new ImageIcon(pathImg + "if_image-x-generic_118887.png");
         JButton buttonImagen = new JButton("IMAGEN", FotoImagen);
+       
         buttonImagen.setPreferredSize(new Dimension(120, 60));
         buttonImagen.addActionListener(e -> {
             JFileChooser chImangen = new JFileChooser();
