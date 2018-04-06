@@ -84,8 +84,8 @@ public class Ejecucion {
             List<Especie> especies = econtroller.lista();
             /*for (Especie e : especies) {
 
-                System.err.println();
-            }*/
+             System.err.println();
+             }*/
 
             EspecieController controller = new EspecieControllerImpl();
             Collection<Especie> especies2 = controller.coleccionCompleta();
@@ -172,8 +172,8 @@ public class Ejecucion {
         ImageIcon cancelarImagen = new ImageIcon(pathImg + "if_Cancel_131742.png");
 
         /*Por si queremos cambiar la posicion del texto en el boton
-        btnCrear.setHorizontalTextPosition(JButton.CENTER);
-        btnCrear.setVerticalTextPosition(JButton.BOTTOM);*/
+         btnCrear.setHorizontalTextPosition(JButton.CENTER);
+         btnCrear.setVerticalTextPosition(JButton.BOTTOM);*/
         JButton btnCrear = new JButton("AÑADIR", crearImagen);
         JButton btnEditar = new JButton("MODIFICAR", editImagen);
         JButton btnEliminar = new JButton("ELIMINAR", eliminarImagen);
@@ -269,19 +269,19 @@ public class Ejecucion {
         elimButton.addActionListener((ActionEvent ae) -> {
             Especie e = (Especie) cmbEspecies.getSelectedItem();
 
-            JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea eliminar " + e + "?");
-            especies.remove(e);
+            int respuesta = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea eliminar " + e + "?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (respuesta == JOptionPane.YES_OPTION) {
+                especies.remove(e);
 
-            cmbEspecies.removeItem(e);
+                cmbEspecies.removeItem(e);
 
             //EspecieController.delete(e);
-            EspecieControllerImpl nuevControllerImpl = new EspecieControllerImpl();
-            try {
-                EspecieController.delete(e);
-            } catch (EspecieException ex) {
-                Logger.getLogger(Ejecucion.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SQLException ex) {
-                Logger.getLogger(Ejecucion.class.getName()).log(Level.SEVERE, null, ex);
+                //EspecieControllerImpl nuevControllerImpl = new EspecieControllerImpl();
+                try {
+                    EspecieController.delete(e);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
             eliminarFrame.setVisible(false);
 
