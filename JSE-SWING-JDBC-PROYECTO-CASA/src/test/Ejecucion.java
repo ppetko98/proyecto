@@ -6,6 +6,8 @@ import modelo.entidades.Especie;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
@@ -57,8 +59,7 @@ public class Ejecucion {
     private final JFrame nomenclaturaFrame = crear("MODIFICAR CLASIFICACION",
             850, 600, false, true);
 
-    private final JFrame buscarFrame = crear("BUSCAR ESPECIE",
-            760, 450, true, true);
+    private JFrame buscarFrame = null;
     private final List<Especie> especies = EspecieControllerImpl.lista;
 
     private final List<Dominio> dominios = NomenclaturaControllerImpl.listaDominio;
@@ -80,13 +81,12 @@ public class Ejecucion {
             Class.forName("com.mysql.jdbc.Driver");
 
             EspecieController econtroller = new EspecieControllerImpl();
-            List<Especie>especies = econtroller.lista();
+            List<Especie> especies = econtroller.lista();
             /*for (Especie e : especies) {
 
                 System.err.println();
             }*/
 
-                    
             EspecieController controller = new EspecieControllerImpl();
             Collection<Especie> especies2 = controller.coleccionCompleta();
             for (Especie esp : especies2) {
@@ -214,8 +214,10 @@ public class Ejecucion {
         });
 
         btnBuscar.addActionListener((ae) -> {
-            buscarEspecie(buscarFrame);
-
+            buscarFrame = crear("BUSCAR ESPECIE",
+            760, 450, true, true);
+            JPanel buscarPanel = new BuscarPanel();
+            buscarEspecie(buscarPanel);
         });
 
         btnCancelar.addActionListener((ae) -> {
@@ -390,10 +392,11 @@ public class Ejecucion {
         agregarFrame.setContentPane(panel);
     }
 
-    private void buscarEspecie(JFrame frame) {
-        JPanel buscarPanel = new BuscarPanel();
-        frame.add(buscarPanel);
-        buscarFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+    void buscarEspecie(JPanel buscarPanel) {
+        
+        //frame.add(buscarPanel);
+        buscarFrame.setContentPane(buscarPanel);
+        buscarFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         buscarFrame.setVisible(true);
     }
 
@@ -450,8 +453,6 @@ public class Ejecucion {
     }
 
     private void modificarDatosEspecie() {
-        
-       
 
         JTextField txtNombre = new JTextField(JTextField.LEFT);
         JTextField txtAutor = new JTextField();
@@ -459,16 +460,16 @@ public class Ejecucion {
         JTextField txtMetabolismo = new JTextField();
         JTextField txtEcologia = new JTextField();
         JTextField txtReferences = new JTextField();
-        
-        
+
         // Mostrar en las cajas de texto (JTextField) los campos del objeto
-        for (Especie e : especies){
+        for (Especie e : especies) {
             txtNombre.setText(e.getEspecie_name());
             txtAutor.setText(e.getAutor());
             txtDecripcion.setText(e.getDescripcion());
-        txtMetabolismo.setText(e.getMetabolismo());
-       txtEcologia.setText(e.getEcologia());
-       txtReferences.setText(e.getReferences());}
+            txtMetabolismo.setText(e.getMetabolismo());
+            txtEcologia.setText(e.getEcologia());
+            txtReferences.setText(e.getReferences());
+        }
 
         JTextField txtTopologia = new JTextField();
         JTextField txtLongitud = new JTextField();
@@ -477,7 +478,7 @@ public class Ejecucion {
 
         ImageIcon FotoImagen = new ImageIcon(pathImg + "if_image-x-generic_118887.png");
         JButton buttonImagen = new JButton("IMAGEN", FotoImagen);
-       
+
         buttonImagen.setPreferredSize(new Dimension(120, 60));
         buttonImagen.addActionListener(e -> {
             JFileChooser chImangen = new JFileChooser();
@@ -570,12 +571,8 @@ public class Ejecucion {
 
         inferior.add(buttonOK);
         buttonOK.addActionListener(ae -> {
-            
-           
-            
 
             try {
-                
 
                 Validacion.validarCadena(txtNombre, true, "Nombre");
                 Validacion.validarCadena(txtAutor, true, "Autor");
@@ -602,14 +599,14 @@ public class Ejecucion {
                     ecologia, references);
 
             especiescompletas.add(es);
-              // Mostrar en las cajas de texto (JTextField) los campos del objeto
-        // Empleado recibido como argumento
+            // Mostrar en las cajas de texto (JTextField) los campos del objeto
+            // Empleado recibido como argumento
             txtNombre.setText(es.getEspecie_name());
             txtAutor.setText(String.valueOf(es.getAutor()));
             txtDecripcion.setText(es.getDescripcion());
-        txtMetabolismo.setText(es.getMetabolismo());
-       txtEcologia.setText(es.getEcologia());
-       txtReferences.setText(es.getReferences());
+            txtMetabolismo.setText(es.getMetabolismo());
+            txtEcologia.setText(es.getEcologia());
+            txtReferences.setText(es.getReferences());
             modificarClasificacion();
             nomenclaturaFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
             nomenclaturaFrame.setVisible(true);

@@ -16,28 +16,22 @@ import utilidades.BaseDatos;
  * @author ppetk
  */
 public class CBPropiedad {
+
     String propiedad;
     int id;
-    String PreparedStatement;
-    String ResultSet;
-    PreparedStatement ps;
+    String query;
     ResultSet rs;
-    
-    public CBPropiedad(CBPropiedad cbp){
-        this(cbp.getPropiedad(), cbp.getId(), cbp.getResultSet());
+    int id_especie;
+
+    public CBPropiedad(CBPropiedad cbp) {
+        this(cbp.getPropiedad(), cbp.getId(), cbp.getQuery(), cbp.getId_especie());
     }
 
-    public CBPropiedad(String propiedad, int id, String PreparedStatement, String ResultSet) {
+    public CBPropiedad(String propiedad, int id, String query, int id_especie) {
         this.propiedad = propiedad;
         this.id = id;
-        this.PreparedStatement = PreparedStatement;
-        this.ResultSet = ResultSet;
-    }
-
-    public CBPropiedad(String propiedad, int id, String ResultSet) {
-        this.propiedad = propiedad;
-        this.id = id;
-        this.ResultSet = ResultSet;
+        this.query = query;
+        this.id_especie = id_especie;
     }
 
     public String getPropiedad() {
@@ -56,28 +50,20 @@ public class CBPropiedad {
         this.id = id;
     }
 
-    public String getPreparedStatement() {
-        return PreparedStatement;
+    public String getQuery() {
+        return query;
     }
 
-    public void setPreparedStatement(String PreparedStatement) {
-        this.PreparedStatement = PreparedStatement;
+    public void setQuery(String query) {
+        this.query = query;
     }
 
-    public String getResultSet() {
-        return ResultSet;
+    public int getId_especie() {
+        return id_especie;
     }
 
-    public void setResultSet(String ResultSet) {
-        this.ResultSet = ResultSet;
-    }
-
-    public PreparedStatement getPs() {
-        return ps;
-    }
-
-    public void setPs(PreparedStatement ps) {
-        this.ps = ps;
+    public void setId_especie(int id_especie) {
+        this.id_especie = id_especie;
     }
 
     public ResultSet getRs() {
@@ -87,16 +73,13 @@ public class CBPropiedad {
     public void setRs(ResultSet rs) {
         this.rs = rs;
     }
-    
-    public ResultSet execute() throws SQLException{
+
+    public ResultSet execute() throws SQLException {
         Connection connection = BaseDatos.getConnection();
-        this.rs = connection.createStatement().executeQuery(this.ResultSet);
+        PreparedStatement ps = connection.prepareStatement(query);
+        ps.setInt(1, id_especie);
+        this.rs = ps.executeQuery();
         return rs;
     }
-    
-    public void executeps() throws SQLException{
-        Connection connection = BaseDatos.getConnection();
-        this.ps = connection.prepareStatement(this.PreparedStatement);
-        this.rs = ps.executeQuery(this.ResultSet);
-    }
+
 }
