@@ -14,6 +14,7 @@ public interface BaseSwing {
         }
 
         app.setResizable(resizable);
+        
         //app.setLocationByPlatform(true);
         return app;
     }
