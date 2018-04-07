@@ -1,18 +1,18 @@
-
 package modelo.entidades;
 
 public class Especie {
-    private  int id_especie;
-    private  String especie_name;
-    private  String genero_name;
-    private  String autor;
+
+    private int id_especie;
+    private String especie_name;
+    private String genero_name;
+    private String autor;
     private String descripcion;
     private int imagen;
     private String metabolismo;
     private String ecologia;
     private String references;
     private int id_secuencia;
-    
+
     public Especie() {
     }
 
@@ -31,9 +31,9 @@ public class Especie {
         this.metabolismo = metabolismo;
         this.ecologia = ecologia;
         this.references = references;
-        
+
     }
-    
+
     public Especie(int id_especie, String especie_name, String genero_name, String autor, String descripcion, int imagen, String metabolismo, String ecologia, String references, int id_secuencia) {
         this.id_especie = id_especie;
         this.especie_name = especie_name;
@@ -47,7 +47,6 @@ public class Especie {
         this.id_secuencia = id_secuencia;
     }
 
-   
     public int getId_especie() {
         return id_especie;
     }
@@ -128,12 +127,9 @@ public class Especie {
         this.id_secuencia = id_secuencia;
     }
 
-    
-    
-    
     @Override
     public String toString() {
-        return  id_especie + " " + genero_name + " " + especie_name ;
+        return id_especie + " " + genero_name + " " + especie_name;
     }
-    
+
 }

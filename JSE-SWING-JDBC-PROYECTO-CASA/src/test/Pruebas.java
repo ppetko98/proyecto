@@ -27,6 +27,7 @@ import utilidades.BaseSwing;
  * @author ppetk
  */
 public class Pruebas {
+
     public static void main(String[] args) {
         try {
             /*
@@ -34,8 +35,8 @@ public class Pruebas {
             String path = System.getProperty("user.dir");
             
             System.out.println(path+"\\src\\testImages\\chromosomebn.png");
-            */
-            
+             */
+
             Connection connection = BaseDatos.getConnection();
             PreparedStatement ps = connection.prepareStatement(BaseDatos.SELECT_TABLA);
             ps.setInt(1, 4);
@@ -46,14 +47,14 @@ public class Pruebas {
                 obj = rs.getString(1);
                 scrollPanel(obj, true);
             }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(Pruebas.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
-        
-    static void scrollPanel (String information, boolean resizable){
+
+    static void scrollPanel(String information, boolean resizable) {
         JFrame frame = new JFrame();
         JTextArea text = new JTextArea(information);
         frame.add(new JScrollPane(text));

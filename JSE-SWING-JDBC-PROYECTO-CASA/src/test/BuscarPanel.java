@@ -5,8 +5,6 @@
  */
 package test;
 
-import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.io.BufferedWriter;
@@ -35,8 +33,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeNode;
-import javax.swing.tree.TreePath;
 import modelo.dao.Implements.EspecieControllerImpl;
 import modelo.entidades.CBPropiedad;
 import modelo.entidades.Especie;
@@ -97,7 +93,7 @@ public class BuscarPanel extends JPanel {
         setPreferredSize(new java.awt.Dimension(600, 400));
         setRequestFocusEnabled(false);
 
-        textBuscarEspecie.setText("ghanensis");
+        textBuscarEspecie.setText("Buscar especie...");
         textBuscarEspecie.setToolTipText("");
 
         jScrollPane1.setVisible(false);

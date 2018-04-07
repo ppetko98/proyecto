@@ -13,7 +13,7 @@ public class Orden {
     public Orden(String orden_name) {
         this.orden_name = orden_name;
     }
-      
+
     public Orden(int id_orden, String orden_name, String autor, String descripcion, String references, Date last_update, String imagen) {
         this.id_orden = id_orden;
         this.orden_name = orden_name;
@@ -85,7 +85,7 @@ public class Orden {
 
     @Override
     public String toString() {
-        return orden_name ;
+        return orden_name;
     }
 
 }

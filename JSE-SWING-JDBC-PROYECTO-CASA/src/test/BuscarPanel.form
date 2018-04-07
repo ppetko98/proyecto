@@ -122,7 +122,7 @@
   <SubComponents>
     <Component class="javax.swing.JTextField" name="textBuscarEspecie">
       <Properties>
-        <Property name="text" type="java.lang.String" value="ghanensis"/>
+        <Property name="text" type="java.lang.String" value="Buscar especie..."/>
         <Property name="toolTipText" type="java.lang.String" value=""/>
       </Properties>
     </Component>

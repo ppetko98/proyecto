@@ -4,7 +4,7 @@ import java.awt.Dimension;
 import javax.swing.*;
 
 public interface BaseSwing {
-    
+
     static JFrame crear(String titulo, int anchura, int altura, boolean resizable, boolean centerOnScreen) {
         JFrame app = new JFrame(titulo);
         app.setSize(anchura, altura);

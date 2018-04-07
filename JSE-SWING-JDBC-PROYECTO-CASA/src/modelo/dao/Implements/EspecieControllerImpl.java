@@ -10,15 +10,12 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import modelo.excepciones.EspecieException;
 import utilidades.BaseDatos;
 
 public class EspecieControllerImpl implements EspecieController {
 
     public static List<Especie> lista = new ArrayList<>();
     public static Collection<Especie> listacompleta = new ArrayList<>();
-
-   
 
     @Override
     public List<Especie> lista() throws SQLException {
@@ -83,14 +80,13 @@ public class EspecieControllerImpl implements EspecieController {
 
                 if (rs.next()) {
                     do {
-                        
+
                         String especie_name = rs.getString("especie_name");
                         String autor = rs.getString("autor");
                         String descripcion = rs.getString("descripcion");
                         String metabolismo = rs.getString("metabolismo");
                         String ecologia = rs.getString("ecologia");
                         String references = rs.getString("references");
-                        
 
                         Especie objeto = new Especie();
 
@@ -103,17 +99,15 @@ public class EspecieControllerImpl implements EspecieController {
                     throw new SQLException("No data available in table");
                 }
 
-               
                 connection.commit();
 
             } catch (SQLException e) {
 
                 System.out.println("Error SQL. " + e.getMessage());
-            } 
+            }
 
-                   }
+        }
         return listacompleta;
 
     }
 }
-

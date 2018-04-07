@@ -3,6 +3,7 @@ package modelo.entidades;
 import java.util.Date;
 
 public class Genero {
+
     private int id_genero;
     private String genero_name;
     private String autor;
@@ -27,11 +28,10 @@ public class Genero {
     }
 
     public Genero(int id_genero, String genero_name) {
-         this.id_genero = id_genero;
+        this.id_genero = id_genero;
         this.genero_name = genero_name;
     }
 
-   
     public int getId_genero() {
         return id_genero;
     }
@@ -84,10 +84,5 @@ public class Genero {
     public String toString() {
         return genero_name;
     }
-    
-    
-    
-    
-    
-    
+
 }
