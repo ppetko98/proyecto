@@ -3,7 +3,7 @@ package modelo.entidades;
 import java.util.Date;
 
 public class Filo {
-    
+
     private int id_filo;
     private String filo_name;
     private String autor;
@@ -19,7 +19,6 @@ public class Filo {
         this.filo_name = filo_name;
     }
 
-    
     public Filo(int id_filo, String filo_name, String autor, String descripcion, String references, Date last_update, String imagen) {
         this.id_filo = id_filo;
         this.filo_name = filo_name;
@@ -88,9 +87,7 @@ public class Filo {
 
     @Override
     public String toString() {
-        return  filo_name ;
+        return filo_name;
     }
-    
-    
-    
+
 }

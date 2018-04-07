@@ -3,7 +3,8 @@ package modelo.entidades;
 import java.util.Date;
 
 public class Dominio {
-    private  int id_dominio;
+
+    private int id_dominio;
     private String dominio_name;
     private String autor;
     private String descripcion;
@@ -86,9 +87,7 @@ public class Dominio {
 
     @Override
     public String toString() {
-        return dominio_name ;
+        return dominio_name;
     }
-    
-    
-    
+
 }

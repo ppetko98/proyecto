@@ -69,8 +69,11 @@
               <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Component id="btnBuscarEspecie" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="downloadButton" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnBuscarEspecie" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                       <Component id="lblImagen" min="-2" pref="200" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jScrollPane2" pref="0" max="32767" attributes="0"/>
@@ -94,6 +97,7 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="cbEspecie1" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="cbEspecie4" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="downloadButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="cbEspecie2" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -118,7 +122,7 @@
   <SubComponents>
     <Component class="javax.swing.JTextField" name="textBuscarEspecie">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Buscar Especie..."/>
+        <Property name="text" type="java.lang.String" value="Buscar especie..."/>
         <Property name="toolTipText" type="java.lang.String" value=""/>
       </Properties>
     </Component>
@@ -188,51 +192,44 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Autor"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbEspecie1ActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JCheckBox" name="cbEspecie2">
       <Properties>
         <Property name="text" type="java.lang.String" value="Ecologia"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbEspecie2ActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JCheckBox" name="cbEspecie3">
       <Properties>
         <Property name="text" type="java.lang.String" value="Referencias"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbEspecie3ActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JCheckBox" name="cbEspecie4">
       <Properties>
         <Property name="text" type="java.lang.String" value="Secuencia"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbEspecie4ActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JCheckBox" name="cbEspecie5">
       <Properties>
         <Property name="text" type="java.lang.String" value="Longitud"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbEspecie5ActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JCheckBox" name="cbEspecie6">
       <Properties>
         <Property name="text" type="java.lang.String" value="Topolog&#xed;a"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbEspecie6ActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="lblImagen">
+    </Component>
+    <Component class="javax.swing.JButton" name="downloadButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Descargar FASTA"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="downloadButtonActionPerformed"/>
+      </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="downloadButton.setVisible(false);&#xd;&#xa;"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>

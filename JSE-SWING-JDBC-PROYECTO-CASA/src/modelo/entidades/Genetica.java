@@ -1,6 +1,5 @@
 package modelo.entidades;
 
-import java.util.Arrays;
 import java.util.Date;
 
 public class Genetica {
@@ -14,7 +13,7 @@ public class Genetica {
 
     public Genetica() {
     }
-    
+
     public Genetica(int id_secuencia, boolean es_genomico_plasmido, int longitud, String topologia, Date last_update, String fasta) {
         this.id_secuencia = id_secuencia;
         this.es_genomico_plasmido = es_genomico_plasmido;
@@ -74,14 +73,14 @@ public class Genetica {
 
     @Override
     public String toString() {
-        return "Genetica{" +
-                "id_secuencia=" + id_secuencia +
-                ", es_genomico_plasmido=" + es_genomico_plasmido +
-                ", longitud=" + longitud +
-                ", topologia='" + topologia + '\'' +
-                ", last_update=" + last_update +
-                ", fasta=" + fasta.substring(0,10) +
-                '}';
+        return "Genetica{"
+                + "id_secuencia=" + id_secuencia
+                + ", es_genomico_plasmido=" + es_genomico_plasmido
+                + ", longitud=" + longitud
+                + ", topologia='" + topologia + '\''
+                + ", last_update=" + last_update
+                + ", fasta=" + fasta.substring(0, 10)
+                + '}';
     }
 
 }

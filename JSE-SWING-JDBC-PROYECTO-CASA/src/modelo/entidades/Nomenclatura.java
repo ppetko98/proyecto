@@ -75,14 +75,14 @@ public class Nomenclatura {
 
     @Override
     public String toString() {
-        return "Nomenclatura{" +
-                "especie=" + especie +
-                ", genero=" + genero +
-                ", clase=" + clase +
-                ", filo=" + filo +
-                ", orden=" + orden +
-                ", familia=" + familia +
-                ", dominio=" + dominio +
-                '}';
+        return "Nomenclatura{"
+                + "especie=" + especie
+                + ", genero=" + genero
+                + ", clase=" + clase
+                + ", filo=" + filo
+                + ", orden=" + orden
+                + ", familia=" + familia
+                + ", dominio=" + dominio
+                + '}';
     }
 }

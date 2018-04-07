@@ -12,8 +12,7 @@ public class Clase {
     public Clase(String clase_name) {
         this.clase_name = clase_name;
     }
-    
-      
+
     public Clase(int id_clase, String clase_name, String autor, String descripcion, String references, Date last_update) {
         this.id_clase = id_clase;
         this.clase_name = clase_name;

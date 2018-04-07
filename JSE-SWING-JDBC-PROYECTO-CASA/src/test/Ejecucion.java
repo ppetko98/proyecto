@@ -6,14 +6,20 @@ import modelo.entidades.Especie;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static javax.swing.JOptionPane.QUESTION_MESSAGE;
-import static javax.swing.JOptionPane.YES_NO_CANCEL_OPTION;
+import javax.swing.filechooser.FileFilter;
 import modelo.dao.Implements.NomenclaturaControllerImpl;
 import modelo.dao.NomenclaturaController;
 import modelo.entidades.Clase;
@@ -22,16 +28,17 @@ import modelo.entidades.Familia;
 import modelo.entidades.Filo;
 import modelo.entidades.Genero;
 import modelo.entidades.Orden;
-import modelo.excepciones.EspecieException;
 
 import static utilidades.BaseSwing.crear;
 import utilidades.Validacion;
 import utilidades.ValidacionException;
-//import utilidades.VentanaPrincipal;
 
 /**
  *
  * @author Tamara
+ * @author Tuka
+ * @author Petko
+ *
  */
 public class Ejecucion {
 
@@ -43,6 +50,10 @@ public class Ejecucion {
             600, 400, false, true);
     private final JFrame agregarFrame3 = crear("AÑADIR DATOS 2",
             600, 400, false, true);
+    private final JFrame agregarFrame4 = crear("AÑADIR DATOS 3",
+            850, 400, false, true);
+    private final JFrame agregarFrame5 = crear("AÑADIR DATOS 3",
+            850, 400, false, true);
     private final JFrame eliminarFrame = crear("ELIMINAR ESPECIE",
             600, 400, false, true);
     private final JFrame modificarFrame = crear("MODIFICAR ESPECIE",
@@ -57,8 +68,7 @@ public class Ejecucion {
     private final JFrame nomenclaturaFrame = crear("MODIFICAR CLASIFICACION",
             850, 600, false, true);
 
-    private final JFrame buscarFrame = crear("BUSCAR ESPECIE",
-            760, 450, true, true);
+    private JFrame buscarFrame = null;
     private final List<Especie> especies = EspecieControllerImpl.lista;
 
     private final List<Dominio> dominios = NomenclaturaControllerImpl.listaDominio;
@@ -213,8 +223,10 @@ public class Ejecucion {
         });
 
         btnBuscar.addActionListener((ae) -> {
-            buscarEspecie(buscarFrame);
-
+            buscarFrame = crear("BUSCAR ESPECIE",
+                    760, 450, true, true);
+            JPanel buscarPanel = new BuscarPanel();
+            buscarEspecie(buscarPanel);
         });
 
         btnCancelar.addActionListener((ae) -> {
@@ -272,7 +284,7 @@ public class Ejecucion {
 
                 cmbEspecies.removeItem(e);
 
-            //EspecieController.delete(e);
+                //EspecieController.delete(e);
                 //EspecieControllerImpl nuevControllerImpl = new EspecieControllerImpl();
                 try {
                     EspecieController.delete(e);
@@ -298,11 +310,35 @@ public class Ejecucion {
         eliminarFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         eliminarFrame.setContentPane(eliminarPanel);
         eliminarFrame.setVisible(true);
-        //eliminarFrame.setLocationByPlatform(true); ***NO TOCAR SALTA EXCEPCION!***
+
     }
 
     private void crearEspecie() {
 
+        /*  ImageIcon FotoImagen = new ImageIcon(pathImg + "if_image-x-generic_118887.png");
+        JButton buttonImagen = new JButton("IMAGEN", FotoImagen);
+
+        buttonImagen.setPreferredSize(new Dimension(120, 60));
+        buttonImagen.addActionListener(e -> {
+            JFileChooser chImangen = new JFileChooser();
+            JPanel imagenPanel = new JPanel();
+            imagenPanel.add(chImangen);
+            imagenFrame.setContentPane(imagenPanel);
+            imagenFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+            imagenFrame.setVisible(true);
+        });
+
+        ImageIcon ADNImagen = new ImageIcon(pathImg + "if_medical_icon_10_1290983.png");
+        JButton buttonFasta = new JButton("FASTA", ADNImagen);
+        buttonFasta.setPreferredSize(new Dimension(120, 60));
+        buttonFasta.addActionListener(e -> {
+            JFileChooser chSecuencia = new JFileChooser();
+            JPanel fastaPanel = new JPanel();
+            fastaPanel.add(chSecuencia);
+            fastaFrame.setContentPane(fastaPanel);
+            fastaFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+            fastaFrame.setVisible(true);
+        });*/
         JTextField txtNombre = new JTextField();
         JTextField txtAutor = new JTextField();
         JTextField txtDecripcion = new JTextField();
@@ -336,6 +372,12 @@ public class Ejecucion {
         JButton buttonOK = new JButton("SIGUIENTE", siguienteImagen);
         ImageIcon cancelarImagen = new ImageIcon(pathImg + "if_Cancel_131742.png");
         JButton buttonKO = new JButton("CANCELAR", cancelarImagen);
+        ImageIcon FotoImagen = new ImageIcon(pathImg + "if_image-x-generic_118887.png");
+        JButton buttonImagen = new JButton("IMAGEN", FotoImagen);
+        buttonImagen.setPreferredSize(new Dimension(120, 60));
+        ImageIcon ADNImagen = new ImageIcon(pathImg + "if_medical_icon_10_1290983.png");
+        JButton buttonFasta = new JButton("FASTA", ADNImagen);
+        buttonFasta.setPreferredSize(new Dimension(120, 60));
 
         JPanel inferior = new JPanel();
         inferior.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -356,6 +398,7 @@ public class Ejecucion {
                         JOptionPane.ERROR_MESSAGE);
 
                 return;
+
             }
 
             String nombre = txtNombre.getText();
@@ -372,27 +415,298 @@ public class Ejecucion {
 
             agregarFrame.setVisible(false);
 
-            agregarFrame2.setVisible(true);
-
+            agregarFrame.setVisible(true);
+            crearDatos();
         });
         inferior.add(buttonKO);
+
+        JPanel botonesextraPanel = new JPanel();
+        botonesextraPanel.setLayout(new GridLayout(2, 0, 10, 15));
+        buttonImagen.addActionListener(e -> {
+            String currentDirectory = System.getProperty("user.home") + "\\Documents\\";
+            JFileChooser chImangen = new JFileChooser(currentDirectory);
+            JFrame añadirImagen = imagenFrame;
+            añadirImagen.add(chImangen);
+
+            chImangen.setFileFilter(new FileFilter() {
+                @Override
+                public boolean accept(File file) {
+                    boolean is = false;
+
+                    if (file.getName().endsWith(".png") || file.getName().endsWith(".jpg")
+                            || file.isDirectory()) {
+                        is = true;
+                    }
+                    return is;
+                }
+
+                @Override
+                public String getDescription() {
+                    return "Archivo de Imagen";
+                }
+            });
+
+            chImangen.setDialogTitle("Seleccionar imagen");
+            int returnValue = chImangen.showOpenDialog(chImangen.getParent());
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                String selectedFilePath = chImangen.getSelectedFile().getAbsolutePath();
+                String extension = selectedFilePath.substring(selectedFilePath.length() - 4, selectedFilePath.length());
+                File saveFile = new File(System.getProperty("user.dir") + "\\src\\testImages\\" + txtNombre.getText() + extension);
+                //File imagen = new File(chImangen.getSelectedFile().getAbsolutePath());
+
+                int res = guardarArchivo(chImangen.getSelectedFile(), saveFile);
+                if (res == 1) {
+                    JOptionPane.showMessageDialog(null, "Archivo cargado correctamente");
+                } else {
+                    System.out.println("No se ha cargado correctamente");
+                }
+            }
+            añadirImagen.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        });
+        botonesextraPanel.add(buttonImagen);
+
+        buttonFasta.addActionListener(e -> {
+            String currentDirectory = System.getProperty("user.home") + "\\Documents\\";
+            JFileChooser chSecuencia = new JFileChooser(currentDirectory);
+            JFrame añadirFasta = fastaFrame;
+            añadirFasta.add(chSecuencia);
+
+            chSecuencia.setFileFilter(new FileFilter() {
+                @Override
+                public boolean accept(File file) {
+                    boolean is = false;
+                    if (file.getName().endsWith(".txt") || file.isDirectory()) {
+                        is = true;
+                    }
+                    return is;
+                }
+
+                @Override
+                public String getDescription() {
+                    return ".txt";
+                }
+            });
+
+            chSecuencia.setDialogTitle("Cargar Fasta");
+            int returnValue = chSecuencia.showOpenDialog(chSecuencia.getParent());
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                String selectedFilePath = chSecuencia.getSelectedFile().getAbsolutePath();
+                String extension = selectedFilePath.substring(selectedFilePath.length() - 4, selectedFilePath.length());
+                File saveFile = new File(System.getProperty("user.dir") + "\\src\\fasta\\" + txtNombre.getText() + extension);
+                int res = guardarArchivo(chSecuencia.getSelectedFile(), saveFile);
+                if (res == 1) {
+                    JOptionPane.showMessageDialog(null, "Archivo cargado correctamente");
+                } else {
+                    System.out.println("No se ha cargado correctamente");
+                }
+            }
+            añadirFasta.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        });
+
+        botonesextraPanel.add(buttonFasta);
+
         buttonKO.addActionListener(ae -> {
             agregarFrame.setVisible(false);
         });
         JPanel panel = new JPanel(new BorderLayout(5, 5));
 
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        botonesextraPanel.setBorder(BorderFactory.createEmptyBorder(80, 80, 80, 1));
 
         panel.add(inferior, BorderLayout.SOUTH);
         panel.add(datos, BorderLayout.CENTER);
 
+        panel.add(botonesextraPanel, BorderLayout.WEST);
         agregarFrame.setContentPane(panel);
     }
 
-    private void buscarEspecie(JFrame frame) {
-        JPanel buscarPanel = new BuscarPanel();
-        frame.add(buscarPanel);
-        buscarFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+    private int guardarArchivo(File in, File out) {
+        int res = 0;
+        BufferedWriter bw = null;
+        BufferedReader br = null;
+        try {
+            bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(out), "utf-8"));
+            br = new BufferedReader(new InputStreamReader(new FileInputStream(in)));
+            bw.write(br.readLine());
+        } catch (IOException e) {
+            System.out.println(">" + e.getMessage());
+        } finally {
+            try {
+                bw.close();
+            } catch (IOException ex) {
+                Logger.getLogger(BuscarPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (out.canRead()) {
+            res = 1;
+        }
+        return res;
+    }
+
+    private void crearDatos() {
+
+        JLabel lblSeleccion = new JLabel("SELECCIONE LOS DATOS QUE DESEA");
+
+        JComboBox<Dominio> cmbDominios = new JComboBox<>();
+        JComboBox<Clase> cmbClases = new JComboBox<>();
+        JComboBox<Genero> cmbGeneros = new JComboBox<>();
+
+        JLabel lblDominio = new JLabel("DOMINIO", JLabel.CENTER);
+        JLabel lblClase = new JLabel("CLASE", JLabel.CENTER);
+        JLabel lblGenero = new JLabel("GENERO", JLabel.CENTER);
+
+        ImageIcon prevImagen = new ImageIcon(pathImg + "if_pre_293277.png");
+        JButton buttonprev = new JButton("ANTERIOR", prevImagen);
+        ImageIcon siguienteImagen = new ImageIcon(pathImg + "if_next_293276.png");
+        JButton buttonOK = new JButton("SIGUIENTE", siguienteImagen);
+        ImageIcon cancelarImagen = new ImageIcon(pathImg + "if_Cancel_131742.png");
+        JButton buttonKO = new JButton("CANCELAR", cancelarImagen);
+
+        for (Dominio d : dominios) {
+            cmbDominios.addItem(d);
+        }
+        for (Clase c : clases) {
+            cmbClases.addItem(c);
+        }
+        for (Genero g : generos) {
+            cmbGeneros.addItem(g);
+        }
+
+        JPanel northPanel = new JPanel();
+        northPanel.setLayout(new FlowLayout(1, 20, 20));
+        JPanel centerRPanel = new JPanel();
+        centerRPanel.setLayout(new GridLayout(3, 0, 1, 60));
+        centerRPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 30, 30));
+
+        JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
+        northPanel.add(lblSeleccion);
+
+        centerRPanel.add(lblDominio);
+        centerRPanel.add(cmbDominios);
+        centerRPanel.add(lblClase);
+        centerRPanel.add(cmbClases);
+        centerRPanel.add(lblGenero);
+        centerRPanel.add(cmbGeneros);
+
+//BOnton anterior
+        buttonprev.addActionListener(ae -> {
+            agregarFrame.setVisible(true);
+            agregarFrame2.setVisible(false);
+        });
+        southPanel.add(buttonprev);
+
+//BOnton siguiente
+        buttonOK.addActionListener(ae -> {
+            Dominio d = (Dominio) cmbDominios.getSelectedItem();
+            Clase c = (Clase) cmbClases.getSelectedItem();
+            Genero g = (Genero) cmbGeneros.getSelectedItem();
+            agregarFrame3.setVisible(true);
+            crearDatos2();
+        });
+        southPanel.add(buttonOK);
+
+//Boton cancelar
+        buttonKO.addActionListener((ActionEvent ae) -> {
+            agregarFrame2.setVisible(false);
+        });
+        southPanel.add(buttonKO);
+
+        JPanel CrearClasPanel = new JPanel(new BorderLayout(10, 10));
+        CrearClasPanel.setBorder(BorderFactory.createEmptyBorder(10, 60, 10, 50));
+
+        CrearClasPanel.add(northPanel, BorderLayout.NORTH);
+        CrearClasPanel.add(centerRPanel, BorderLayout.CENTER);
+        CrearClasPanel.add(southPanel, BorderLayout.SOUTH);
+
+        agregarFrame2.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        agregarFrame2.setContentPane(CrearClasPanel);
+        agregarFrame2.setVisible(true);
+
+    }
+
+    private void crearDatos2() {
+
+        JLabel lblSeleccion = new JLabel("SELECCIONE LOS DATOS QUE DESEA");
+
+        JLabel lblFilo = new JLabel("FILO", JLabel.CENTER);
+        JLabel lblFamilia = new JLabel("FAMILIA", JLabel.CENTER);
+        JLabel lblOrden = new JLabel("ORDEN", JLabel.CENTER);
+
+        JComboBox<Filo> cmbFilos = new JComboBox<>();
+        JComboBox<Familia> cmbFamilias = new JComboBox<>();
+        JComboBox<Orden> cmbOrdenes = new JComboBox<>();
+
+        ImageIcon prevImagen = new ImageIcon(pathImg + "if_pre_293277.png");
+        JButton buttonprev = new JButton("ANTERIOR", prevImagen);
+        ImageIcon siguienteImagen = new ImageIcon(pathImg + "if_next_293276.png");
+        JButton buttonOK = new JButton("SIGUIENTE", siguienteImagen);
+        ImageIcon cancelarImagen = new ImageIcon(pathImg + "if_Cancel_131742.png");
+        JButton buttonKO = new JButton("CANCELAR", cancelarImagen);
+
+        for (Filo f : filos) {
+            cmbFilos.addItem(f);
+        }
+        for (Familia fa : familias) {
+            cmbFamilias.addItem(fa);
+        }
+        for (Orden o : ordenes) {
+            cmbOrdenes.addItem(o);
+        }
+        JPanel northPanel = new JPanel();
+        northPanel.setLayout(new FlowLayout(1, 20, 20));
+        JPanel centerLPanel = new JPanel();
+        centerLPanel.setLayout(new GridLayout(3, 0, 2, 40));
+        JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
+        northPanel.add(lblSeleccion);
+        centerLPanel.add(lblFilo);
+        centerLPanel.add(cmbFilos);
+        centerLPanel.add(lblFamilia);
+        centerLPanel.add(cmbFamilias);
+        centerLPanel.add(lblOrden);
+        centerLPanel.add(cmbOrdenes);
+
+        //BOnton anterior
+        southPanel.add(buttonprev);
+        buttonprev.addActionListener(ae -> {
+            agregarFrame2.setVisible(true);
+            agregarFrame3.setVisible(false);
+        });
+
+        //Boton cancelar
+        buttonKO.addActionListener((ActionEvent ae) -> {
+            agregarFrame3.setVisible(false);
+
+        });
+        southPanel.add(buttonKO);
+
+        buttonOK.addActionListener(ae -> {
+            Filo f = (Filo) cmbFilos.getSelectedItem();
+            Familia fa = (Familia) cmbFamilias.getSelectedItem();
+            Orden o = (Orden) cmbOrdenes.getSelectedItem();
+            agregarFrame3.setVisible(true);
+
+        });
+        southPanel.add(buttonOK);
+
+        JPanel CrearClasPanel = new JPanel(new BorderLayout(10, 10));
+        CrearClasPanel.setBorder(BorderFactory.createEmptyBorder(10, 60, 10, 50));
+
+        CrearClasPanel.add(northPanel, BorderLayout.NORTH);
+        CrearClasPanel.add(centerLPanel, BorderLayout.CENTER);
+        CrearClasPanel.add(southPanel, BorderLayout.SOUTH);
+
+        agregarFrame3.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        agregarFrame3.setContentPane(CrearClasPanel);
+        agregarFrame3.setVisible(true);
+    }
+
+    void buscarEspecie(JPanel buscarPanel) {
+
+        //frame.add(buscarPanel);
+        buscarFrame.setContentPane(buscarPanel);
+        buscarFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         buscarFrame.setVisible(true);
     }
 
@@ -595,7 +909,7 @@ public class Ejecucion {
                     ecologia, references);
 
             especiescompletas.add(es);
-              // Mostrar en las cajas de texto (JTextField) los campos del objeto
+            // Mostrar en las cajas de texto (JTextField) los campos del objeto
             // Empleado recibido como argumento
             txtNombre.setText(es.getEspecie_name());
             txtAutor.setText(String.valueOf(es.getAutor()));
@@ -741,71 +1055,3 @@ public class Ejecucion {
         nomenclaturaFrame.setVisible(true);
     }
 }
-/*
- private void crearDatos(){
- JLabel lblSeleccion = new JLabel("SELECCIONE LOS DATOS QUE DESEA");
-
- JComboBox<Dominio> cmbDominios = new JComboBox<>();
- JComboBox<Clase> cmbClases = new JComboBox<>();
- JComboBox<Genero> cmbGeneros = new JComboBox<>();
-
- JLabel lblDominio = new JLabel("DOMINIO", JLabel.CENTER);
- JLabel lblClase = new JLabel("CLASE", JLabel.CENTER);
- JLabel lblGenero = new JLabel("GENERO", JLabel.CENTER);
-
- ImageIcon prevImagen = new ImageIcon(pathImg + "if_pre_293277.png");
- JButton buttonprev = new JButton("ANTERIOR", prevImagen);
- ImageIcon siguienteImagen = new ImageIcon(pathImg + "if_next_293276.png");
- JButton buttonOK = new JButton("SIGUIENTE", siguienteImagen);
- ImageIcon cancelarImagen = new ImageIcon(pathImg + "if_Cancel_131742.png");
- JButton buttonKO = new JButton("CANCELAR", cancelarImagen);
-
- for (Dominio d : dominios) {
- cmbDominios.addItem(d);
- }
-
- JPanel northPanel = new JPanel();
- northPanel.setLayout(new FlowLayout(1, 20, 20));
- JPanel centerRPanel = new JPanel();
- centerRPanel.setLayout(new GridLayout(3, 0, 1, 60));
- centerRPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 30, 30));
- JPanel centerLPanel = new JPanel();
- centerLPanel.setLayout(new GridLayout(3, 0, 2, 40));
- JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-
- northPanel.add(lblSeleccion);
-
- centerRPanel.add(lblDominio);
- centerRPanel.add(cmbDominios);      
- centerRPanel.add(lblClase);
- centerRPanel.add(cmbClases);
- centerLPanel.add(lblGenero);
- centerLPanel.add(cmbGeneros);
-
- //BOnton anterior
- southPanel.add(buttonprev);
-
- buttonprev.addActionListener(ae -> {
- agregarFrame.setVisible(true);
- agregarFrame2.setVisible(false);
- });
-
- //BOnton siguiente
- southPanel.add(buttonOK);
- buttonKO.addActionListener((ActionEvent ae) -> {
- Dominio d = (Dominio) cmbDominios.getSelectedItem();
-
- agregarFrame2.setVisible(false);
-
- JOptionPane.showMessageDialog(null, "Los datos se han añadido a la Base de Datos");
- });
- //Boton cancelar
- southPanel.add(buttonKO);
-
- buttonOK.addActionListener(ae -> {
- agregarFrame3.setVisible(true);
-          
- });
- }
-
- */

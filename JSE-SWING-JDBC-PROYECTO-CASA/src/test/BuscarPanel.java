@@ -6,6 +6,12 @@
 package test;
 
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -17,8 +23,11 @@ import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTree;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
@@ -30,6 +39,7 @@ import modelo.entidades.Especie;
 import modelo.entidades.Genetica;
 import modelo.excepciones.EspecieException;
 import utilidades.BaseDatos;
+import utilidades.BaseSwing;
 import utilidades.Validacion;
 import utilidades.ValidacionException;
 import vista.EspecieTableModel;
@@ -39,6 +49,16 @@ import vista.EspecieTableModel;
  * @author ppetk
  */
 public class BuscarPanel extends JPanel {
+
+    ResultSet rs;
+    List<String> columnas;
+    Map<String, String> propiedadesMap;
+    PriorityQueue<CBPropiedad> props;
+    Especie especiebuscada;
+    Genetica genetica;
+    String especieString;
+    TableModel modelo;
+    ActionEvent event = null;
 
     public BuscarPanel() {
         initComponents();
@@ -67,12 +87,13 @@ public class BuscarPanel extends JPanel {
         cbEspecie5 = new javax.swing.JCheckBox();
         cbEspecie6 = new javax.swing.JCheckBox();
         lblImagen = new javax.swing.JLabel();
+        downloadButton = new javax.swing.JButton();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         setPreferredSize(new java.awt.Dimension(600, 400));
         setRequestFocusEnabled(false);
 
-        textBuscarEspecie.setText("Buscar Especie...");
+        textBuscarEspecie.setText("Buscar especie...");
         textBuscarEspecie.setToolTipText("");
 
         jScrollPane1.setVisible(false);
@@ -109,44 +130,22 @@ public class BuscarPanel extends JPanel {
         jScrollPane2.setViewportView(tablaEspecie);
 
         cbEspecie1.setText("Autor");
-        cbEspecie1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbEspecie1ActionPerformed(evt);
-            }
-        });
 
         cbEspecie2.setText("Ecologia");
-        cbEspecie2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbEspecie2ActionPerformed(evt);
-            }
-        });
 
         cbEspecie3.setText("Referencias");
-        cbEspecie3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbEspecie3ActionPerformed(evt);
-            }
-        });
 
         cbEspecie4.setText("Secuencia");
-        cbEspecie4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbEspecie4ActionPerformed(evt);
-            }
-        });
 
         cbEspecie5.setText("Longitud");
-        cbEspecie5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbEspecie5ActionPerformed(evt);
-            }
-        });
 
         cbEspecie6.setText("Topología");
-        cbEspecie6.addActionListener(new java.awt.event.ActionListener() {
+
+        downloadButton.setVisible(false);
+        downloadButton.setText("Descargar FASTA");
+        downloadButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbEspecie6ActionPerformed(evt);
+                downloadButtonActionPerformed(evt);
             }
         });
 
@@ -180,8 +179,10 @@ public class BuscarPanel extends JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnBuscarEspecie)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(downloadButton)
+                            .addComponent(btnBuscarEspecie))
+                        .addGap(31, 31, 31)
                         .addComponent(lblImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
@@ -199,7 +200,8 @@ public class BuscarPanel extends JPanel {
                         .addGap(31, 31, 31)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cbEspecie1)
-                            .addComponent(cbEspecie4))
+                            .addComponent(cbEspecie4)
+                            .addComponent(downloadButton))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cbEspecie2)
                             .addComponent(cbEspecie5))
@@ -216,33 +218,116 @@ public class BuscarPanel extends JPanel {
         getAccessibleContext().setAccessibleDescription("");
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnBuscarEspecieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarEspecieActionPerformed
+    private void downloadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downloadButtonActionPerformed
+        descargarClick();
+    }//GEN-LAST:event_downloadButtonActionPerformed
 
-        String especieString = textBuscarEspecie.getText();
+    private void btnBuscarEspecieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarEspecieActionPerformed
+        buscarClick();
+    }//GEN-LAST:event_btnBuscarEspecieActionPerformed
+
+    private DefaultMutableTreeNode arbolEspecie(Especie e) throws SQLException {
+        int id_especie = e.getId_especie();
+        ResultSet rs = BaseDatos.executeQuery(BaseDatos.SELECT_ARBOL, id_especie);
+        DefaultMutableTreeNode dominioRoot = new DefaultMutableTreeNode();
+        DefaultMutableTreeNode leaf = new DefaultMutableTreeNode();
+
+        DefaultMutableTreeNode[] path = new DefaultMutableTreeNode[7];
+        if (rs.next()) {
+
+            for (int i = 0; i < path.length; i++) {
+                if (i == 0) {
+                    dominioRoot = new DefaultMutableTreeNode(rs.getString(i + 1), true);
+                    path[i] = dominioRoot;
+                } else if (i == path.length - 1) {
+                    leaf = new DefaultMutableTreeNode(rs.getString(i + 1), false);
+                    path[i - 1].add(leaf);
+                    path[i] = leaf;
+                } else {
+                    DefaultMutableTreeNode node = new DefaultMutableTreeNode(rs.getString(i + 1), true);
+                    path[i - 1].add(node);
+                    path[i] = node;
+                }
+            }
+        }
+        treeEspecie.setShowsRootHandles(true);
+        treeEspecie.setExpandsSelectedPaths(true);
+        treeEspecie.setToggleClickCount(1);
+        jScrollPane1.setVisible(true);
+        treeEspecie.setVisible(true);
+
+        return dominioRoot;
+    }
+
+    private void expandAllNodes(JTree tree, int startingIndex, int rowCount) {
+        for (int i = startingIndex; i < rowCount; ++i) {
+            tree.expandRow(i);
+        }
+
+        if (tree.getRowCount() != rowCount) {
+            expandAllNodes(tree, rowCount, tree.getRowCount());
+        }
+    }
+
+    private int guardarArchivo(File fasta) {
+        int res = 0;
+        BufferedWriter bw = null;
+        try {
+            bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fasta), "utf-8"));
+            bw.write(genetica.getFasta());
+        } catch (IOException e) {
+            System.out.println(">" + e.getMessage());
+        } finally {
+            try {
+                bw.close();
+            } catch (IOException ex) {
+                Logger.getLogger(BuscarPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (fasta.canRead()) {
+            res = 1;
+        }
+        return res;
+    }
+
+    private void tableListener() {
+        tablaEspecie.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                int index = tablaEspecie.getSelectedColumn();
+                if (!e.getValueIsAdjusting() && index >= 0) {
+                    if (index != 2) {
+                        String obj = tablaEspecie.getModel().getValueAt(1, index).toString();
+                        if (obj != null) {
+                            JOptionPane.showMessageDialog(null, obj);
+                        }
+                    } else {
+                        descargarClick();
+                    }
+                    BuscarPanel.this.repaint();
+                    buscarClick();
+                }
+            }
+        });
+    }
+
+    private void buscarClick() {
+
+        if (textBuscarEspecie.getText() != null) {
+            especieString = textBuscarEspecie.getText();
+        }
 
         List<Especie> especies = null;
+
         try {
             especies = new EspecieControllerImpl().lista();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
 
-        Especie especiebuscada = null;
-        Genetica genetica = null;
-        
-        Comparator comparator = new Comparator<CBPropiedad>() {
-            @Override
-            public int compare(CBPropiedad o1, CBPropiedad o2) {
-                if (o1.getId() > o2.getId()) {
-                    return 1;
-                } else if (o1.getId() < o2.getId()) {
-                    return -1;
-                } else {
-                    return 0;
-                }
-            }
-        };//comparador para priority queue
-        PriorityQueue<CBPropiedad> props = new PriorityQueue<>(comparator);
+        especiebuscada = null;
+        genetica = null;
+        props = new PriorityQueue<>(comparador());
 
         try {
             Validacion.validarCadena(textBuscarEspecie, true, "Buscar Especie");
@@ -264,11 +349,14 @@ public class BuscarPanel extends JPanel {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error",
                     JOptionPane.ERROR_MESSAGE);
         }//Validacion de la caja de texto
+        catch (NullPointerException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Introducir Especie",
+                    JOptionPane.ERROR_MESSAGE);
+        }//Si no se introdujo especie
         catch (EspecieException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Especie No Encontrada",
                     JOptionPane.ERROR_MESSAGE);
         }//Validacion Especie
-
         //SE DEBERÁ HACER CON CONSULTA SQL
         String pathImg = System.getProperty("user.dir") + "\\src\\testImages\\"
                 + especiebuscada.getEspecie_name() + ".png";//direccion de las imagenes
@@ -280,37 +368,39 @@ public class BuscarPanel extends JPanel {
         lblImagen.setIcon(new ImageIcon(image));
         lblImagen.setVisible(true);
 
-        
-        
+        downloadButton.setVisible(true);
+
         try {
 
             treeEspecie.setModel(new DefaultTreeModel(arbolEspecie(especiebuscada)));
-
+            expandAllNodes(treeEspecie, 0, treeEspecie.getRowCount());
         } catch (SQLException ex) {
             Logger.getLogger(BuscarPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         int id = especiebuscada.getId_especie();
-        ResultSet rs = null;
-        List<String> propiedades = new ArrayList<>();
-        Map<String, String> propiedadesMap = new TreeMap<>();
 
-        CBPropiedad descripcion = new CBPropiedad("descripcion", 1, BaseDatos.SELECT_DESCRIPCION + id);
-        CBPropiedad metabolismo = new CBPropiedad("metabolismo", 2, BaseDatos.SELECT_METABOLISMO + id);
-        CBPropiedad secuencia = new CBPropiedad("secuencia", 3, BaseDatos.SELECT_SECUENCIA + id);
+        rs = null;
+
+        columnas = new ArrayList<>();
+        propiedadesMap = new TreeMap<>();
+
+        CBPropiedad descripcion = new CBPropiedad("descripcion", 1, BaseDatos.SELECT_DESCRIPCION, id);
+        CBPropiedad metabolismo = new CBPropiedad("metabolismo", 2, BaseDatos.SELECT_METABOLISMO, id);
+        CBPropiedad secuencia = new CBPropiedad("secuencia", 3, BaseDatos.SELECT_SECUENCIA, id);
 
         try {
             rs = BaseDatos.executeQuery(BaseDatos.SELECT_TABLA, id);
             if (rs.next()) {
                 especiebuscada.setDescripcion(rs.getString(1));
-                //propiedades.add(0,"Descripcion");
-                propiedadesMap.put("Descripcion",rs.getString(1));
+                columnas.add(0, rs.getString(1));
+                propiedadesMap.put("Descripcion", rs.getString(1));
                 especiebuscada.setMetabolismo(rs.getString(2));
-                //propiedades.add(1,"Metabolismo");
-                propiedadesMap.put("Metabolismo",rs.getString(2));
+                columnas.add(1, rs.getString(2));
+                propiedadesMap.put("Metabolismo", rs.getString(2));
                 genetica.setFasta(rs.getString(3));
-                //propiedades.add(2,"Fasta");
-                propiedadesMap.put("Fasta",rs.getString(3));
+                columnas.add(2, rs.getString(3));
+                propiedadesMap.put("Fasta", rs.getString(3));
             }
         } catch (SQLException ex) {
             Logger.getLogger(BuscarPanel.class.getName()).log(Level.SEVERE, null, ex);
@@ -322,15 +412,15 @@ public class BuscarPanel extends JPanel {
 
         //CHECKBOX PARA LA TABLA
         if (cbEspecie1.isSelected()) {
-            CBPropiedad autor = new CBPropiedad("autor", 4, BaseDatos.SELECT_AUTOR + id);
+            CBPropiedad autor = new CBPropiedad("autor", 4, BaseDatos.SELECT_AUTOR, id);
             props.add(autor);
 
             try {
                 rs = BaseDatos.executeQuery(BaseDatos.SELECT_AUTOR, id);
                 if (rs.next()) {
                     especiebuscada.setAutor(rs.getString(1));
-                    //propiedades.add(3,"Autor");
-                    propiedadesMap.put("Autor",rs.getString(1));
+                    columnas.add(rs.getString(1));
+                    propiedadesMap.put("Autor", rs.getString(1));
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(BuscarPanel.class.getName()).log(Level.SEVERE, null, ex);
@@ -338,15 +428,15 @@ public class BuscarPanel extends JPanel {
 
         }
         if (cbEspecie2.isSelected()) {
-            CBPropiedad ecologia = new CBPropiedad("ecologia", 5, BaseDatos.SELECT_ECOLOGIA + id);
+            CBPropiedad ecologia = new CBPropiedad("ecologia", 5, BaseDatos.SELECT_ECOLOGIA, id);
             props.add(ecologia);
 
             try {
                 rs = BaseDatos.executeQuery(BaseDatos.SELECT_ECOLOGIA, id);
                 if (rs.next()) {
                     especiebuscada.setEcologia(rs.getString(1));
-                    //propiedades.add(4,"Ecologia");
-                    propiedadesMap.put("Ecologia",rs.getString(1));
+                    columnas.add(rs.getString(1));
+                    propiedadesMap.put("Ecologia", rs.getString(1));
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(BuscarPanel.class.getName()).log(Level.SEVERE, null, ex);
@@ -354,15 +444,15 @@ public class BuscarPanel extends JPanel {
 
         }
         if (cbEspecie3.isSelected()) {
-            CBPropiedad references = new CBPropiedad("references", 6, BaseDatos.SELECT_REFERENCES + id);
+            CBPropiedad references = new CBPropiedad("references", 6, BaseDatos.SELECT_REFERENCES, id);
             props.add(references);
 
             try {
                 rs = BaseDatos.executeQuery(BaseDatos.SELECT_REFERENCES, id);
                 if (rs.next()) {
                     especiebuscada.setReferences(rs.getString(1));
-                    //propiedades.add(5,"References");
-                    propiedadesMap.put("References",rs.getString(1));
+                    columnas.add(rs.getString(1));
+                    propiedadesMap.put("References", rs.getString(1));
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(BuscarPanel.class.getName()).log(Level.SEVERE, null, ex);
@@ -370,14 +460,14 @@ public class BuscarPanel extends JPanel {
 
         }
         if (cbEspecie4.isSelected()) {
-            CBPropiedad es_genomico_plasmido = new CBPropiedad("es_genomico_plasmido", 7, BaseDatos.SELECT_ES_GENOMICO_PLASMIDO + id);
+            CBPropiedad es_genomico_plasmido = new CBPropiedad("es_genomico_plasmido", 7, BaseDatos.SELECT_ES_GENOMICO_PLASMIDO, id);
             props.add(es_genomico_plasmido);
 
             try {
                 rs = BaseDatos.executeQuery(BaseDatos.SELECT_ES_GENOMICO_PLASMIDO, id);
                 if (rs.next()) {
                     genetica.setEs_genomico_plasmido(rs.getBoolean(1));
-                    //propiedades.add(6,"es_genomico_plasmido");
+                    columnas.add((rs.getBoolean(1) ? "genomico" : "plasmido"));
                     propiedadesMap.put("es_genomico_plasmido", Boolean.toString(rs.getBoolean(1)));
                 }
             } catch (SQLException ex) {
@@ -385,32 +475,34 @@ public class BuscarPanel extends JPanel {
             }
 
         }
+
         if (cbEspecie5.isSelected()) {
-            CBPropiedad longitud = new CBPropiedad("longitud", 8, BaseDatos.SELECT_LONGITUD + id);
+            CBPropiedad longitud = new CBPropiedad("longitud", 8, BaseDatos.SELECT_LONGITUD, id);
             props.add(longitud);
 
             try {
                 rs = BaseDatos.executeQuery(BaseDatos.SELECT_LONGITUD, id);
                 if (rs.next()) {
                     genetica.setLongitud(rs.getInt(1));
-                    //propiedades.add(7,"Longitud");
-                    propiedadesMap.put("Longitud",rs.getString(1));
+                    columnas.add(Integer.toString(rs.getInt(1)));
+                    propiedadesMap.put("Longitud", rs.getString(1));
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(BuscarPanel.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         }
+
         if (cbEspecie6.isSelected()) {
-            CBPropiedad topologia = new CBPropiedad("topologia", 9, BaseDatos.SELECT_TOPOLOGIA + id);
+            CBPropiedad topologia = new CBPropiedad("topologia", 9, BaseDatos.SELECT_TOPOLOGIA, id);
             props.add(topologia);
 
             try {
                 rs = BaseDatos.executeQuery(BaseDatos.SELECT_TOPOLOGIA, id);
                 if (rs.next()) {
                     genetica.setTopologia(rs.getString(1));
-                    //propiedades.add(8, "Topologia");
-                    propiedadesMap.put("Topologia",rs.getString(1));
+                    columnas.add(rs.getString(1));
+                    propiedadesMap.put("Topologia", rs.getString(1));
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(BuscarPanel.class.getName()).log(Level.SEVERE, null, ex);
@@ -419,94 +511,67 @@ public class BuscarPanel extends JPanel {
         }
 
         try {
-            TableModel modelo = new EspecieTableModel(props, especiebuscada, genetica);
+            modelo = new EspecieTableModel(props, especiebuscada, genetica);
+            //tablaEspecie = new JTable(modelo);
             tablaEspecie.setModel(modelo);
             int heightable = tablaEspecie.getSize().height;
             tablaEspecie.setRowHeight(heightable);
-            
-            crearListener();
-            
-            jScrollPane2.setVisible(true);
-            tablaEspecie.setVisible(true);
-            jScrollPane2.setEnabled(true);
+
+            tableListener();
+
+            jScrollPane2.setVisible(
+                    true);
+            tablaEspecie.setVisible(
+                    true);
+            jScrollPane2.setEnabled(
+                    true);
 
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-    }//GEN-LAST:event_btnBuscarEspecieActionPerformed
-
-    private void cbEspecie1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEspecie1ActionPerformed
-        
-    }//GEN-LAST:event_cbEspecie1ActionPerformed
-
-    private void cbEspecie5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEspecie5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbEspecie5ActionPerformed
-
-    private void cbEspecie4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEspecie4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbEspecie4ActionPerformed
-
-    private void cbEspecie6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEspecie6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbEspecie6ActionPerformed
-
-    private void cbEspecie2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEspecie2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbEspecie2ActionPerformed
-
-    private void cbEspecie3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEspecie3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbEspecie3ActionPerformed
-    
-    private DefaultMutableTreeNode arbolEspecie(Especie e) throws SQLException {
-        int id_especie = e.getId_especie();
-        ResultSet rs = BaseDatos.executeQuery(BaseDatos.SELECT_ARBOL, id_especie);
-        DefaultMutableTreeNode dominioRoot = new DefaultMutableTreeNode();
-        if (rs.next()) {
-            String dominio = rs.getString(1);
-            String filo = rs.getString(2);
-            String clase = rs.getString(3);
-            String orden = rs.getString(4);
-            String familia = rs.getString(5);
-            String genero = rs.getString(6);
-            String especie = rs.getString(7);
-
-            dominioRoot = new DefaultMutableTreeNode(dominio, true);
-            DefaultMutableTreeNode filoNode = new DefaultMutableTreeNode(filo, true);
-            DefaultMutableTreeNode claseNode = new DefaultMutableTreeNode(clase, true);
-            DefaultMutableTreeNode ordenNode = new DefaultMutableTreeNode(orden, true);
-            DefaultMutableTreeNode familiaNode = new DefaultMutableTreeNode(familia, true);
-            DefaultMutableTreeNode generoNode = new DefaultMutableTreeNode(genero, true);
-            DefaultMutableTreeNode especieLeaf = new DefaultMutableTreeNode(especie, false);
-
-            dominioRoot.add(filoNode);
-            filoNode.add(claseNode);
-            claseNode.add(ordenNode);
-            ordenNode.add(familiaNode);
-            familiaNode.add(generoNode);
-            generoNode.add(especieLeaf);
-        }
-            treeEspecie.setShowsRootHandles(true);
-            treeEspecie.setExpandsSelectedPaths(true);
-            treeEspecie.setToggleClickCount(1);
-            jScrollPane1.setVisible(true);
-            treeEspecie.setVisible(true);
-
-        return dominioRoot;
     }
 
-    private void crearListener(){
-        tablaEspecie.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                int index = tablaEspecie.getSelectedColumn();
-                List<String> lista = EspecieTableModel.getList();
-                JOptionPane.showMessageDialog(null, lista.get(index));
+    private void descargarClick() {
+
+        JFrame archivoFrame = BaseSwing.crear("Descargar Archivo", 600, 400, false, true);
+        String currentDirectory = System.getProperty("user.home") + "\\Documents\\";
+        JFileChooser fc = new JFileChooser(currentDirectory);
+
+        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        fc.setDialogTitle("Guardar FASTA");
+        int returnValue = fc.showSaveDialog(this);
+
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            System.out.println("Guardando archivo...");
+            String path = fc.getSelectedFile().getAbsolutePath() + "\\" + especiebuscada.getEspecie_name() + "_fasta.txt";
+            File fasta = new File(path);
+            int res = guardarArchivo(fasta);
+            if (fasta.canRead() && res == 1) {
+                System.out.println("Archivo guarado correctamente");
             }
-        });
+        } else {
+            System.out.println("Archivo no guardado");
+        }
+        archivoFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+
     }
-    
+
+    private Comparator comparador() {
+        Comparator comparator = new Comparator<CBPropiedad>() {
+            @Override
+            public int compare(CBPropiedad o1, CBPropiedad o2) {
+                if (o1.getId() > o2.getId()) {
+                    return 1;
+                } else if (o1.getId() < o2.getId()) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            }
+        };//comparador para priority queue
+        return comparator;
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscarEspecie;
     private javax.swing.ButtonGroup buttonGroup1;
@@ -516,6 +581,7 @@ public class BuscarPanel extends JPanel {
     private javax.swing.JCheckBox cbEspecie4;
     private javax.swing.JCheckBox cbEspecie5;
     private javax.swing.JCheckBox cbEspecie6;
+    private javax.swing.JButton downloadButton;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblImagen;

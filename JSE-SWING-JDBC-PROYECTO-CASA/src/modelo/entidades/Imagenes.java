@@ -31,9 +31,9 @@ public class Imagenes {
 
     @Override
     public String toString() {
-        return "Imagenes{" +
-                "id_imagenes=" + id_imagenes +
-                ", imagen='" + imagen + '\'' +
-                '}';
+        return "Imagenes{"
+                + "id_imagenes=" + id_imagenes
+                + ", imagen='" + imagen + '\''
+                + '}';
     }
 }

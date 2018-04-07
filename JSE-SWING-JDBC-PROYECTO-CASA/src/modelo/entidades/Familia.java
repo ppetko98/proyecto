@@ -6,13 +6,13 @@ public class Familia {
 
     private int id_familia;
     private String familia_name, autor;
-    private String descripcion,references;
+    private String descripcion, references;
     private Date last_update;
 
     public Familia(String familia_name) {
         this.familia_name = familia_name;
     }
-      
+
     public Familia(int id_familia, String familia_name, String autor, String descripcion, String references, Date last_update) {
         this.id_familia = id_familia;
         this.familia_name = familia_name;
