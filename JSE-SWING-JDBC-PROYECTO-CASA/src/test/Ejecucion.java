@@ -129,20 +129,20 @@ public class Ejecucion {
 
     private void startup() {
         //Dejo comentao esto por si al final no os gusta lo del fondo 
-        JPanel botones = new JPanel(new GridLayout(5, 1, 30, 30));
+        JPanel botones = new JPanel(new GridLayout(5, 0, 30, 30));
         botones.setOpaque(false);
         botones.setBorder(BorderFactory.createEmptyBorder(20, 1,10, 10));
         //JPanel contenido = new JPanel(new GridLayout(2, 1, 20, 20));
         //contenido.setBorder(BorderFactory.createEmptyBorder(10, 100, 100, 100));
         // titulo
-        JLabel titulo = new JLabel("GESTION BASE DE DATOS", JLabel.NORTH_EAST);
-        Font auxFont = titulo.getFont();
-        titulo.setFont(new Font(auxFont.getFontName(), auxFont.getStyle(), 30));
+        //JLabel titulo = new JLabel("GESTION BASE DE DATOS", JLabel.NORTH_EAST);
+        //Font auxFont = titulo.getFont();
+        //titulo.setFont(new Font(auxFont.getFontName(), auxFont.getStyle(), 30));
 
         //Imagen del logo , por ejemplo 
-        ImageIcon logo = new ImageIcon(pathImg + "Imagene1.png");
+       // ImageIcon logo = new ImageIcon(pathImg + "Imagene1.png");
 
-        JLabel imagen = new JLabel(logo);
+        //JLabel imagen = new JLabel(logo);
 
         // Botones
         ImageIcon crearImagen = new ImageIcon(pathImg + "addBBDD.png");
@@ -225,14 +225,15 @@ public class Ejecucion {
         mainPanel.setBackground(pathImg + "Imagene1.png");
         //pathImage,"testImages/Imagene.png");
 
-        mainPanel.add(botones, BorderLayout.EAST);
+       
         botones.add(btnCrear);
-        botones.add(btnEditar);
-        botones.add(btnEliminar);
-        botones.add(btnBuscar);
-        botones.add(btnCancelar);
+        botones.add(btnEditar,BorderLayout.EAST);
+        botones.add(btnEliminar,BorderLayout.EAST);
+        botones.add(btnBuscar,BorderLayout.EAST);
+        botones.add(btnCancelar,BorderLayout.EAST);
+        mainPanel.add(botones, BorderLayout.WEST);
 
-       // mainPanel.add(contenido, BorderLayout.EAST);
+        //mainPanel.add(contenido, BorderLayout.EAST);
         //contenido.add(titulo, BorderLayout.NORTH);
         //contenido.add(imagen, BorderLayout.WEST);
         mainFrame.setContentPane(mainPanel);
