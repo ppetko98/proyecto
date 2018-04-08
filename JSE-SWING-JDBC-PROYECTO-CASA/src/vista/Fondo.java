@@ -7,6 +7,7 @@ package vista;
 
 import java.awt.BorderLayout;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -16,6 +17,10 @@ public class Fondo extends JPanel{
     
     private Image background;
 
+  
+
+   
+
    
     
     public void paintComponent (Graphics g){
@@ -24,7 +29,7 @@ public class Fondo extends JPanel{
         int height = this.getSize().height;
         
         if (this.background != null){
-        g.drawImage(this.background, 0, 0, width,height,null);
+        g.drawImage(this.background, 0,0, width,height,null);
         }
         super.paintComponent(g);
     }

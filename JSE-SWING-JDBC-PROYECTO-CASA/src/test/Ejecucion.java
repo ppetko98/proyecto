@@ -93,58 +93,31 @@ public class Ejecucion {
             EspecieController econtroller = new EspecieControllerImpl();
             List<Especie> especies = econtroller.lista();
             /*for (Especie e : especies) {
-
              System.err.println();
-             }*/
+             }
+                        
+             Era esto lo que imprimia todo en rojo */
 
             EspecieController controller = new EspecieControllerImpl();
             Collection<Especie> especies2 = controller.coleccionCompleta();
-            for (Especie esp : especies2) {
-
-                System.err.println();
-            }
 
             NomenclaturaController ncontroller = new NomenclaturaControllerImpl();
             List<Dominio> dominios = ncontroller.listaDominio();
-            for (Dominio dom : dominios) {
-
-                System.err.println();
-            }
 
             NomenclaturaController filcontroller = new NomenclaturaControllerImpl();
             List<Filo> filos = filcontroller.listaFilo();
-            for (Filo fil : filos) {
-
-                System.err.println();
-            }
 
             NomenclaturaController clascontroller = new NomenclaturaControllerImpl();
             List<Clase> clases = clascontroller.listaClase();
-            for (Clase clas : clases) {
-
-                System.err.println();
-            }
 
             NomenclaturaController fcontroller = new NomenclaturaControllerImpl();
             List<Familia> familias = fcontroller.listaFamilia();
-            for (Familia fa : familias) {
-
-                System.err.println();
-            }
 
             NomenclaturaController ocontroller = new NomenclaturaControllerImpl();
             List<Orden> ordenes = ocontroller.listaOrden();
-            for (Orden or : ordenes) {
-
-                System.err.println();
-            }
 
             NomenclaturaController gcontroller = new NomenclaturaControllerImpl();
             List<Genero> generos = gcontroller.listaGenero();
-            for (Genero g : generos) {
-
-                System.err.println();
-            }
 
         } catch (SQLException e) {
             System.err.println(e.getMessage());
@@ -155,9 +128,10 @@ public class Ejecucion {
     }
 
     private void startup() {
-
-        //JPanel botones = new JPanel(new GridLayout(5, 0, 25, 25));
-        //botones.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
+        //Dejo comentao esto por si al final no os gusta lo del fondo 
+        JPanel botones = new JPanel(new GridLayout(5, 1, 30, 30));
+        botones.setOpaque(false);
+        botones.setBorder(BorderFactory.createEmptyBorder(20, 1,10, 10));
         //JPanel contenido = new JPanel(new GridLayout(2, 1, 20, 20));
         //contenido.setBorder(BorderFactory.createEmptyBorder(10, 100, 100, 100));
         // titulo
@@ -171,15 +145,15 @@ public class Ejecucion {
         JLabel imagen = new JLabel(logo);
 
         // Botones
-        ImageIcon crearImagen = new ImageIcon(pathImg + "if_New_file_131897.png");
+        ImageIcon crearImagen = new ImageIcon(pathImg + "addBBDD.png");
 
-        ImageIcon editImagen = new ImageIcon(pathImg + "edit.png");
+        ImageIcon editImagen = new ImageIcon(pathImg + "editAM.png");
 
-        ImageIcon eliminarImagen = new ImageIcon(pathImg + "if_Trash_empty_71063.png");
+        ImageIcon eliminarImagen = new ImageIcon(pathImg + "if_Delete_Database_65997.png");
 
-        ImageIcon buscarImagen = new ImageIcon(pathImg + "if_Preview_131689.png");
+        ImageIcon buscarImagen = new ImageIcon(pathImg + "Find_bacteria.png");
 
-        ImageIcon cancelarImagen = new ImageIcon(pathImg + "if_Cancel_131742.png");
+        ImageIcon cancelarImagen = new ImageIcon(pathImg + "newClose.png");
 
         /*Por si queremos cambiar la posicion del texto en el boton
          btnCrear.setHorizontalTextPosition(JButton.CENTER);
@@ -187,22 +161,22 @@ public class Ejecucion {
         JButton btnCrear = new JButton("", crearImagen);
         btnCrear.setBorderPainted(false);
         btnCrear.setContentAreaFilled(false);
-        JButton btnEditar = new JButton("MODIFICAR", editImagen);
+        JButton btnEditar = new JButton("", editImagen);
         btnEditar.setBorderPainted(false);
         btnEditar.setContentAreaFilled(false);
-        JButton btnEliminar = new JButton("ELIMINAR", eliminarImagen);
+        JButton btnEliminar = new JButton("", eliminarImagen);
         btnEliminar.setBorderPainted(false);
-       btnEliminar.setContentAreaFilled(false);
-        JButton btnBuscar = new JButton("BUSCAR", buscarImagen);
-       btnBuscar.setBorderPainted(false);
+        btnEliminar.setContentAreaFilled(false);
+        JButton btnBuscar = new JButton("", buscarImagen);
+        btnBuscar.setBorderPainted(false);
         btnBuscar.setContentAreaFilled(false);
-        JButton btnCancelar = new JButton("CANCELAR", cancelarImagen);
+        JButton btnCancelar = new JButton("", cancelarImagen);
 
-         btnCancelar.setBorderPainted(false);
+        btnCancelar.setBorderPainted(false);
         btnCancelar.setContentAreaFilled(false);
+        
         // Añadir botones 
-       
-       
+
         //Action Listener
         btnCrear.addActionListener(e -> {
             crearEspecie();
@@ -246,23 +220,21 @@ public class Ejecucion {
         //Vista
         //JPanel fondo = new JPanel(new BorderLayout(40, 40));
         //mainPanel.setBorder(BorderFactory.createEmptyBorder(40, 30, 30, 30));
-Fondo mainPanel= new Fondo();
-mainPanel.setOpaque(false);
-mainPanel.setBackground(pathImg +"Imagene1.png");
+        Fondo mainPanel = new Fondo();
+        mainPanel.setOpaque(false);
+        mainPanel.setBackground(pathImg + "Imagene1.png");
         //pathImage,"testImages/Imagene.png");
 
-        //mainPanel.add(botones, BorderLayout.WEST);
-        mainPanel.add(btnCrear);
-        mainPanel.add(btnEditar);
-        mainPanel.add(btnEliminar);
-        mainPanel.add(btnBuscar);
-        mainPanel.add(btnCancelar);
+        mainPanel.add(botones, BorderLayout.EAST);
+        botones.add(btnCrear);
+        botones.add(btnEditar);
+        botones.add(btnEliminar);
+        botones.add(btnBuscar);
+        botones.add(btnCancelar);
 
        // mainPanel.add(contenido, BorderLayout.EAST);
-
         //contenido.add(titulo, BorderLayout.NORTH);
         //contenido.add(imagen, BorderLayout.WEST);
-
         mainFrame.setContentPane(mainPanel);
         //mainFrame.setLocationByPlatform(true);
         mainFrame.setVisible(true);
@@ -333,29 +305,29 @@ mainPanel.setBackground(pathImg +"Imagene1.png");
     private void crearEspecie() {
 
         /*  ImageIcon FotoImagen = new ImageIcon(pathImg + "if_image-x-generic_118887.png");
-        JButton buttonImagen = new JButton("IMAGEN", FotoImagen);
+         JButton buttonImagen = new JButton("IMAGEN", FotoImagen);
 
-        buttonImagen.setPreferredSize(new Dimension(120, 60));
-        buttonImagen.addActionListener(e -> {
-            JFileChooser chImangen = new JFileChooser();
-            JPanel imagenPanel = new JPanel();
-            imagenPanel.add(chImangen);
-            imagenFrame.setContentPane(imagenPanel);
-            imagenFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-            imagenFrame.setVisible(true);
-        });
+         buttonImagen.setPreferredSize(new Dimension(120, 60));
+         buttonImagen.addActionListener(e -> {
+         JFileChooser chImangen = new JFileChooser();
+         JPanel imagenPanel = new JPanel();
+         imagenPanel.add(chImangen);
+         imagenFrame.setContentPane(imagenPanel);
+         imagenFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+         imagenFrame.setVisible(true);
+         });
 
-        ImageIcon ADNImagen = new ImageIcon(pathImg + "if_medical_icon_10_1290983.png");
-        JButton buttonFasta = new JButton("FASTA", ADNImagen);
-        buttonFasta.setPreferredSize(new Dimension(120, 60));
-        buttonFasta.addActionListener(e -> {
-            JFileChooser chSecuencia = new JFileChooser();
-            JPanel fastaPanel = new JPanel();
-            fastaPanel.add(chSecuencia);
-            fastaFrame.setContentPane(fastaPanel);
-            fastaFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-            fastaFrame.setVisible(true);
-        });*/
+         ImageIcon ADNImagen = new ImageIcon(pathImg + "if_medical_icon_10_1290983.png");
+         JButton buttonFasta = new JButton("FASTA", ADNImagen);
+         buttonFasta.setPreferredSize(new Dimension(120, 60));
+         buttonFasta.addActionListener(e -> {
+         JFileChooser chSecuencia = new JFileChooser();
+         JPanel fastaPanel = new JPanel();
+         fastaPanel.add(chSecuencia);
+         fastaFrame.setContentPane(fastaPanel);
+         fastaFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+         fastaFrame.setVisible(true);
+         });*/
         JTextField txtNombre = new JTextField();
         JTextField txtAutor = new JTextField();
         JTextField txtDecripcion = new JTextField();
