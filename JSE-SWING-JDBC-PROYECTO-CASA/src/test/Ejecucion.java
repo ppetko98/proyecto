@@ -32,6 +32,7 @@ import modelo.entidades.Orden;
 import static utilidades.BaseSwing.crear;
 import utilidades.Validacion;
 import utilidades.ValidacionException;
+import vista.Fondo;
 
 /**
  *
@@ -155,17 +156,17 @@ public class Ejecucion {
 
     private void startup() {
 
-        JPanel botones = new JPanel(new GridLayout(5, 0, 25, 25));
-        botones.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
-        JPanel contenido = new JPanel(new GridLayout(2, 1, 20, 20));
-        contenido.setBorder(BorderFactory.createEmptyBorder(10, 100, 100, 100));
+        //JPanel botones = new JPanel(new GridLayout(5, 0, 25, 25));
+        //botones.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
+        //JPanel contenido = new JPanel(new GridLayout(2, 1, 20, 20));
+        //contenido.setBorder(BorderFactory.createEmptyBorder(10, 100, 100, 100));
         // titulo
         JLabel titulo = new JLabel("GESTION BASE DE DATOS", JLabel.NORTH_EAST);
         Font auxFont = titulo.getFont();
         titulo.setFont(new Font(auxFont.getFontName(), auxFont.getStyle(), 30));
 
         //Imagen del logo , por ejemplo 
-        ImageIcon logo = new ImageIcon(pathImg + "logo angym.png");
+        ImageIcon logo = new ImageIcon(pathImg + "Imagene1.png");
 
         JLabel imagen = new JLabel(logo);
 
@@ -183,19 +184,25 @@ public class Ejecucion {
         /*Por si queremos cambiar la posicion del texto en el boton
          btnCrear.setHorizontalTextPosition(JButton.CENTER);
          btnCrear.setVerticalTextPosition(JButton.BOTTOM);*/
-        JButton btnCrear = new JButton("AÑADIR", crearImagen);
+        JButton btnCrear = new JButton("", crearImagen);
+        btnCrear.setBorderPainted(false);
+        btnCrear.setContentAreaFilled(false);
         JButton btnEditar = new JButton("MODIFICAR", editImagen);
+        btnEditar.setBorderPainted(false);
+        btnEditar.setContentAreaFilled(false);
         JButton btnEliminar = new JButton("ELIMINAR", eliminarImagen);
+        btnEliminar.setBorderPainted(false);
+       btnEliminar.setContentAreaFilled(false);
         JButton btnBuscar = new JButton("BUSCAR", buscarImagen);
+       btnBuscar.setBorderPainted(false);
+        btnBuscar.setContentAreaFilled(false);
         JButton btnCancelar = new JButton("CANCELAR", cancelarImagen);
 
+         btnCancelar.setBorderPainted(false);
+        btnCancelar.setContentAreaFilled(false);
         // Añadir botones 
-        botones.add(btnCrear);
-        botones.add(btnEditar);
-        botones.add(btnEliminar);
-        botones.add(btnBuscar);
-        botones.add(btnCancelar);
-
+       
+       
         //Action Listener
         btnCrear.addActionListener(e -> {
             crearEspecie();
@@ -237,14 +244,24 @@ public class Ejecucion {
         });
 
         //Vista
-        JPanel mainPanel = new JPanel(new BorderLayout(40, 40));
+        //JPanel fondo = new JPanel(new BorderLayout(40, 40));
         //mainPanel.setBorder(BorderFactory.createEmptyBorder(40, 30, 30, 30));
+Fondo mainPanel= new Fondo();
+mainPanel.setOpaque(false);
+mainPanel.setBackground(pathImg +"Imagene1.png");
+        //pathImage,"testImages/Imagene.png");
 
-        mainPanel.add(botones, BorderLayout.WEST);
-        mainPanel.add(contenido, BorderLayout.EAST);
+        //mainPanel.add(botones, BorderLayout.WEST);
+        mainPanel.add(btnCrear);
+        mainPanel.add(btnEditar);
+        mainPanel.add(btnEliminar);
+        mainPanel.add(btnBuscar);
+        mainPanel.add(btnCancelar);
 
-        contenido.add(titulo, BorderLayout.NORTH);
-        contenido.add(imagen, BorderLayout.WEST);
+       // mainPanel.add(contenido, BorderLayout.EAST);
+
+        //contenido.add(titulo, BorderLayout.NORTH);
+        //contenido.add(imagen, BorderLayout.WEST);
 
         mainFrame.setContentPane(mainPanel);
         //mainFrame.setLocationByPlatform(true);
