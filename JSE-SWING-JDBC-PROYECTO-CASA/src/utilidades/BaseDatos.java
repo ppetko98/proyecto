@@ -22,6 +22,13 @@ public interface BaseDatos {
             + "ON n.id_genero = g.id_genero\n"
             + "INNER JOIN especie e\n"
             + "ON n.id_especie = e.id_especie";
+    
+    String SELECT_ESPECIE2
+            = "SELECT e.id_especie, g.genero_name, e.especie_name, e.autor, e.descripcion, e.imagen, e.ecologia, e.metabolismo, e.references\n"
+            + "FROM nomenclatura n INNER JOIN genero g \n"
+            + "ON n.id_genero = g.id_genero\n"
+            + "INNER JOIN especie e\n"
+            + "ON n.id_especie = e.id_especie";
 
     String SELECT_GENERO = "SELECT genero_name FROM biologia.genero";
     String SELECT_FAMILIA = "SELECT familia_name FROM biologia.familia";
@@ -42,8 +49,14 @@ public interface BaseDatos {
     String SELECT_ES_GENOMICO_PLASMIDO = "SELECT genetica.es_genomico_plasmido  FROM genetica inner join especie on genetica.id_secuencia = especie.id_secuencia where especie.id_especie = ?;";
     String SELECT_LONGITUD = "SELECT genetica.longitud FROM genetica INNER JOIN especie WHERE genetica.id_secuencia = especie.id_secuencia AND especie.id_especie = ?;";
     String SELECT_TOPOLOGIA = "SELECT genetica.topologia FROM genetica INNER JOIN especie WHERE genetica.id_secuencia = especie.id_secuencia AND especie.id_especie = ?;";
+   
+    String SELECT_GENETICA = "SELECT ge.id_secuencia, ge.longitud, ge.topologia, ge.es_genomico_plasmido\n"
++ "FROM genetica ge  INNER JOIN especie e\n"
++ "ON ge.id_secuencia = e.id_secuencia WHERE ge.id_secuencia  = ?";
+   
 
     String DELETE_ESPECIE = "DELETE FROM biologia.especie where id_especie = ?;";
+    String UPDATE_ESPECIE= "UPDATE FROM biologia.especie where id_especie = ?;";
 
     String SELECT_ARBOL = "SELECT d.dominio_name dominio, f.filo_name filo, c.clase_name clase, o.orden_name orden, fam.familia_name familia, g.genero_name genero, e.especie_name especie\n"
             + "FROM nomenclatura n INNER JOIN dominio d ON n.id_dominio=d.id_dominio\n"
@@ -55,23 +68,7 @@ public interface BaseDatos {
             + "INNER JOIN especie e ON n.id_especie=e.id_especie\n"
             + "WHERE e.id_especie = ?;";
 
-    /*"DELETE e.id_especie, e.especie_name, e.autor, e.descripcion, e.imagen, e.ecologia, e.metabolismo, e.references, e.id_secuencia,\n" +
-"g.id_secuencia, g.es_genomico_plasmido, g.fasta, g.topologia, g.longitud, g.last_update,\n" +
-"n.id_clase, n.id_dominio, n.id_especie, n.id_familia, n.id_filo, n.id_genero, n.id_orden\n" +
-"FROM especie e\n" +
-"INNER JOIN nomenclatura n \n" +
-"ON e.id_especie = n.id_especie\n" +
-"INNER JOIN genetica g\n" +
-"ON e.id_secuencia = g.id_secuencia";
-    
-    
-      "DELETE e, g, n \n"
-            + "FROM especie e \n"
-            + "LEFT JOIN genetica g \n"
-            + "ON e.id_secuencia = g.id_secuencia\n"
-            + "LEFT JOIN nomenclatura n\n"
-            + "ON e.id_especie = n.id_especie"
-            +"WHERE id_especie= AND id_secuencia= ";*/
+ 
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USUARIO, CLAVE);
     }

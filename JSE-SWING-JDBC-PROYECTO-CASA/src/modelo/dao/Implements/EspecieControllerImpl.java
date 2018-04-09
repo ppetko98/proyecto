@@ -72,7 +72,7 @@ public class EspecieControllerImpl implements EspecieController {
                 connection = (Connection) BaseDatos.getConnection();
 
                 connection.setAutoCommit(false);
-                PreparedStatement ps = connection.prepareStatement(BaseDatos.SELECT_ESPECIE);
+                PreparedStatement ps = connection.prepareStatement(BaseDatos.SELECT_ESPECIE2);
 
                 ResultSet rs = ps.executeQuery();
 
@@ -80,15 +80,16 @@ public class EspecieControllerImpl implements EspecieController {
 
                 if (rs.next()) {
                     do {
-
+                        int id_especie = rs.getInt("id_especie");
                         String especie_name = rs.getString("especie_name");
+                        String genero_name = rs.getString("genero_name");
                         String autor = rs.getString("autor");
                         String descripcion = rs.getString("descripcion");
                         String metabolismo = rs.getString("metabolismo");
                         String ecologia = rs.getString("ecologia");
                         String references = rs.getString("references");
 
-                        Especie objeto = new Especie();
+                        Especie objeto = new Especie(id_especie, especie_name, genero_name,autor,descripcion,metabolismo,ecologia,references);
 
                         listacompleta.add(objeto);
 

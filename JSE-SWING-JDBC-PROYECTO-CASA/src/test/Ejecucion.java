@@ -6,6 +6,8 @@ import modelo.entidades.Especie;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -15,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
@@ -58,10 +61,10 @@ public class Ejecucion {
     private final JFrame eliminarFrame = crear("ELIMINAR ESPECIE",
             600, 400, false, true);
     private final JFrame modificarFrame = crear("MODIFICAR ESPECIE",
-            600, 400, false, true);
+            850, 600, false, true);
     private final JFrame modificarDatosFrame = crear("MODIFICAR DATOS DE LA ESPECIE SELECIONADA",
-            850, 400, false, true);
-    private final JFrame imagenFrame = crear("MODIFICAR DATOS DE LA ESPECIE SELECIONADA",
+            850, 600, false, true);
+  private final JFrame imagenFrame = crear("MODIFICAR DATOS DE LA ESPECIE SELECIONADA",
             850, 400, false, true);
     private final JFrame fastaFrame = crear("MODIFICAR DATOS DE LA ESPECIE SELECIONADA",
             850, 400, false, true);
@@ -79,7 +82,7 @@ public class Ejecucion {
     private final List<Orden> ordenes = NomenclaturaControllerImpl.listaO;
     private final List<Genero> generos = NomenclaturaControllerImpl.listaG;
 
-    private final Collection<Especie> especiescompletas = EspecieControllerImpl.listacompleta;
+    private Collection<Especie> especiescompletas = EspecieControllerImpl.listacompleta;
 
     private final String pathImg = System.getProperty("user.dir") + "\\src\\testImages\\";
 
@@ -131,7 +134,7 @@ public class Ejecucion {
         //Dejo comentao esto por si al final no os gusta lo del fondo 
         JPanel botones = new JPanel(new GridLayout(5, 0, 30, 30));
         botones.setOpaque(false);
-        botones.setBorder(BorderFactory.createEmptyBorder(20, 1,10, 10));
+        botones.setBorder(BorderFactory.createEmptyBorder(20, 1, 10, 10));
         //JPanel contenido = new JPanel(new GridLayout(2, 1, 20, 20));
         //contenido.setBorder(BorderFactory.createEmptyBorder(10, 100, 100, 100));
         // titulo
@@ -140,10 +143,8 @@ public class Ejecucion {
         //titulo.setFont(new Font(auxFont.getFontName(), auxFont.getStyle(), 30));
 
         //Imagen del logo , por ejemplo 
-       // ImageIcon logo = new ImageIcon(pathImg + "Imagene1.png");
-
+        // ImageIcon logo = new ImageIcon(pathImg + "Imagene1.png");
         //JLabel imagen = new JLabel(logo);
-
         // Botones
         ImageIcon crearImagen = new ImageIcon(pathImg + "addBBDD.png");
 
@@ -174,9 +175,8 @@ public class Ejecucion {
 
         btnCancelar.setBorderPainted(false);
         btnCancelar.setContentAreaFilled(false);
-        
-        // Añadir botones 
 
+        // Añadir botones 
         //Action Listener
         btnCrear.addActionListener(e -> {
             crearEspecie();
@@ -189,13 +189,13 @@ public class Ejecucion {
         });
 
         btnEditar.addActionListener(e -> {
-            modificarEspecie();
+            modificarDatosEspecie();
             // Ocultar formulario cuando se pulse el boton de X
-            modificarFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+            modificarDatosFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
             // Mostrar formulario
-            modificarFrame.setVisible(true);
-            modificarEspecie();
+            modificarDatosFrame.setVisible(true);
+            modificarDatosEspecie();
         });
 
         btnEliminar.addActionListener(ae -> {
@@ -225,12 +225,11 @@ public class Ejecucion {
         mainPanel.setBackground(pathImg + "Imagene1.png");
         //pathImage,"testImages/Imagene.png");
 
-       
         botones.add(btnCrear);
-        botones.add(btnEditar,BorderLayout.EAST);
-        botones.add(btnEliminar,BorderLayout.EAST);
-        botones.add(btnBuscar,BorderLayout.EAST);
-        botones.add(btnCancelar,BorderLayout.EAST);
+        botones.add(btnEditar, BorderLayout.EAST);
+        botones.add(btnEliminar, BorderLayout.EAST);
+        botones.add(btnBuscar, BorderLayout.EAST);
+        botones.add(btnCancelar, BorderLayout.EAST);
         mainPanel.add(botones, BorderLayout.WEST);
 
         //mainPanel.add(contenido, BorderLayout.EAST);
@@ -442,7 +441,7 @@ public class Ejecucion {
                 String selectedFilePath = chImangen.getSelectedFile().getAbsolutePath();
                 String extension = selectedFilePath.substring(selectedFilePath.length() - 4, selectedFilePath.length());
                 File saveFile = new File(System.getProperty("user.dir") + "\\src\\testImages\\" + txtNombre.getText() + extension);
-                //File imagen = new File(chImangen.getSelectedFile().getAbsolutePath());
+                File imagen = new File(chImangen.getSelectedFile().getAbsolutePath());
 
                 int res = guardarArchivo(chImangen.getSelectedFile(), saveFile);
                 if (res == 1) {
@@ -700,59 +699,10 @@ public class Ejecucion {
         buscarFrame.setVisible(true);
     }
 
-    private void modificarEspecie() {
+    private void modificarDatosEspecie() {
+
         JLabel lblSeleccion = new JLabel("SELECCIONE LA ESPECIE QUE DESEA MODIFICAR");
         JComboBox<Especie> cmbEspecies = new JComboBox<>();
-
-        ImageIcon siguienteImagen = new ImageIcon(pathImg + "if_next_293276.png");
-        JButton siguenteButton = new JButton("SIGUIENTE", siguienteImagen);
-
-        ImageIcon cancelarImagen = new ImageIcon(pathImg + "if_Cancel_131742.png");
-        JButton cancelButton = new JButton("CANCELAR", cancelarImagen);
-
-        JPanel inferior = new JPanel();
-        inferior.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-        for (Especie e : especies) {
-            cmbEspecies.addItem(e);
-        }
-
-        JPanel northPanel = new JPanel();
-        northPanel.setLayout(new FlowLayout(1, 50, 50));
-        JPanel centerPanel = new JPanel();
-        JPanel southPanel = new JPanel();
-
-        northPanel.add(lblSeleccion);
-        centerPanel.add(cmbEspecies);
-
-        southPanel.add(siguenteButton);
-        siguenteButton.addActionListener(ae -> {
-            Especie e = (Especie) cmbEspecies.getSelectedItem();
-
-            modificarDatosEspecie();
-            modificarDatosFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-            modificarDatosFrame.setVisible(true);
-
-        });
-
-        southPanel.add(cancelButton);
-
-        cancelButton.addActionListener(ae -> {
-            modificarFrame.setVisible(false);
-        });
-
-        JPanel eliminarPanel = new JPanel(new GridLayout(3, 0, 20, 20));
-        eliminarPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
-        eliminarPanel.add(northPanel, BorderLayout.NORTH);
-        eliminarPanel.add(centerPanel, BorderLayout.CENTER);
-        eliminarPanel.add(southPanel, BorderLayout.SOUTH);
-
-        modificarFrame.setContentPane(eliminarPanel);
-        modificarFrame.setVisible(true);
-
-    }
-
-    private void modificarDatosEspecie() {
 
         JTextField txtNombre = new JTextField(JTextField.LEFT);
         JTextField txtAutor = new JTextField();
@@ -760,20 +710,39 @@ public class Ejecucion {
         JTextField txtMetabolismo = new JTextField();
         JTextField txtEcologia = new JTextField();
         JTextField txtReferences = new JTextField();
+       
 
-        // Mostrar en las cajas de texto (JTextField) los campos del objeto
-        for (Especie e : especies) {
-            txtNombre.setText(e.getEspecie_name());
-            txtAutor.setText(e.getAutor());
-            txtDecripcion.setText(e.getDescripcion());
-            txtMetabolismo.setText(e.getMetabolismo());
-            txtEcologia.setText(e.getEcologia());
-            txtReferences.setText(e.getReferences());
+        /*
+         Añadir Accion al combo
+         programar combobox
+         */
+        for (Especie e : especiescompletas) {
+            cmbEspecies.addItem(e);
         }
+        cmbEspecies.setSelectedIndex(0);
 
-        JTextField txtTopologia = new JTextField();
+        cmbEspecies.addItemListener(new ItemListener() {
+
+            // Recuperar elemento seleccionado
+            @Override
+            public void itemStateChanged(ItemEvent ie) {
+                Especie species = (Especie) ie.getItem();
+
+                for (Especie e : especiescompletas) {
+
+                    txtNombre.setText(e.getEspecie_name());
+                    txtAutor.setText(e.getAutor());
+                    txtDecripcion.setText(e.getDescripcion());
+                    txtMetabolismo.setText(e.getMetabolismo());
+                    txtEcologia.setText(e.getEcologia());
+                    txtReferences.setText(e.getReferences());
+                }
+            }
+        });
+
+        
+ JTextField txtTopologia = new JTextField();
         JTextField txtLongitud = new JTextField();
-
         JRadioButton buttonGenomico = new JRadioButton("SECUENCIA DE TIPO GENÓMICO", true);
 
         ImageIcon FotoImagen = new ImageIcon(pathImg + "if_image-x-generic_118887.png");
@@ -781,25 +750,100 @@ public class Ejecucion {
 
         buttonImagen.setPreferredSize(new Dimension(120, 60));
         buttonImagen.addActionListener(e -> {
+            
+             String currentDirectory = System.getProperty("user.home") + "\\Documents\\";
+            JFileChooser chImangen = new JFileChooser(currentDirectory);
+            JFrame añadirImagen = imagenFrame;
+            añadirImagen.add(chImangen);
+
+            chImangen.setFileFilter(new FileFilter() {
+                @Override
+                public boolean accept(File file) {
+                    boolean is = false;
+
+                    if (file.getName().endsWith(".png") || file.getName().endsWith(".jpg")
+                            || file.isDirectory()) {
+                        is = true;
+                    }
+                    return is;
+                }
+
+                @Override
+                public String getDescription() {
+                    return "Archivo de Imagen";
+                }
+            });
+
+            chImangen.setDialogTitle("Seleccionar imagen");
+            int returnValue = chImangen.showOpenDialog(chImangen.getParent());
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                String selectedFilePath = chImangen.getSelectedFile().getAbsolutePath();
+                String extension = selectedFilePath.substring(selectedFilePath.length() - 4, selectedFilePath.length());
+                File saveFile = new File(System.getProperty("user.dir") + "\\src\\testImages\\" + txtNombre.getText() + extension);
+                File imagen = new File(chImangen.getSelectedFile().getAbsolutePath());
+
+                int res = guardarArchivo(chImangen.getSelectedFile(), saveFile);
+                if (res == 1) {
+                    JOptionPane.showMessageDialog(null, "Archivo cargado correctamente");
+                } else {
+                    System.out.println("No se ha cargado correctamente");
+                }
+            }
+            añadirImagen.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        });
+            
+            
             JFileChooser chImangen = new JFileChooser();
-            JPanel imagenPanel = new JPanel();
+            
+            
+           /* JPanel imagenPanel = new JPanel();
             imagenPanel.add(chImangen);
             imagenFrame.setContentPane(imagenPanel);
             imagenFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-            imagenFrame.setVisible(true);
-        });
+            imagenFrame.setVisible(true);*/
+        
 
         ImageIcon ADNImagen = new ImageIcon(pathImg + "if_medical_icon_10_1290983.png");
         JButton buttonFasta = new JButton("FASTA", ADNImagen);
         buttonFasta.setPreferredSize(new Dimension(120, 60));
         buttonFasta.addActionListener(e -> {
-            JFileChooser chSecuencia = new JFileChooser();
-            JPanel fastaPanel = new JPanel();
-            fastaPanel.add(chSecuencia);
-            fastaFrame.setContentPane(fastaPanel);
-            fastaFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-            fastaFrame.setVisible(true);
+            String currentDirectory = System.getProperty("user.home") + "\\Documents\\";
+            JFileChooser chSecuencia = new JFileChooser(currentDirectory);
+            JFrame añadirFasta = fastaFrame;
+            añadirFasta.add(chSecuencia);
+
+            chSecuencia.setFileFilter(new FileFilter() {
+                @Override
+                public boolean accept(File file) {
+                    boolean is = false;
+                    if (file.getName().endsWith(".txt") || file.isDirectory()) {
+                        is = true;
+                    }
+                    return is;
+                }
+
+                @Override
+                public String getDescription() {
+                    return ".txt";
+                }
+            });
+
+            chSecuencia.setDialogTitle("Cargar Fasta");
+            int returnValue = chSecuencia.showOpenDialog(chSecuencia.getParent());
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                String selectedFilePath = chSecuencia.getSelectedFile().getAbsolutePath();
+                String extension = selectedFilePath.substring(selectedFilePath.length() - 4, selectedFilePath.length());
+                File saveFile = new File(System.getProperty("user.dir") + "\\src\\fasta\\" + txtNombre.getText() + extension);
+                int res = guardarArchivo(chSecuencia.getSelectedFile(), saveFile);
+                if (res == 1) {
+                    JOptionPane.showMessageDialog(null, "Archivo cargado correctamente");
+                } else {
+                    System.out.println("No se ha cargado correctamente");
+                }
+            }
+            añadirFasta.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         });
+       
 
         JLabel lblNombre = new JLabel("NOMBRE", JLabel.RIGHT);
         JLabel lblAutor = new JLabel("AUTOR", JLabel.RIGHT);
@@ -810,6 +854,11 @@ public class Ejecucion {
 
         JLabel lblLogitud = new JLabel("LONGITUD DE LA SECUENCIA ", JLabel.RIGHT);
         JLabel lblTopologia = new JLabel("TOPOLOGIA", JLabel.RIGHT);
+
+        JPanel northPanel = new JPanel();
+        northPanel.setLayout(new FlowLayout(1, 50, 50));
+        northPanel.add(lblSeleccion);
+        northPanel.add(cmbEspecies);
 
         JPanel datos = new JPanel();
         datos.setBorder(BorderFactory.createEmptyBorder(5, 10, 10, 20));
@@ -865,7 +914,7 @@ public class Ejecucion {
         buttonprev.addActionListener(ae -> {
 
             modificarDatosFrame.setVisible(false);
-            modificarFrame.setVisible(true);
+            mainFrame.setVisible(true);
 
         });
 
@@ -875,6 +924,7 @@ public class Ejecucion {
             try {
 
                 Validacion.validarCadena(txtNombre, true, "Nombre");
+                                //ME da error cuando lo cargo, lo tengo que cambiar para que damita otros caracteres
                 Validacion.validarCadena(txtAutor, true, "Autor");
                 Validacion.validarCadena(txtDecripcion, true, "Descripcion");
                 Validacion.validarCadena(txtMetabolismo, true, "Metabolismo");
@@ -887,26 +937,21 @@ public class Ejecucion {
 
                 return;
             }
+            
+            
+            Especie e = (Especie) cmbEspecies.getSelectedItem();
 
-            String nombre = txtNombre.getText();
-            String autor = txtAutor.getText();
-            String descripcion = txtDecripcion.getText();
-            String metabolismo = txtMetabolismo.getText();
-            String ecologia = txtEcologia.getText();
-            String references = txtReferences.getText();
+            int respuesta = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea modificar " + e + "?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (respuesta == JOptionPane.YES_OPTION) {
+               
+               try {
+                    EspecieController.update(e);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
 
-            Especie es = new Especie(nombre, autor, descripcion, metabolismo,
-                    ecologia, references);
-
-            especiescompletas.add(es);
-            // Mostrar en las cajas de texto (JTextField) los campos del objeto
-            // Empleado recibido como argumento
-            txtNombre.setText(es.getEspecie_name());
-            txtAutor.setText(String.valueOf(es.getAutor()));
-            txtDecripcion.setText(es.getDescripcion());
-            txtMetabolismo.setText(es.getMetabolismo());
-            txtEcologia.setText(es.getEcologia());
-            txtReferences.setText(es.getReferences());
+          
             modificarClasificacion();
             nomenclaturaFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
             nomenclaturaFrame.setVisible(true);
@@ -923,6 +968,7 @@ public class Ejecucion {
         datos.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         genetica.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 15));
 
+        panel.add(northPanel, BorderLayout.NORTH);
         panel.add(inferior, BorderLayout.SOUTH);
         panel.add(datos, BorderLayout.CENTER);
         panel.add(genetica, BorderLayout.WEST);
@@ -1044,4 +1090,5 @@ public class Ejecucion {
         nomenclaturaFrame.setContentPane(modClasPanel);
         nomenclaturaFrame.setVisible(true);
     }
+
 }
