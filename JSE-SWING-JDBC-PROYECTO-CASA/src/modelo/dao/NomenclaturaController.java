@@ -1,5 +1,6 @@
 package modelo.dao;
 
+import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 import java.util.List;
 import modelo.entidades.Clase;
@@ -14,6 +15,10 @@ import modelo.entidades.Orden;
  * @author Tuka Manel
  */
 public interface NomenclaturaController {
+
+   
+
+   
 
     List<Dominio> listaDominio() throws SQLException;
 

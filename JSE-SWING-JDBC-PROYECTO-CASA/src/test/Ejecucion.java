@@ -134,11 +134,10 @@ public class Ejecucion {
 
     private void startup() {
         //Dejo comentao esto por si al final no os gusta lo del fondo 
-        JPanel botones = new JPanel(new GridLayout(5, 0, 30, 30));
+        JPanel botones = new JPanel(new GridLayout(5, 0, 300, 30));
         botones.setOpaque(false);
-        botones.setBorder(BorderFactory.createEmptyBorder(20, 1, 10, 10));
-        //JPanel contenido = new JPanel(new GridLayout(2, 1, 20, 20));
-        //contenido.setBorder(BorderFactory.createEmptyBorder(10, 100, 100, 100));
+        botones.setBorder(BorderFactory.createEmptyBorder(20, 0, 50, 700));
+        // JPanel contenido = new JPanel(new GridLayout(2, 5, 100, 200));
         // titulo
         //JLabel titulo = new JLabel("GESTION BASE DE DATOS", JLabel.NORTH_EAST);
         //Font auxFont = titulo.getFont();
@@ -228,13 +227,13 @@ public class Ejecucion {
         //pathImage,"testImages/Imagene.png");
 
         botones.add(btnCrear);
-        botones.add(btnEditar, BorderLayout.EAST);
-        botones.add(btnEliminar, BorderLayout.EAST);
-        botones.add(btnBuscar, BorderLayout.EAST);
-        botones.add(btnCancelar, BorderLayout.EAST);
-        mainPanel.add(botones, BorderLayout.WEST);
+        botones.add(btnEditar);
+        botones.add(btnEliminar);
+        botones.add(btnBuscar);
+        botones.add(btnCancelar);
+        mainPanel.add(botones,BorderLayout.EAST);
 
-        //mainPanel.add(contenido, BorderLayout.EAST);
+        //mainPanel.add(contenido, BorderLayout.WEST);
         //contenido.add(titulo, BorderLayout.NORTH);
         //contenido.add(imagen, BorderLayout.WEST);
         mainFrame.setContentPane(mainPanel);
@@ -938,6 +937,8 @@ public class Ejecucion {
                 Validacion.validarCadena(txtMetabolismo, true, "Metabolismo");
                 Validacion.validarCadena(txtEcologia, true, "Ecologia");
                 Validacion.validarCadena(txtReferences, true, "References");
+                Validacion.validarCadena(txtTopologia, true, "Topologia");
+                Validacion.validarCadena(txtLongitud, true, "Longitud");
 
             } catch (ValidacionException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage(), "Error",
@@ -1032,11 +1033,11 @@ public class Ejecucion {
         JPanel northPanel = new JPanel();
         northPanel.setLayout(new FlowLayout(1, 20, 20));
         JPanel centerRPanel = new JPanel();
-        centerRPanel.setLayout(new GridLayout(3, 2, 1, 20));
-        centerRPanel.setBorder(BorderFactory.createEmptyBorder(10, 5, 30, 5));
+        centerRPanel.setLayout(new GridLayout(3, 0, 1, 100));
+        centerRPanel.setBorder(BorderFactory.createEmptyBorder(20, 5, 40, 5));
         JPanel centerLPanel = new JPanel();
-        centerLPanel.setLayout(new GridLayout(3, 0, 1, 20));
-        centerLPanel.setBorder(BorderFactory.createEmptyBorder(10, 5, 30, 5));
+        centerLPanel.setLayout(new GridLayout(3, 0, 1, 100));
+        centerLPanel.setBorder(BorderFactory.createEmptyBorder(20, 5, 40, 5));
         JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
         northPanel.add(lblSeleccion);
@@ -1074,7 +1075,17 @@ public class Ejecucion {
             Orden o = (Orden) cmbOrdenes.getSelectedItem();
             Genero g = (Genero) cmbGeneros.getSelectedItem();
 
-            JOptionPane.showMessageDialog(null, "Los datos se han añadido a la Base de Datos");
+            int respuesta = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea modificar estos campos?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (respuesta == JOptionPane.YES_OPTION) {
+               
+               try {
+                   //NomenclaturaController.update(d);
+                    
+                    
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
 
         });
 
