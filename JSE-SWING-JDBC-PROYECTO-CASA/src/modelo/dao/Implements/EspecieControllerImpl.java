@@ -10,12 +10,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import modelo.entidades.Genetica;
 import utilidades.BaseDatos;
 
 public class EspecieControllerImpl implements EspecieController {
 
     public static List<Especie> lista = new ArrayList<>();
     public static Collection<Especie> listacompleta = new ArrayList<>();
+    public static List<Genetica> listaGenetica = new ArrayList<>();
 
     @Override
     public List<Especie> lista() throws SQLException {
@@ -77,7 +79,8 @@ public class EspecieControllerImpl implements EspecieController {
                 ResultSet rs = ps.executeQuery();
 
                 Statement st = connection.createStatement();
-
+                
+                
                 if (rs.next()) {
                     do {
                         int id_especie = rs.getInt("id_especie");
@@ -88,8 +91,10 @@ public class EspecieControllerImpl implements EspecieController {
                         String metabolismo = rs.getString("metabolismo");
                         String ecologia = rs.getString("ecologia");
                         String references = rs.getString("references");
+                        int id_secuencia = rs.getInt("id_secuencia");
+                       
 
-                        Especie objeto = new Especie(id_especie, especie_name, genero_name,autor,descripcion,metabolismo,ecologia,references);
+                        Especie objeto = new Especie(id_especie, especie_name, genero_name, autor, descripcion, metabolismo, ecologia, references, id_secuencia);
 
                         listacompleta.add(objeto);
 
@@ -110,5 +115,53 @@ public class EspecieControllerImpl implements EspecieController {
         }
         return listacompleta;
 
+    }
+
+    @Override
+    public List<Genetica> listaGenetica() throws SQLException {
+        
+         if (listaGenetica.isEmpty()) {
+
+            Connection connection = null;
+            try {
+
+                connection = (Connection) BaseDatos.getConnection();
+
+                connection.setAutoCommit(false);
+                PreparedStatement ps = connection.prepareStatement(BaseDatos.SELECT_ESPECIE2);
+
+                ResultSet rs = ps.executeQuery();
+
+                Statement st = connection.createStatement();
+                
+                
+                if (rs.next()) {
+                    do {
+                        
+                        int id_secuencia = rs.getInt("id_secuencia");
+                        String topologia = rs.getString("topologia");
+                        int longitud = rs.getInt("longitud");
+                        boolean es_genomico_plasmido = rs.getBoolean(topologia);
+                       
+
+                        Genetica objeto = new Genetica(id_secuencia, es_genomico_plasmido, longitud, topologia);
+                        listaGenetica.add(objeto);
+
+                    } while (rs.next());
+
+                } else {
+
+                    throw new SQLException("No data available in table");
+                }
+
+                connection.commit();
+
+            } catch (SQLException e) {
+
+                System.out.println("Error SQL. " + e.getMessage());
+            }
+
+        }
+        return listaGenetica;
     }
 }

@@ -30,6 +30,7 @@ import modelo.entidades.Dominio;
 import modelo.entidades.Familia;
 import modelo.entidades.Filo;
 import modelo.entidades.Genero;
+import modelo.entidades.Genetica;
 import modelo.entidades.Orden;
 
 import static utilidades.BaseSwing.crear;
@@ -83,6 +84,7 @@ public class Ejecucion {
     private final List<Genero> generos = NomenclaturaControllerImpl.listaG;
 
     private Collection<Especie> especiescompletas = EspecieControllerImpl.listacompleta;
+    private List<Genetica> genetica = EspecieControllerImpl.listaGenetica;
 
     private final String pathImg = System.getProperty("user.dir") + "\\src\\testImages\\";
 
@@ -710,6 +712,9 @@ public class Ejecucion {
         JTextField txtMetabolismo = new JTextField();
         JTextField txtEcologia = new JTextField();
         JTextField txtReferences = new JTextField();
+         JTextField txtTopologia = new JTextField();
+        JTextField txtLongitud = new JTextField();
+        JRadioButton buttonGenomico = new JRadioButton("SECUENCIA DE TIPO GENÓMICO", true);
        
 
         /*
@@ -719,14 +724,14 @@ public class Ejecucion {
         for (Especie e : especiescompletas) {
             cmbEspecies.addItem(e);
         }
-        cmbEspecies.setSelectedIndex(0);
+        
 
         cmbEspecies.addItemListener(new ItemListener() {
 
             // Recuperar elemento seleccionado
             @Override
             public void itemStateChanged(ItemEvent ie) {
-                Especie species = (Especie) ie.getItem();
+                //Especie species = (Especie) ie.getItem();
 
                 for (Especie e : especiescompletas) {
 
@@ -737,13 +742,16 @@ public class Ejecucion {
                     txtEcologia.setText(e.getEcologia());
                     txtReferences.setText(e.getReferences());
                 }
+                for (Genetica ge : genetica )   {
+                    
+                    //txtLongitud.setText(ge.getLongitud());
+                   
+                }
             }
         });
 
         
- JTextField txtTopologia = new JTextField();
-        JTextField txtLongitud = new JTextField();
-        JRadioButton buttonGenomico = new JRadioButton("SECUENCIA DE TIPO GENÓMICO", true);
+
 
         ImageIcon FotoImagen = new ImageIcon(pathImg + "if_image-x-generic_118887.png");
         JButton buttonImagen = new JButton("IMAGEN", FotoImagen);
@@ -937,6 +945,7 @@ public class Ejecucion {
 
                 return;
             }
+            
             
             
             Especie e = (Especie) cmbEspecies.getSelectedItem();

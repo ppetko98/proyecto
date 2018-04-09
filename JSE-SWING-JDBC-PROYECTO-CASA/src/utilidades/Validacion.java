@@ -26,4 +26,6 @@ public interface Validacion {
             throw new ValidacionException("La caja " + nombre + " ha de contener unicamente letras");
         }
     }
+    
+     
 }

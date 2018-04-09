@@ -14,6 +14,14 @@ public class Genetica {
     public Genetica() {
     }
 
+    public Genetica(int id_secuencia, boolean es_genomico_plasmido, int longitud, String topologia) {
+        this.id_secuencia = id_secuencia;
+        this.es_genomico_plasmido = es_genomico_plasmido;
+        this.longitud = longitud;
+        this.topologia = topologia;
+    }
+
+        
     public Genetica(int id_secuencia, boolean es_genomico_plasmido, int longitud, String topologia, Date last_update, String fasta) {
         this.id_secuencia = id_secuencia;
         this.es_genomico_plasmido = es_genomico_plasmido;
