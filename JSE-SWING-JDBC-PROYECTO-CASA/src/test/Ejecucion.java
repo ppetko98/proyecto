@@ -45,18 +45,15 @@ import vista.Fondo;
  */
 public class Ejecucion {
 
+    private Especie es=null;
+    
     private final JFrame mainFrame = crear("GESTIÓN DE ESPECIES",
             850, 600, false, true);
     private final JFrame agregarFrame = crear("AÑADIR ESPECIE",
             600, 400, false, true);
     private final JFrame agregarFrame2 = crear("AÑADIR DATOS",
             600, 400, false, true);
-    private final JFrame agregarFrame3 = crear("AÑADIR DATOS 2",
-            600, 400, false, true);
-    private final JFrame agregarFrame4 = crear("AÑADIR DATOS 3",
-            850, 400, false, true);
-    private final JFrame agregarFrame5 = crear("AÑADIR DATOS 3",
-            850, 400, false, true);
+    private final JFrame agregarFrame3 = crear("AÑADIR DATOS 2",600, 400, false, true);
     private final JFrame eliminarFrame = crear("ELIMINAR ESPECIE",
             600, 400, false, true);
     private final JFrame modificarFrame = crear("MODIFICAR ESPECIE",
@@ -303,30 +300,7 @@ public class Ejecucion {
 
     private void crearEspecie() {
 
-        /*  ImageIcon FotoImagen = new ImageIcon(pathImg + "if_image-x-generic_118887.png");
-         JButton buttonImagen = new JButton("IMAGEN", FotoImagen);
-
-         buttonImagen.setPreferredSize(new Dimension(120, 60));
-         buttonImagen.addActionListener(e -> {
-         JFileChooser chImangen = new JFileChooser();
-         JPanel imagenPanel = new JPanel();
-         imagenPanel.add(chImangen);
-         imagenFrame.setContentPane(imagenPanel);
-         imagenFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-         imagenFrame.setVisible(true);
-         });
-
-         ImageIcon ADNImagen = new ImageIcon(pathImg + "if_medical_icon_10_1290983.png");
-         JButton buttonFasta = new JButton("FASTA", ADNImagen);
-         buttonFasta.setPreferredSize(new Dimension(120, 60));
-         buttonFasta.addActionListener(e -> {
-         JFileChooser chSecuencia = new JFileChooser();
-         JPanel fastaPanel = new JPanel();
-         fastaPanel.add(chSecuencia);
-         fastaFrame.setContentPane(fastaPanel);
-         fastaFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-         fastaFrame.setVisible(true);
-         });*/
+     
         JTextField txtNombre = new JTextField();
         JTextField txtAutor = new JTextField();
         JTextField txtDecripcion = new JTextField();
@@ -380,7 +354,7 @@ public class Ejecucion {
                 Validacion.validarCadena(txtMetabolismo, true, "Metabolismo");
                 Validacion.validarCadena(txtEcologia, true, "Ecologia");
                 Validacion.validarCadena(txtReferences, true, "References");
-
+                
             } catch (ValidacionException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage(), "Error",
                         JOptionPane.ERROR_MESSAGE);
@@ -396,7 +370,7 @@ public class Ejecucion {
             String ecologia = txtEcologia.getText();
             String references = txtReferences.getText();
 
-            Especie es = new Especie(nombre, autor, descripcion, metabolismo,
+            this.es = new Especie(nombre, autor, descripcion, metabolismo,
                     ecologia, references);
 
             especies.add(es);
@@ -672,9 +646,21 @@ public class Ejecucion {
         buttonOK.addActionListener(ae -> {
             Filo f = (Filo) cmbFilos.getSelectedItem();
             Familia fa = (Familia) cmbFamilias.getSelectedItem();
-            Orden o = (Orden) cmbOrdenes.getSelectedItem();
-            agregarFrame3.setVisible(true);
-
+            Orden o = (Orden) cmbOrdenes.getSelectedItem();         
+            
+            try {
+                EspecieController controllerEspecie = new EspecieControllerImpl();
+                Especie añadida = this.es;
+                if (EspecieController.crearEspecie(this.es)>0) {
+                      JOptionPane.showMessageDialog(null, "Especie creada correctamente");
+                } else {
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Error\n" + e.getMessage());
+            }
+              agregarFrame3.setVisible(false);
+              agregarFrame2.setVisible(false);
+              agregarFrame.setVisible(false);
         });
         southPanel.add(buttonOK);
 

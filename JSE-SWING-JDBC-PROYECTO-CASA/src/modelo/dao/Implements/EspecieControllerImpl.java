@@ -10,10 +10,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import modelo.excepciones.EspecieException;
 import utilidades.BaseDatos;
 
 public class EspecieControllerImpl implements EspecieController {
-
+    public static int registrado;
     public static List<Especie> lista = new ArrayList<>();
     public static Collection<Especie> listacompleta = new ArrayList<>();
 
@@ -110,5 +111,24 @@ public class EspecieControllerImpl implements EspecieController {
         }
         return listacompleta;
 
+    }
+    
+    public int crearEspecie(Especie e) throws  EspecieException, SQLException{
+        
+        java.sql.Connection conexion = BaseDatos.getConnection();
+        
+        PreparedStatement consulta_a_realizar= conexion.prepareStatement(BaseDatos.INSERT_ESPECIE);
+        
+        consulta_a_realizar.setString(1, e.getEspecie_name());
+        consulta_a_realizar.setString(2, e.getAutor());
+        consulta_a_realizar.setString(3, e.getDescripcion());
+        consulta_a_realizar.setString(4, e.getMetabolismo());
+        consulta_a_realizar.setString(5, e.getEcologia());
+        consulta_a_realizar.setString(6, e.getReferences());
+        
+        
+        
+        int resultadoOperacion = consulta_a_realizar.executeUpdate();
+        return resultadoOperacion;
     }
 }
