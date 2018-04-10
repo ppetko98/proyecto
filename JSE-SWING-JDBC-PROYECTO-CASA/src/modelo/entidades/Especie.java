@@ -32,19 +32,20 @@ public class Especie {
         this.references = references;
 
     }
-    
-    public Especie(int id_especie, String genero_name, String especie_name, String autor, String descripcion, String metabolismo, String ecologia, String references ) {
+
+    public Especie(int id_especie, String especie_name, String genero_name, String autor, String descripcion, String metabolismo, String ecologia, String references, int id_secuencia) {
         this.id_especie = id_especie;
-        this.genero_name = genero_name;
         this.especie_name = especie_name;
+        this.genero_name = genero_name;
         this.autor = autor;
         this.descripcion = descripcion;
         this.metabolismo = metabolismo;
         this.ecologia = ecologia;
         this.references = references;
-
-
+        this.id_secuencia = id_secuencia;
     }
+    
+    
 
     public Especie(int id_especie, String especie_name, String genero_name, String autor, String descripcion, int imagen, String metabolismo, String ecologia, String references, int id_secuencia) {
         this.id_especie = id_especie;

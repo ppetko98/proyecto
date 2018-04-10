@@ -8,6 +8,7 @@ import modelo.entidades.Especie;
 import modelo.excepciones.EspecieException;
 
 import java.util.List;
+import modelo.entidades.Genetica;
 import utilidades.BaseDatos;
 
 /**
@@ -20,6 +21,10 @@ public interface EspecieController {
     List<Especie> lista() throws SQLException;
 
     Collection<Especie> coleccionCompleta() throws SQLException;
+    
+    List<Genetica> listaGenetica() throws SQLException;
+    
+    
 
     static void delete(Especie e) throws EspecieException, SQLException {
         int id = e.getId_especie();
@@ -27,8 +32,8 @@ public interface EspecieController {
     }
 
     static void update(Especie e) throws EspecieException, SQLException {
-        //int id = e.getId_especie();
-        //BaseDatos.executeUpdate(BaseDatos.UPDATE_ESPECIE, id);
+        int id = e.getId_especie();
+        BaseDatos.executeUpdate(BaseDatos.UPDATE_ESPECIE, id);
     }
     
     static int crearEspecie(Especie e) throws  EspecieException, SQLException{
@@ -50,5 +55,6 @@ public interface EspecieController {
         return resultadoOperacion;
         
     }
+    
     
 }
