@@ -36,7 +36,7 @@ public interface Validacion {
             }
         }
 
-        if (!contenidoCaja.matches("([0-9]+[A-Za-zñáéíóú.+]+[\\s]*)+")) {
+        if (!contenidoCaja.matches("[^@#]+")) {
             throw new ValidacionException("La caja " + nombre + " ha de contener numeros y letras");
         }
     }

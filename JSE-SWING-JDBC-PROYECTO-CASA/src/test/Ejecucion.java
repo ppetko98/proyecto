@@ -84,6 +84,7 @@ public class Ejecucion {
     private final List<Genero> generos = NomenclaturaControllerImpl.listaG;
 
     private Collection<Especie> especiescompletas = EspecieControllerImpl.listacompleta;
+    
     private List<Genetica> genetica = EspecieControllerImpl.listaGenetica;
 
     private final String pathImg = System.getProperty("user.dir") + "\\src\\testImages\\";
@@ -711,9 +712,9 @@ public class Ejecucion {
         JTextField txtMetabolismo = new JTextField();
         JTextField txtEcologia = new JTextField();
         JTextField txtReferences = new JTextField();
-         JTextField txtTopologia = new JTextField();
-        JTextField txtLongitud = new JTextField();
-        JRadioButton buttonGenomico = new JRadioButton("SECUENCIA DE TIPO GENÓMICO", true);
+         //JTextField txtTopologia = new JTextField();
+        //JTextField txtLongitud = new JTextField();
+        //JRadioButton buttonGenomico = new JRadioButton("SECUENCIA DE TIPO GENÓMICO", true);
        
 
         /*
@@ -730,9 +731,9 @@ public class Ejecucion {
             // Recuperar elemento seleccionado
             @Override
             public void itemStateChanged(ItemEvent ie) {
-                //Especie species = (Especie) ie.getItem();
+                Especie e = (Especie) ie.getItem();
 
-                for (Especie e : especiescompletas) {
+                //for (Especie e : especiescompletas) {
 
                     txtNombre.setText(e.getEspecie_name());
                     txtAutor.setText(e.getAutor());
@@ -740,12 +741,12 @@ public class Ejecucion {
                     txtMetabolismo.setText(e.getMetabolismo());
                     txtEcologia.setText(e.getEcologia());
                     txtReferences.setText(e.getReferences());
-                }
-                for (Genetica ge : genetica )   {
+                //}
+                //for (Genetica ge : genetica )   {
                     
                     //txtLongitud.setText(ge.getLongitud());
                    
-                }
+                //}
             }
         });
 
@@ -883,16 +884,16 @@ public class Ejecucion {
         datos.add(lblReferences);
         datos.add(txtReferences);
 
-        JPanel archivo = new JPanel();
-        archivo.setLayout(new GridLayout(2, 0, 10, 10));
-        archivo.add(lblTopologia);
-        archivo.add(txtTopologia);
-        archivo.add(lblLogitud);
-        archivo.add(txtLongitud);
+        //JPanel archivo = new JPanel();
+        //archivo.setLayout(new GridLayout(2, 0, 10, 10));
+        //archivo.add(lblTopologia);
+        //archivo.add(txtTopologia);
+       //archivo.add(lblLogitud);
+        //archivo.add(txtLongitud);
 
-        JPanel radio = new JPanel();
-        radio.setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 10));
-        radio.add(buttonGenomico, BorderLayout.EAST);
+        //JPanel radio = new JPanel();
+        //radio.setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 10));
+        //radio.add(buttonGenomico, BorderLayout.EAST);
 
         JPanel botones = new JPanel();
         botones.setBorder(BorderFactory.createEmptyBorder(1, 10, 10, 1));
@@ -900,11 +901,11 @@ public class Ejecucion {
         botones.add(buttonFasta, BorderLayout.WEST);
 
         JPanel genetica = new JPanel();
-        genetica.setLayout(new GridLayout(3, 0, 10, 20));
+        genetica.setLayout(new GridLayout(1, 0, 10, 20));
         genetica.setBorder(BorderFactory.createEmptyBorder(30, 20, 30, 1));
-        genetica.add(archivo, BorderLayout.CENTER);
-        genetica.add(radio, BorderLayout.NORTH);
-        genetica.add(botones, BorderLayout.SOUTH);
+        //genetica.add(archivo, BorderLayout.CENTER);
+        //genetica.add(radio, BorderLayout.NORTH);
+        genetica.add(botones, BorderLayout.CENTER);
 
         //archivo.add(chImangen);
         ImageIcon prevImagen = new ImageIcon(pathImg + "if_pre_293277.png");
@@ -932,13 +933,13 @@ public class Ejecucion {
 
                 Validacion.validarCadena(txtNombre, true, "Nombre");
                                 //ME da error cuando lo cargo, lo tengo que cambiar para que damita otros caracteres
-                Validacion.validarCadena(txtAutor, true, "Autor");
-                Validacion.validarCadena(txtDecripcion, true, "Descripcion");
-                Validacion.validarCadena(txtMetabolismo, true, "Metabolismo");
-                Validacion.validarCadena(txtEcologia, true, "Ecologia");
-                Validacion.validarCadena(txtReferences, true, "References");
-                Validacion.validarCadena(txtTopologia, true, "Topologia");
-                Validacion.validarCadena(txtLongitud, true, "Longitud");
+                Validacion.validarMixto(txtAutor, true, "Autor");
+                Validacion.validarMixto(txtDecripcion, true, "Descripcion");
+                //Validacion.validarCadena(txtMetabolismo, true, "Metabolismo");
+               // Validacion.validarCadena(txtEcologia, true, "Ecologia");
+                //Validacion.validarCadena(txtReferences, true, "References");
+                //Validacion.validarCadena(txtTopologia, true, "Topologia");
+                //Validacion.validarCadena(txtLongitud, true, "Longitud");
 
             } catch (ValidacionException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage(), "Error",
@@ -955,6 +956,12 @@ public class Ejecucion {
             if (respuesta == JOptionPane.YES_OPTION) {
                
                try {
+                   e.setAutor(txtAutor.getText());
+                   e.setEspecie_name(txtNombre.getText());
+                   e.setDescripcion(txtDecripcion.getText());
+                   e.setEcologia(txtEcologia.getText());
+                   e.setMetabolismo(txtMetabolismo.getText());
+                   e.setReferences(txtReferences.getText());
                     EspecieController.update(e);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -1079,7 +1086,7 @@ public class Ejecucion {
             if (respuesta == JOptionPane.YES_OPTION) {
                
                try {
-                   //NomenclaturaController.update(d);
+                   NomenclaturaController.update(d);
                     
                     
                 } catch (Exception ex) {

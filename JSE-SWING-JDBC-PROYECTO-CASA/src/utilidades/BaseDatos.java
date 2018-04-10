@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import modelo.entidades.Especie;
 
 public interface BaseDatos {
 
@@ -57,8 +58,22 @@ public interface BaseDatos {
             + "ON ge.id_secuencia = e.id_secuencia WHERE ge.id_secuencia  = ?";
 
     String DELETE_ESPECIE = "DELETE FROM biologia.especie where id_especie = ?;";
-    String UPDATE_ESPECIE = "UPDATE FROM biologia.especie where id_especie = ?;";
+    String UPDATE_ESPECIE = "UPDATE biologia.especie SET especie_name = ?, autor = ?, descripcion = ?, metabolismo =?, ecologia = ?,  References = ? where id_especie = ?";
 
+      
+    
+    String UPDATE_DOMINIO = "UPDATE FROM biologia.dominio where id_dominio = ?;";
+    String UPDATE_FILO = "UPDATE FROM biologia.dominio where id_dominio = ?;";
+    String UPDATE_CLASE = "UPDATE FROM biologia.dominio where id_dominio = ?;";
+    String UPDATE_FAMILIA = "UPDATE FROM biologia.dominio where id_dominio = ?;";
+    String UPDATE_ORDEN = "UPDATE FROM biologia.dominio where id_dominio = ?;";
+    String UPDATE_GENERO = "UPDATE FROM biologia.dominio where id_dominio = ?;";
+    
+    
+    
+    
+    
+    
     String SELECT_ARBOL = "SELECT d.dominio_name dominio, f.filo_name filo, c.clase_name clase, o.orden_name orden, fam.familia_name familia, g.genero_name genero, e.especie_name especie\n"
             + "FROM nomenclatura n INNER JOIN dominio d ON n.id_dominio=d.id_dominio\n"
             + "INNER JOIN filo f ON n.id_filo=f.id_filo\n"
@@ -94,7 +109,26 @@ public interface BaseDatos {
     public static int executeUpdate(String sql, Integer id) throws SQLException {
         Connection connection = getConnection();
         connection.setAutoCommit(false);
-        int res = connection.prepareStatement(sql + id + ";").executeUpdate();
+        PreparedStatement ps = connection.prepareStatement(sql);
+        ps.setInt(1, id);
+        int res = ps.executeUpdate();
+        connection.commit();
+
+        return res;
+    }
+    
+    public static int executeUpdate2(String sql, Especie e) throws SQLException {
+        Connection connection = getConnection();
+        connection.setAutoCommit(false);
+        PreparedStatement ps = connection.prepareStatement(sql);
+        ps.setString(1, e.getEspecie_name());
+        ps.setString(2, e.getAutor());
+        ps.setString(3, e.getDescripcion());
+        ps.setString(4, e.getMetabolismo());
+        ps.setString(5, e.getEcologia());
+        ps.setString(6, e.getReferences());
+        ps.setInt(7, e.getId_especie());
+        int res = ps.executeUpdate();
         connection.commit();
 
         return res;

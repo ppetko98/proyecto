@@ -29,7 +29,6 @@ public interface EspecieController {
     }
     
     static void update (Especie e) throws EspecieException, SQLException {
-        int id = e.getId_especie();
-        BaseDatos.executeUpdate(BaseDatos.UPDATE_ESPECIE, id);
+        BaseDatos.executeUpdate2(BaseDatos.UPDATE_ESPECIE, e);
 }
 }
