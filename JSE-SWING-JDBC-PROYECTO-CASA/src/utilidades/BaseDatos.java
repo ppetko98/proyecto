@@ -14,7 +14,7 @@ public interface BaseDatos {
     String DRIVERS = "com.mysql.jdbc.Driver";
     String URL = "jdbc:mysql://localhost:3306/biologia";
     String USUARIO = "root";
-    String CLAVE = "root";
+    String CLAVE = "Pa$$w0rd";
 
     String SELECT_ESPECIE
             = "SELECT e.id_especie, g.genero_name, e.especie_name\n"
@@ -68,6 +68,7 @@ public interface BaseDatos {
             + "INNER JOIN especie e ON n.id_especie=e.id_especie\n"
             + "WHERE e.id_especie = ?;";
 
+    String INSERT_ESPECIE= "INSERT INTO especie VALUES(?,?,?,?,?,?)";
  
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USUARIO, CLAVE);
