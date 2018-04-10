@@ -23,8 +23,6 @@ public interface EspecieController {
     Collection<Especie> coleccionCompleta() throws SQLException;
     
     List<Genetica> listaGenetica() throws SQLException;
-    
-    
 
     static void delete(Especie e) throws EspecieException, SQLException {
         int id = e.getId_especie();
@@ -55,6 +53,4 @@ public interface EspecieController {
         return resultadoOperacion;
         
     }
-    
-    
 }

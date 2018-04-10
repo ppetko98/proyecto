@@ -64,7 +64,7 @@ public class EspecieControllerImpl implements EspecieController {
 
         return lista;
     }
-
+    
     public Collection<Especie> coleccionCompleta() throws SQLException {
 
         if (listacompleta.isEmpty()) {
@@ -184,4 +184,53 @@ public class EspecieControllerImpl implements EspecieController {
         }
         return listGenetica;
     }
+    /*
+    @Override
+    public List<Genetica> listaGenetica() throws SQLException {
+        
+         if (listGenetica.isEmpty()) {
+
+            Connection connection = null;
+            try {
+
+                connection = (Connection) BaseDatos.getConnection();
+
+                connection.setAutoCommit(false);
+                PreparedStatement ps = connection.prepareStatement(BaseDatos.SELECT_ESPECIE2);
+
+                ResultSet rs = ps.executeQuery();
+
+                Statement st = connection.createStatement();
+                
+                
+                if (rs.next()) {
+                    do {
+                        
+                        int id_secuencia = rs.getInt("id_secuencia");
+                        String topologia = rs.getString("topologia");
+                        int longitud = rs.getInt("longitud");
+                        boolean es_genomico_plasmido = rs.getBoolean(topologia);
+                       
+
+                        Genetica objeto = new Genetica(id_secuencia, es_genomico_plasmido, longitud, topologia);
+                        listGenetica.add(objeto);
+
+                    } while (rs.next());
+
+                } else {
+
+                    throw new SQLException("No data available in table");
+                }
+
+                connection.commit();
+
+            } catch (SQLException e) {
+
+                System.out.println("Error SQL. " + e.getMessage());
+            }
+
+        }
+        return listGenetica;
+    
+*/
 }
