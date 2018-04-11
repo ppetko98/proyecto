@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
@@ -91,8 +90,6 @@ public class Ejecucion {
 
     private final String pathImg = System.getProperty("user.dir") + "\\src\\testImages\\";
 
-    //private EspecieController controllerEspecie = new EspecieControllerImpl();
-    //private NomenclaturaController controllerNomenclatura = new NomenclaturaControllerImpl();
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new Ejecucion().startup());
         try {
@@ -100,11 +97,6 @@ public class Ejecucion {
 
             EspecieController econtroller = new EspecieControllerImpl();
             List<Especie> especies = econtroller.lista();
-            /*for (Especie e : especies) {
-             System.err.println();
-             }
-                        
-             Era esto lo que imprimia todo en rojo */
 
             EspecieController controller = new EspecieControllerImpl();
             Collection<Especie> especies2 = controller.coleccionCompleta();
@@ -140,15 +132,6 @@ public class Ejecucion {
         JPanel botones = new JPanel(new GridLayout(5, 0, 300, 30));
         botones.setOpaque(false);
         botones.setBorder(BorderFactory.createEmptyBorder(20, 0, 50, 700));
-        // JPanel contenido = new JPanel(new GridLayout(2, 5, 100, 200));
-        // titulo
-        //JLabel titulo = new JLabel("GESTION BASE DE DATOS", JLabel.NORTH_EAST);
-        //Font auxFont = titulo.getFont();
-        //titulo.setFont(new Font(auxFont.getFontName(), auxFont.getStyle(), 30));
-
-        //Imagen del logo , por ejemplo 
-        // ImageIcon logo = new ImageIcon(pathImg + "Imagene1.png");
-        //JLabel imagen = new JLabel(logo);
         // Botones
         ImageIcon crearImagen = new ImageIcon(pathImg + "addBBDD.png");
 
@@ -160,9 +143,6 @@ public class Ejecucion {
 
         ImageIcon cancelarImagen = new ImageIcon(pathImg + "newClose.png");
 
-        /*Por si queremos cambiar la posicion del texto en el boton
-         btnCrear.setHorizontalTextPosition(JButton.CENTER);
-         btnCrear.setVerticalTextPosition(JButton.BOTTOM);*/
         JButton btnCrear = new JButton("", crearImagen);
         btnCrear.setBorderPainted(false);
         btnCrear.setContentAreaFilled(false);
@@ -186,8 +166,6 @@ public class Ejecucion {
             crearEspecie();
             // Ocultar formulario cuando se pulse el boton de X
             agregarFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-
-            //agregarFrame.setLocationRelativeTo(null);
             // Mostrar formulario
             agregarFrame.setVisible(true);
         });
@@ -221,13 +199,9 @@ public class Ejecucion {
             System.exit(0);//Esto SI cierra el programa
         });
 
-        //Vista
-        //JPanel fondo = new JPanel(new BorderLayout(40, 40));
-        //mainPanel.setBorder(BorderFactory.createEmptyBorder(40, 30, 30, 30));
         Fondo mainPanel = new Fondo();
         mainPanel.setOpaque(false);
         mainPanel.setBackground(pathImg + "Imagene1.png");
-        //pathImage,"testImages/Imagene.png");
 
         botones.add(btnCrear);
         botones.add(btnEditar);
@@ -236,11 +210,7 @@ public class Ejecucion {
         botones.add(btnCancelar);
         mainPanel.add(botones, BorderLayout.EAST);
 
-        //mainPanel.add(contenido, BorderLayout.WEST);
-        //contenido.add(titulo, BorderLayout.NORTH);
-        //contenido.add(imagen, BorderLayout.WEST);
         mainFrame.setContentPane(mainPanel);
-        //mainFrame.setLocationByPlatform(true);
         mainFrame.setVisible(true);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -896,13 +866,12 @@ public class Ejecucion {
                     e.setEcologia(txtEcologia.getText());
                     e.setMetabolismo(txtMetabolismo.getText());
                     e.setReferences(txtReferences.getText());
-                    
-                    //EspecieController.update(e);
 
+                    //EspecieController.update(e);
                     modificarClasificacion();
                     nomenclaturaFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                     nomenclaturaFrame.setVisible(true);
-                    
+
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -1021,13 +990,13 @@ public class Ejecucion {
             if (respuesta == JOptionPane.YES_OPTION) {
 
                 try {
-                    //NomenclaturaController.update(d);
 
+                    //NomenclaturaController.update(d);
                 } catch (Exception ex) {
                     System.out.println("Aqui esta el error");
                     JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
-                JOptionPane.showMessageDialog(null,"Datos Actualizados Correctamente");
+                JOptionPane.showMessageDialog(null, "Datos Actualizados Correctamente");
                 nomenclaturaFrame.setVisible(false);
                 nomenclaturaFrame.dispose();
                 modificarDatosFrame.setVisible(false);

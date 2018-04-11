@@ -1,6 +1,5 @@
 package utilidades;
 
-import java.awt.Dimension;
 import javax.swing.*;
 
 public interface BaseSwing {
@@ -15,8 +14,7 @@ public interface BaseSwing {
             app.setLocationByPlatform(true);
         }
         app.setResizable(resizable);
-        
-        //app.setLocationByPlatform(true);
+
         return app;
     }
 

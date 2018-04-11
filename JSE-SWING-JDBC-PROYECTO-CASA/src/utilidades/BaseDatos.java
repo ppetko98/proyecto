@@ -9,9 +9,6 @@ import modelo.entidades.Especie;
 
 public interface BaseDatos {
 
-    /*
-     * Constantes utilizadas en el ejemplo
-     */
     String DRIVERS = "com.mysql.jdbc.Driver";
     String URL = "jdbc:mysql://localhost:3306/biologia";
     String USUARIO = "root";
@@ -60,20 +57,13 @@ public interface BaseDatos {
     String DELETE_ESPECIE = "DELETE FROM biologia.especie where id_especie = ?;";
     String UPDATE_ESPECIE = "UPDATE biologia.especie SET especie_name = ?, autor = ?, descripcion = ?, metabolismo =?, ecologia = ?,  referencias = ? where id_especie = ?";
 
-      
-    
     String UPDATE_DOMINIO = "UPDATE FROM biologia.dominio where id_dominio = ?;";
     String UPDATE_FILO = "UPDATE FROM biologia.dominio where id_dominio = ?;";
     String UPDATE_CLASE = "UPDATE FROM biologia.dominio where id_dominio = ?;";
     String UPDATE_FAMILIA = "UPDATE FROM biologia.dominio where id_dominio = ?;";
     String UPDATE_ORDEN = "UPDATE FROM biologia.dominio where id_dominio = ?;";
     String UPDATE_GENERO = "UPDATE FROM biologia.dominio where id_dominio = ?;";
-    
-    
-    
-    
-    
-    
+
     String SELECT_ARBOL = "SELECT d.dominio_name dominio, f.filo_name filo, c.clase_name clase, o.orden_name orden, fam.familia_name familia, g.genero_name genero, e.especie_name especie\n"
             + "FROM nomenclatura n INNER JOIN dominio d ON n.id_dominio=d.id_dominio\n"
             + "INNER JOIN filo f ON n.id_filo=f.id_filo\n"
@@ -84,8 +74,8 @@ public interface BaseDatos {
             + "INNER JOIN especie e ON n.id_especie=e.id_especie\n"
             + "WHERE e.id_especie = ?;";
 
-    String INSERT_ESPECIE= "INSERT INTO biologia.especie (especie_name, autor, descripcion, metabolismo, ecologia, referencias) VALUES (?,?,?,?,?,?)";
-    
+    String INSERT_ESPECIE = "INSERT INTO biologia.especie (especie_name, autor, descripcion, metabolismo, ecologia, referencias) VALUES (?,?,?,?,?,?)";
+
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USUARIO, CLAVE);
     }
@@ -118,7 +108,7 @@ public interface BaseDatos {
 
         return res;
     }
-    
+
     public static int executeUpdate2(String sql, Especie e) throws SQLException {
         Connection connection = getConnection();
         connection.setAutoCommit(false);
@@ -135,47 +125,4 @@ public interface BaseDatos {
 
         return res;
     }
-    /*
-     public static Connection conexion() throws SQLException {
-
-     JFrame conexion = crear("Conexion a base de Datos", 400, 400, false, true);
-     JPanel panel = new JPanel(new FlowLayout());
-     JLabel user = new JLabel("user:");
-     JLabel pass = new JLabel("Password:");
-     JTextField userin = new JTextField("root");
-     JPasswordField passin = new JPasswordField("Pa$$w0rd");
-     JButton submit = new JButton("Submit");
-
-     panel.add(user);
-     panel.add(userin);
-     panel.add(pass);
-     panel.add(passin);
-     panel.add(submit);
-
-     conexion.setContentPane(panel);
-     conexion.setVisible(true);
-
-     submit.addActionListener((ae) -> {
-
-     String usuario = "root";//valor por defecto
-     if (userin.getText() != null) {
-     usuario = userin.getText();
-     }
-     String contraseña = "Pa$$w0rd";//valor por defecto
-     if (passin.getPassword() != null) {
-     contraseña = Arrays.toString(passin.getPassword());
-     }
-     try {
-     Connection connection = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/biologia",
-     usuario, contraseña);
-     } catch (SQLException ex) {
-     System.out.println(ex.getMessage());
-     }
-     conexion.setVisible(false);
-     });
-
-     Connection connection = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/biologia");
-     return connection;
-     }
-     */
 }

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package utilidades;
 
 import javax.swing.JTextField;
@@ -26,8 +21,8 @@ public interface Validacion {
             throw new ValidacionException("La caja " + nombre + " ha de contener unicamente letras");
         }
     }
-        
-         public static void validarMixto (JTextField field, boolean required, String nombre) throws ValidacionException {
+
+    public static void validarMixto(JTextField field, boolean required, String nombre) throws ValidacionException {
         String contenidoCaja = field.getText();
 
         if (required) {
@@ -40,6 +35,4 @@ public interface Validacion {
             throw new ValidacionException("La caja " + nombre + " ha de contener numeros y letras");
         }
     }
-    
-     
 }

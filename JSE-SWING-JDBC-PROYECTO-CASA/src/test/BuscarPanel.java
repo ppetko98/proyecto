@@ -550,7 +550,7 @@ public class BuscarPanel extends JPanel {
                 System.out.println("Archivo guarado correctamente");
             }
         } else {
-            System.out.println("Archivo no guardado");
+            //System.out.println("Archivo no guardado");
         }
         archivoFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 

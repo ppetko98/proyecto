@@ -1,6 +1,5 @@
 package modelo.dao;
 
-import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 import java.util.List;
 import modelo.entidades.Clase;
@@ -19,10 +18,6 @@ import utilidades.BaseDatos;
  */
 public interface NomenclaturaController {
 
- 
-
-   
-
     List<Dominio> listaDominio() throws SQLException;
 
     List<Filo> listaFilo() throws SQLException;
@@ -34,14 +29,15 @@ public interface NomenclaturaController {
     List<Familia> listaFamilia() throws SQLException;
 
     List<Genero> listaGenero() throws SQLException;
-    
-     static void update (Especie e) throws EspecieException, SQLException {
+
+    static void update(Especie e) throws EspecieException, SQLException {
         int id = e.getId_especie();
         BaseDatos.executeUpdate(BaseDatos.UPDATE_ESPECIE, id);
-}
-      static void update (Dominio d) throws EspecieException, SQLException {
+    }
+
+    static void update(Dominio d) throws EspecieException, SQLException {
         int id = d.getId_dominio();
         BaseDatos.executeUpdate(BaseDatos.UPDATE_DOMINIO, id);
 
-}
+    }
 }
