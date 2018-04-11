@@ -91,11 +91,11 @@ public class EspecieControllerImpl implements EspecieController {
                         String descripcion = rs.getString("descripcion");
                         String metabolismo = rs.getString("metabolismo");
                         String ecologia = rs.getString("ecologia");
-                        String references = rs.getString("referencias");
+                        String referencias = rs.getString("referencias");
                         int id_secuencia = rs.getInt("id_secuencia");
                        
 
-                        Especie objeto = new Especie(id_especie, especie_name, genero_name, autor, descripcion, metabolismo, ecologia, references, id_secuencia);
+                        Especie objeto = new Especie(id_especie, especie_name, genero_name, autor, descripcion, metabolismo, ecologia, referencias, id_secuencia);
 
                         listacompleta.add(objeto);
 

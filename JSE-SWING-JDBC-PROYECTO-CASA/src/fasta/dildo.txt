@@ -1,1 +1,0 @@
-   JPanel southPanel = new JPanel(new FlowLayout());

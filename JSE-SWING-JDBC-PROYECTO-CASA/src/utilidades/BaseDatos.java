@@ -25,7 +25,7 @@ public interface BaseDatos {
             + "ON n.id_especie = e.id_especie";
 
     String SELECT_ESPECIE2
-            = "SELECT e.id_especie, g.genero_name, e.especie_name, e.autor, e.descripcion, e.imagen, e.ecologia, e.metabolismo, e.references,e.id_secuencia, ge.longitud, ge.topologia,ge.es_genomico_plasmido \n"
+            = "SELECT e.id_especie, g.genero_name, e.especie_name, e.autor, e.descripcion, e.imagen, e.ecologia, e.metabolismo, e.referencias,e.id_secuencia, ge.longitud, ge.topologia,ge.es_genomico_plasmido \n"
             + "FROM nomenclatura n INNER JOIN genero g \n"
             + "ON n.id_genero = g.id_genero\n"
             + "INNER JOIN especie e\n"
@@ -58,7 +58,7 @@ public interface BaseDatos {
             + "ON ge.id_secuencia = e.id_secuencia WHERE ge.id_secuencia  = ?";
 
     String DELETE_ESPECIE = "DELETE FROM biologia.especie where id_especie = ?;";
-    String UPDATE_ESPECIE = "UPDATE biologia.especie SET especie_name = ?, autor = ?, descripcion = ?, metabolismo =?, ecologia = ?,  References = ? where id_especie = ?";
+    String UPDATE_ESPECIE = "UPDATE biologia.especie SET especie_name = ?, autor = ?, descripcion = ?, metabolismo =?, ecologia = ?,  referencias = ? where id_especie = ?";
 
       
     

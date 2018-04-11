@@ -79,9 +79,9 @@ public class Ejecucion {
     private final List<Orden> ordenes = NomenclaturaControllerImpl.listaO;
     private final List<Genero> generos = NomenclaturaControllerImpl.listaG;
 
-    //private Collection<Especie> especiescompletas = EspecieControllerImpl.listacompleta;
-    private Collection<Especie> especiescompletas = null;
-    //private List<Genetica> genetica = EspecieControllerImpl.listGenetica;
+    private Collection<Especie> especiescompletas = EspecieControllerImpl.listacompleta;
+    //private Collection<Especie> especiescompletas = null;
+    private List<Genetica> genetica = EspecieControllerImpl.listGenetica;
 
     private final String pathImg = System.getProperty("user.dir") + "\\src\\testImages\\";
 
@@ -189,7 +189,7 @@ public class Ejecucion {
         btnEditar.addActionListener(e -> {
             modificarDatosEspecie();
             // Ocultar formulario cuando se pulse el boton de X
-            modificarDatosFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+            modificarDatosFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
             // Mostrar formulario
             modificarDatosFrame.setVisible(true);
@@ -554,6 +554,7 @@ public class Ejecucion {
         centerRPanel.add(cmbGeneros);
 
 //BOnton anterior
+        buttonprev.setEnabled(false);
         buttonprev.addActionListener(ae -> {
             agregarFrame.setVisible(true);
             agregarFrame2.setVisible(false);
@@ -700,11 +701,13 @@ public class Ejecucion {
         //JTextField txtTopologia = new JTextField();
         //JTextField txtLongitud = new JTextField();
         //JRadioButton buttonGenomico = new JRadioButton("SECUENCIA DE TIPO GENÓMICO", true);
+        
         try {
             especiescompletas = new EspecieControllerImpl().coleccionCompleta();
         } catch (SQLException ex) {
             Logger.getLogger(Ejecucion.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
         /*
          Añadir Accion al combo
          programar combobox
@@ -834,7 +837,7 @@ public class Ejecucion {
         JLabel lblDescripcion = new JLabel("DESCRIPCION", JLabel.RIGHT);
         JLabel lblMetabolismo = new JLabel("METABOLISMO", JLabel.RIGHT);
         JLabel lblEcologia = new JLabel("ECOLOGIA", JLabel.RIGHT);
-        JLabel lblReferences = new JLabel("REFERENCES", JLabel.RIGHT);
+        JLabel lblReferences = new JLabel("REFERENCIAS", JLabel.RIGHT);
 
         JLabel lblLogitud = new JLabel("LONGITUD DE LA SECUENCIA ", JLabel.RIGHT);
         JLabel lblTopologia = new JLabel("TOPOLOGIA", JLabel.RIGHT);
@@ -1066,6 +1069,17 @@ public class Ejecucion {
             Familia fa = (Familia) cmbFamilias.getSelectedItem();
             Orden o = (Orden) cmbOrdenes.getSelectedItem();
             Genero g = (Genero) cmbGeneros.getSelectedItem();
+            
+            int respuesta = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea modificar estos campos?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (respuesta == JOptionPane.YES_OPTION) {
+
+                try {
+                    NomenclaturaController.update(d);
+
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
 
         });
 
