@@ -19,7 +19,8 @@ public class EspecieControllerImpl implements EspecieController {
     public static List<Especie> lista = new ArrayList<>();
     public static Collection<Especie> listacompleta = new ArrayList<>();
     public static List<Genetica> listGenetica = new ArrayList<>();
-
+    public static List<Genetica> listaGenetica;
+    
     @Override
     public List<Especie> lista() throws SQLException {
         if (lista.isEmpty()) {

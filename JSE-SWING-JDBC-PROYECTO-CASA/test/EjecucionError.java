@@ -1,4 +1,4 @@
-package test;
+
 
 import modelo.dao.EspecieController;
 import modelo.dao.Implements.EspecieControllerImpl;
@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
@@ -32,6 +31,7 @@ import modelo.entidades.Filo;
 import modelo.entidades.Genero;
 import modelo.entidades.Genetica;
 import modelo.entidades.Orden;
+import test.BuscarPanel;
 
 import static utilidades.BaseSwing.crear;
 import utilidades.Validacion;
@@ -45,7 +45,7 @@ import vista.Fondo;
  * @author Petko
  *
  */
-public class Ejecucion {
+public class EjecucionError {
 
     private Especie es = null;
 
@@ -55,12 +55,7 @@ public class Ejecucion {
             600, 400, false, true);
     private final JFrame agregarFrame2 = crear("AÑADIR DATOS",
             600, 400, false, true);
-    private final JFrame agregarFrame3 = crear("AÑADIR DATOS 2",
-            600, 400, false, true);
-    private final JFrame agregarFrame4 = crear("AÑADIR DATOS 3",
-            850, 400, false, true);
-    private final JFrame agregarFrame5 = crear("AÑADIR DATOS 3",
-            850, 400, false, true);
+    private final JFrame agregarFrame3 = crear("AÑADIR DATOS 2", 600, 400, false, true);
     private final JFrame eliminarFrame = crear("ELIMINAR ESPECIE",
             600, 400, false, true);
     private final JFrame modificarFrame = crear("MODIFICAR ESPECIE",
@@ -86,15 +81,15 @@ public class Ejecucion {
     private final List<Genero> generos = NomenclaturaControllerImpl.listaG;
 
     private Collection<Especie> especiescompletas = EspecieControllerImpl.listacompleta;
-
-    private List<Genetica> genetica = EspecieControllerImpl.listaGenetica;
+    //private Collection<Especie> especiescompletas = null;
+    private List<Genetica> genetica = EspecieControllerImpl.listGenetica;
 
     private final String pathImg = System.getProperty("user.dir") + "\\src\\testImages\\";
 
     //private EspecieController controllerEspecie = new EspecieControllerImpl();
     //private NomenclaturaController controllerNomenclatura = new NomenclaturaControllerImpl();
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new Ejecucion().startup());
+        SwingUtilities.invokeLater(() -> new EjecucionError().startup());
         try {
             Class.forName("com.mysql.jdbc.Driver");
 
@@ -686,6 +681,8 @@ public class Ejecucion {
     }
 
     void buscarEspecie(JPanel buscarPanel) {
+
+        //frame.add(buscarPanel);
         buscarFrame.setContentPane(buscarPanel);
         buscarFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         buscarFrame.setVisible(true);
@@ -702,25 +699,42 @@ public class Ejecucion {
         JTextField txtMetabolismo = new JTextField();
         JTextField txtEcologia = new JTextField();
         JTextField txtReferences = new JTextField();
-        JTextField txtTopologia = new JTextField();
-        JTextField txtLongitud = new JTextField();
-        JRadioButton buttonGenomico = new JRadioButton("SECUENCIA DE TIPO GENÓMICO", true);
-
-        for (Especie e : especiescompletas) {
-            cmbEspecies.addItem(e);
+        //JTextField txtTopologia = new JTextField();
+        //JTextField txtLongitud = new JTextField();
+        //JRadioButton buttonGenomico = new JRadioButton("SECUENCIA DE TIPO GENÓMICO", true);
+        
+        try {
+            especiescompletas = new EspecieControllerImpl().coleccionCompleta();
+        } catch (SQLException ex) {
+            Logger.getLogger(EjecucionError.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        /*
+         Añadir Accion al combo
+         programar combobox
+         */
+        if (especiescompletas != null) {
+            for (Especie e : especiescompletas) {
+                cmbEspecies.addItem(e);
+            }
         }
 
         cmbEspecies.addItemListener(new ItemListener() {
 
+            // Recuperar elemento seleccionado
             @Override
             public void itemStateChanged(ItemEvent ie) {
                 Especie e = (Especie) ie.getItem();
+
                 txtNombre.setText(e.getEspecie_name());
                 txtAutor.setText(e.getAutor());
                 txtDecripcion.setText(e.getDescripcion());
                 txtMetabolismo.setText(e.getMetabolismo());
                 txtEcologia.setText(e.getEcologia());
                 txtReferences.setText(e.getReferences());
+                //for (Especie e : especiescompletas) {
+
+                //}
             }
         });
 
@@ -773,6 +787,11 @@ public class Ejecucion {
 
         JFileChooser chImangen = new JFileChooser();
 
+        /* JPanel imagenPanel = new JPanel();
+            imagenPanel.add(chImangen);
+            imagenFrame.setContentPane(imagenPanel);
+            imagenFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+            imagenFrame.setVisible(true);*/
         ImageIcon ADNImagen = new ImageIcon(pathImg + "if_medical_icon_10_1290983.png");
         JButton buttonFasta = new JButton("FASTA", ADNImagen);
         buttonFasta.setPreferredSize(new Dimension(120, 60));
@@ -819,7 +838,7 @@ public class Ejecucion {
         JLabel lblDescripcion = new JLabel("DESCRIPCION", JLabel.RIGHT);
         JLabel lblMetabolismo = new JLabel("METABOLISMO", JLabel.RIGHT);
         JLabel lblEcologia = new JLabel("ECOLOGIA", JLabel.RIGHT);
-        JLabel lblReferences = new JLabel("REFERENCES", JLabel.RIGHT);
+        JLabel lblReferences = new JLabel("REFERENCIAS", JLabel.RIGHT);
 
         JLabel lblLogitud = new JLabel("LONGITUD DE LA SECUENCIA ", JLabel.RIGHT);
         JLabel lblTopologia = new JLabel("TOPOLOGIA", JLabel.RIGHT);
@@ -845,6 +864,19 @@ public class Ejecucion {
         datos.add(lblReferences);
         datos.add(txtReferences);
 
+        //JPanel archivo = new JPanel();
+        //archivo.setLayout(new GridLayout(2, 0, 10, 10));
+        //archivo.add(lblTopologia);
+        //archivo.add(txtTopologia);
+        //txtNombre.setText(e.getEspecie_name());
+        //txtAutor.setText(e.getAutor());
+        //txtDecripcion.setText(e.getDescripcion());
+        //txtMetabolismo.setText(e.getMetabolismo());
+        //txtEcologia.setText(e.getEcologia());
+        //txtReferences.setText(e.getReferences());
+        //}
+        //for (Genetica ge : genetica )   {
+        //txtLongitud.setText(ge.getLongitud());
         JPanel botones = new JPanel();
         botones.setBorder(BorderFactory.createEmptyBorder(1, 10, 10, 1));
         botones.add(buttonImagen, BorderLayout.EAST);
@@ -853,8 +885,11 @@ public class Ejecucion {
         JPanel genetica = new JPanel();
         genetica.setLayout(new GridLayout(1, 0, 10, 20));
         genetica.setBorder(BorderFactory.createEmptyBorder(30, 20, 30, 1));
+        //genetica.add(archivo, BorderLayout.CENTER);
+        //genetica.add(radio, BorderLayout.NORTH);
         genetica.add(botones, BorderLayout.CENTER);
 
+        //archivo.add(chImangen);
         ImageIcon prevImagen = new ImageIcon(pathImg + "if_pre_293277.png");
         JButton buttonprev = new JButton("ANTERIOR", prevImagen);
         ImageIcon siguienteImagen = new ImageIcon(pathImg + "if_next_293276.png");
@@ -864,19 +899,27 @@ public class Ejecucion {
 
         JPanel inferior = new JPanel();
         inferior.setBorder(BorderFactory.createEmptyBorder(20, 10, 10, 10));
-        buttonprev.setEnabled(false);
+
         inferior.add(buttonprev);
         buttonprev.addActionListener(ae -> {
+
             modificarDatosFrame.setVisible(false);
             mainFrame.setVisible(true);
+
         });
 
         inferior.add(buttonOK);
         buttonOK.addActionListener(ae -> {
 
             try {
+
                 Validacion.validarCadena(txtNombre, true, "Nombre");
                 Validacion.validarMixto(txtAutor, true, "Autor");
+                Validacion.validarMixto(txtDecripcion, true, "Descripcion");
+
+                //Validacion.validarCadena(txtReferences, true, "References");
+                //Validacion.validarCadena(txtTopologia, true, "Topologia");
+                //Validacion.validarCadena(txtLongitud, true, "Longitud");
             } catch (ValidacionException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage(), "Error",
                         JOptionPane.ERROR_MESSAGE);
@@ -884,6 +927,11 @@ public class Ejecucion {
                 return;
             }
 
+            //archivo.add(lblLogitud);
+            //archivo.add(txtLongitud);
+            //JPanel radio = new JPanel();
+            //radio.setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 10));
+            //radio.add(buttonGenomico, BorderLayout.EAST);
             Especie e = (Especie) cmbEspecies.getSelectedItem();
 
             int respuesta = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea modificar " + e + "?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -896,23 +944,25 @@ public class Ejecucion {
                     e.setEcologia(txtEcologia.getText());
                     e.setMetabolismo(txtMetabolismo.getText());
                     e.setReferences(txtReferences.getText());
-                    
-                    //EspecieController.update(e);
-
-                    modificarClasificacion();
-                    nomenclaturaFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                    nomenclaturaFrame.setVisible(true);
-                    
+                    EspecieController.update(e);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
 
-        });
+            modificarClasificacion();
+            nomenclaturaFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+            nomenclaturaFrame.setVisible(true);
+
+        }
+        );
         inferior.add(buttonKO);
-        buttonKO.addActionListener(ae -> {
-            modificarDatosFrame.dispose();
-        });
+
+        buttonKO.addActionListener(ae
+                -> {
+            modificarFrame.setVisible(true);
+        }
+        );
         JPanel panel = new JPanel(new BorderLayout(5, 5));
 
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 20));
@@ -921,11 +971,15 @@ public class Ejecucion {
         genetica.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 15));
 
         panel.add(northPanel, BorderLayout.NORTH);
+
         panel.add(inferior, BorderLayout.SOUTH);
+
         panel.add(datos, BorderLayout.CENTER);
+
         panel.add(genetica, BorderLayout.WEST);
 
         modificarDatosFrame.setContentPane(panel);
+
     }
 
     private void modificarClasificacion() {
@@ -941,9 +995,9 @@ public class Ejecucion {
         JLabel lblDominio = new JLabel("DOMINIO", JLabel.LEFT);
         JLabel lblFilo = new JLabel("FILO", JLabel.LEFT);
         JLabel lblClase = new JLabel("CLASE", JLabel.LEFT);
-        JLabel lblFamilia = new JLabel("FAMILIA", JLabel.LEFT);
-        JLabel lblOrden = new JLabel("ORDEN", JLabel.LEFT);
-        JLabel lblGenero = new JLabel("GENERO", JLabel.LEFT);
+        JLabel lblFamilia = new JLabel("FAMILIA      ", JLabel.LEFT);
+        JLabel lblOrden = new JLabel("ORDEN       ", JLabel.LEFT);
+        JLabel lblGenero = new JLabel("GENERO      ", JLabel.LEFT);
 
         ImageIcon prevImagen = new ImageIcon(pathImg + "if_pre_293277.png");
         JButton buttonprev = new JButton("ANTERIOR", prevImagen);
@@ -1016,23 +1070,16 @@ public class Ejecucion {
             Familia fa = (Familia) cmbFamilias.getSelectedItem();
             Orden o = (Orden) cmbOrdenes.getSelectedItem();
             Genero g = (Genero) cmbGeneros.getSelectedItem();
-
+            
             int respuesta = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea modificar estos campos?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (respuesta == JOptionPane.YES_OPTION) {
 
                 try {
-                    //NomenclaturaController.update(d);
+                    NomenclaturaController.update(d);
 
                 } catch (Exception ex) {
-                    System.out.println("Aqui esta el error");
                     JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
-                JOptionPane.showMessageDialog(null,"Datos Actualizados Correctamente");
-                nomenclaturaFrame.setVisible(false);
-                nomenclaturaFrame.dispose();
-                modificarDatosFrame.setVisible(false);
-                modificarFrame.dispose();
-                modificarDatosFrame.dispose();
             }
 
         });
@@ -1040,9 +1087,10 @@ public class Ejecucion {
         //Boton cancelar
         southPanel.add(buttonKO);
         buttonKO.addActionListener((ActionEvent ae) -> {
-            nomenclaturaFrame.setVisible(false);
-            mainFrame.setVisible(true);
 
+            nomenclaturaFrame.setVisible(false);
+
+            JOptionPane.showMessageDialog(null, "Los datos se han añadido a la Base de Datos");
         });
 
         JPanel modClasPanel = new JPanel(new BorderLayout(10, 10));
@@ -1053,7 +1101,7 @@ public class Ejecucion {
         modClasPanel.add(centerLPanel, BorderLayout.WEST);
         modClasPanel.add(southPanel, BorderLayout.SOUTH);
 
-        nomenclaturaFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        nomenclaturaFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         nomenclaturaFrame.setContentPane(modClasPanel);
         nomenclaturaFrame.setVisible(true);
     }

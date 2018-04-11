@@ -444,15 +444,15 @@ public class BuscarPanel extends JPanel {
 
         }
         if (cbEspecie3.isSelected()) {
-            CBPropiedad references = new CBPropiedad("references", 6, BaseDatos.SELECT_REFERENCES, id);
-            props.add(references);
+            CBPropiedad referencias = new CBPropiedad("referencias", 6, BaseDatos.SELECT_REFERENCES, id);
+            props.add(referencias);
 
             try {
                 rs = BaseDatos.executeQuery(BaseDatos.SELECT_REFERENCES, id);
                 if (rs.next()) {
                     especiebuscada.setReferences(rs.getString(1));
                     columnas.add(rs.getString(1));
-                    propiedadesMap.put("References", rs.getString(1));
+                    propiedadesMap.put("Referencias", rs.getString(1));
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(BuscarPanel.class.getName()).log(Level.SEVERE, null, ex);
